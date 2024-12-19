@@ -1,0 +1,11 @@
+backend/keys.json
+bazel-*
+.idea/
+*.pyc
+__pycache__/
+.vscode/
+.env/
+dist/
+build/
+*.egg-info/
+.pytest_cache/

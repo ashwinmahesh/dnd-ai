@@ -1,0 +1,29 @@
+# load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+# load("@my_deps//:requirements.bzl", "requirement")
+
+py_library(
+    name = "dnd_ai_assistant",
+    srcs = glob(["*.py"]),
+    visibility = ["//visibility:public"],
+    deps = [
+        # requirement("pyyaml"),
+        # requirement("mypy-extensions"),
+    ],
+)
+
+py_binary(
+    name = "dnd_ai_assistant_binary",
+    srcs = glob(["*.py"]),
+    # src = ["main.py"]
+    legacy_create_init = False,
+    main = "main.py",
+    deps = [
+        ":dnd_ai_assistant",
+    ],
+)
+
+filegroup(
+    name = "dnd_ai_assistant_zip",
+    srcs = [":dnd_ai_assistant_binary"],
+    output_group = "python_zip_file",
+)
