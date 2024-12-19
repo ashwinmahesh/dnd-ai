@@ -1,4 +1,4 @@
-backend/keys.json
+backend/.env
 bazel-*
 .idea/
 *.pyc

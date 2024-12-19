@@ -1,3 +1,2 @@
-pyyaml
 mypy-extensions
 openai

@@ -246,7 +246,7 @@
         "bzlTransitiveDigest": "3NU4P1ZMJpwxeEqYgdIqThspiJugQB2YFURwe5Cq0cI=",
         "usagesDigest": "2+LuAd+sVfeoZyJemi1px0B7EzFCN7T6ayAm4aJvDE0=",
         "recordedFileInputs": {
-          "@@//backend/requirements_lock.txt": "0d95d3937f9bb95a26f281ea8f7cbd863d5073de0294bfbb661f7c9bbd55c930",
+          "@@//backend/requirements_lock.txt": "c9e5ceebcd430d5923f28dc172ad86975e368a5b63647c30ac55f2063a48625d",
           "@@protobuf+//python/requirements.txt": "983be60d3cec4b319dcab6d48aeb3f5b2f7c3350f26b3a9e97486c37967c73c5",
           "@@rules_fuzzing+//fuzzing/requirements.txt": "ab04664be026b632a0d2a2446c4f65982b7654f5b6851d2f9d399a19b7242a5b",
           "@@rules_python+//tools/publish/requirements_darwin.txt": "2994136eab7e57b083c3de76faf46f70fad130bc8e7360a7fed2b288b69e79dc",
@@ -259,6 +259,96 @@
           "RULES_PYTHON_REPO_DEBUG_VERBOSITY": null
         },
         "generatedRepoSpecs": {
+          "pip_311_annotated_types": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "annotated-types==0.7.0"
+            }
+          },
+          "pip_311_anyio": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "anyio==4.7.0"
+            }
+          },
+          "pip_311_certifi": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "certifi==2024.12.14"
+            }
+          },
+          "pip_311_distro": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "distro==1.9.0"
+            }
+          },
+          "pip_311_exceptiongroup": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "exceptiongroup==1.2.2"
+            }
+          },
+          "pip_311_h11": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "h11==0.14.0"
+            }
+          },
+          "pip_311_httpcore": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "httpcore==1.0.7"
+            }
+          },
+          "pip_311_httpx": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "httpx==0.28.1"
+            }
+          },
+          "pip_311_idna": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "idna==3.10"
+            }
+          },
+          "pip_311_jiter": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "jiter==0.8.2"
+            }
+          },
           "pip_311_mypy_extensions": {
             "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
             "attributes": {
@@ -268,6 +358,33 @@
               "requirement": "mypy-extensions==1.0.0"
             }
           },
+          "pip_311_openai": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "openai==1.58.1"
+            }
+          },
+          "pip_311_pydantic": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "pydantic==2.10.4"
+            }
+          },
+          "pip_311_pydantic_core": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "pydantic-core==2.27.2"
+            }
+          },
           "pip_311_pyyaml": {
             "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
             "attributes": {
@@ -275,6 +392,33 @@
               "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
               "repo": "pip_311",
               "requirement": "pyyaml==6.0.2"
+            }
+          },
+          "pip_311_sniffio": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "sniffio==1.3.1"
+            }
+          },
+          "pip_311_tqdm": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "tqdm==4.67.1"
+            }
+          },
+          "pip_311_typing_extensions": {
+            "repoRuleId": "@@rules_python+//python/private/pypi:whl_library.bzl%whl_library",
+            "attributes": {
+              "dep_template": "@pip//{name}:{target}",
+              "python_interpreter_target": "@@rules_python++python+python_3_11_host//:python",
+              "repo": "pip_311",
+              "requirement": "typing-extensions==4.12.2"
             }
           },
           "pip_deps_310_numpy": {
@@ -2771,12 +2915,44 @@
               "repo_name": "pip",
               "extra_hub_aliases": {},
               "whl_map": {
+                "annotated_types": "{\"pip_311_annotated_types\":[{\"version\":\"3.11\"}]}",
+                "anyio": "{\"pip_311_anyio\":[{\"version\":\"3.11\"}]}",
+                "certifi": "{\"pip_311_certifi\":[{\"version\":\"3.11\"}]}",
+                "distro": "{\"pip_311_distro\":[{\"version\":\"3.11\"}]}",
+                "exceptiongroup": "{\"pip_311_exceptiongroup\":[{\"version\":\"3.11\"}]}",
+                "h11": "{\"pip_311_h11\":[{\"version\":\"3.11\"}]}",
+                "httpcore": "{\"pip_311_httpcore\":[{\"version\":\"3.11\"}]}",
+                "httpx": "{\"pip_311_httpx\":[{\"version\":\"3.11\"}]}",
+                "idna": "{\"pip_311_idna\":[{\"version\":\"3.11\"}]}",
+                "jiter": "{\"pip_311_jiter\":[{\"version\":\"3.11\"}]}",
                 "mypy_extensions": "{\"pip_311_mypy_extensions\":[{\"version\":\"3.11\"}]}",
-                "pyyaml": "{\"pip_311_pyyaml\":[{\"version\":\"3.11\"}]}"
+                "openai": "{\"pip_311_openai\":[{\"version\":\"3.11\"}]}",
+                "pydantic": "{\"pip_311_pydantic\":[{\"version\":\"3.11\"}]}",
+                "pydantic_core": "{\"pip_311_pydantic_core\":[{\"version\":\"3.11\"}]}",
+                "pyyaml": "{\"pip_311_pyyaml\":[{\"version\":\"3.11\"}]}",
+                "sniffio": "{\"pip_311_sniffio\":[{\"version\":\"3.11\"}]}",
+                "tqdm": "{\"pip_311_tqdm\":[{\"version\":\"3.11\"}]}",
+                "typing_extensions": "{\"pip_311_typing_extensions\":[{\"version\":\"3.11\"}]}"
               },
               "packages": [
+                "annotated_types",
+                "anyio",
+                "certifi",
+                "distro",
+                "exceptiongroup",
+                "h11",
+                "httpcore",
+                "httpx",
+                "idna",
+                "jiter",
                 "mypy_extensions",
-                "pyyaml"
+                "openai",
+                "pydantic",
+                "pydantic_core",
+                "pyyaml",
+                "sniffio",
+                "tqdm",
+                "typing_extensions"
               ],
               "groups": {}
             }

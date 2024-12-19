@@ -2,24 +2,21 @@ load("@pip//:requirements.bzl", "requirement")
 
 py_library(
     name = "dnd_ai_assistant",
-    srcs = glob(["*.py"]),
+    srcs = glob(["**/*.py"]),
     visibility = ["//visibility:public"],
     deps = [
-      # "@pip//:flask",
-        requirement("pyyaml"),
-        # requirement("mypy-extensions"),
+        requirement("openai"),
     ],
 )
 
 py_binary(
     name = "dnd_ai_assistant_binary",
     srcs = glob(["*.py"]),
-    # src = ["main.py"]
     legacy_create_init = False,
     main = "main.py",
     deps = [
         ":dnd_ai_assistant",
-    ],
+    ]
 )
 
 filegroup(
