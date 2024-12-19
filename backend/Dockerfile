@@ -1,18 +1,20 @@
-FROM 549230430157.dkr.ecr.us-east-2.amazonaws.com/instabase-build/python:3.9.17
+FROM python:3
 LABEL maintainer="Ashwin Mahesh"
 
-RUN apk add --no-cache \
-        bash \
-        curl \
-        libmagic \
-        libstdc++ \
-    && addgroup -g 9999 ibuser \
-    && adduser -u 9999 -S -H -G ibuser ibuser
+ENV DEBIAN_FRONTEND=noninteractive
 
-COPY --chown=9999:9999 build/prediction_engine.zip /usr/local/bin/prediction_engine.zip
-COPY --chmod=755 start-main.sh /usr/local/bin/start-main.sh
+RUN apt-get update && apt-get install -y \
+    bash \
+    curl \
+    gnupg \
+    file \
+    gcc \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd -g 9999 ibuser \
+    && useradd -u 9999 -g ibuser -s /bin/bash -m ibuser
+
+COPY --chown=9999:9999 build/dnd_ai_assistant.zip /usr/local/bin/dnd_ai_assistant.zip
 
 WORKDIR /
 USER 9999:9999
-# CMD ["/bin/bash", "/usr/local/bin/start-main.sh"]
-CMD ["python", /usr/local/bin/prediction_engine.zip]
+CMD ["python3", "/usr/local/bin/dnd_ai_assistant.zip"]
