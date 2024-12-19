@@ -10,7 +10,7 @@ build: clean
 	cp $(project_dir)/bazel-out/darwin_x86_64-fastbuild/bin/backend/src/dnd_ai_assistant_binary.zip $(project_dir)/backend/build/dnd_ai_assistant.zip
 
 runlocal:
-	bazel run --enable_workspace //backend/src:dnd_ai_assistant_binary
+	bazel run //backend/src:dnd_ai_assistant_binary
 
 build-docker: build
 	docker build --platform linux/arm64 -t dnd-ai .

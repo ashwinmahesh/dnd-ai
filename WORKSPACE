@@ -1,4 +1,4 @@
-# workspace(name = "dnd_ai")
+workspace(name = "dnd_ai")
 
 # load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -66,28 +66,28 @@
 
 # ATEMPT 3
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+# load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-http_archive(
-    name = "rules_python",
-    sha256 = "4f7e2aa1eb9aa722d96498f5ef514f426c1f55161c3c9ae628c857a7128ceb07",
-    strip_prefix = "rules_python-1.0.0",
-    url = "https://github.com/bazelbuild/rules_python/releases/download/1.0.0/rules_python-1.0.0.tar.gz",
-)
+# http_archive(
+#     name = "rules_python",
+#     sha256 = "4f7e2aa1eb9aa722d96498f5ef514f426c1f55161c3c9ae628c857a7128ceb07",
+#     strip_prefix = "rules_python-1.0.0",
+#     url = "https://github.com/bazelbuild/rules_python/releases/download/1.0.0/rules_python-1.0.0.tar.gz",
+# )
 
-load("@rules_python//python:repositories.bzl", "py_repositories")
+# load("@rules_python//python:repositories.bzl", "py_repositories")
 
-py_repositories()
+# py_repositories()
 
-load("@rules_python//python:pip.bzl", "pip_parse")
+# load("@rules_python//python:pip.bzl", "pip_parse")
 
-# Create a central repo that knows about the dependencies needed from
-# requirements_lock.txt.
-pip_parse(
-   name = "my_deps",
-   requirements_lock = "//backend:requirements_lock.txt",
-)
-# Load the starlark macro, which will define your dependencies.
-load("@my_deps//:requirements.bzl", "install_deps")
-# Call it to define repos for your requirements.
-install_deps()
+# # Create a central repo that knows about the dependencies needed from
+# # requirements_lock.txt.
+# pip_parse(
+#    name = "my_deps",
+#    requirements_lock = "//backend:requirements_lock.txt",
+# )
+# # Load the starlark macro, which will define your dependencies.
+# load("@my_deps//:requirements.bzl", "install_deps")
+# # Call it to define repos for your requirements.
+# install_deps()
