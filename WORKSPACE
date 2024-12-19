@@ -1,64 +1,3 @@
-# # # workspace(name = "dnd_ai")
-
-# # # # Load rules_python
-# # # load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-# # # rules_python_version = "740825b7f74930c62f44af95c9a4c1bd428d2c53"
-# # # http_archive(
-# # #     name = "rules_python",
-# # #     # url = "https://github.com/bazelbuild/rules_python/releases/download/0.40.0/rules_python-0.40.0.tar.gz",
-# # #     url = "https://github.com/bazelbuild/rules_python/archive/{}.zip".format(rules_python_version),
-# # #     sha256 = "09a3c4791c61b62c2cbc5b2cbea4ccc32487b38c7a2cc8f87a794d7a659cc742",
-# # #     # strip_prefix = "rules_python-0.40.0",
-# # #     strip_prefix = "rules_python-{}".format(rules_python_version),
-# # # )
-
-# # # load("@rules_python//python:pip.bzl", "pip_parse")
-# # # pip_parse(
-# # #     name = "python_deps",
-# # #     requirements_lock = "//backend:requirements_lock.txt",
-# # # )
-# # # # Load the starlark macro which will define your dependencies.
-# # # load("@python_deps//backend:requirements.bzl", "install_deps")
-# # # # Call it to define repos for your requirements.
-# # # install_deps()
-
-# # workspace(name = "dnd_ai")
-
-# # # Load rules_python
-# # load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-# # # rules_python_version = "740825b7f74930c62f44af95c9a4c1bd428d2c53"
-# # # http_archive(
-# # #     name = "rules_python",
-# # #     url = "https://github.com/bazelbuild/rules_python/archive/{}.zip".format(rules_python_version),
-# # #     sha256 = "09a3c4791c61b62c2cbc5b2cbea4ccc32487b38c7a2cc8f87a794d7a659cc742",
-# # #     strip_prefix = "rules_python-{}".format(rules_python_version),
-# # # )
-
-# # # Add bazel_skylib
-# # http_archive(
-# #     name = "bazel_skylib",
-# #     urls = ["https://github.com/bazelbuild/bazel-skylib/releases/download/1.3.0/bazel-skylib-1.3.0.tar.gz"],
-# #     sha256 = "74d544d96f4a5bb630d465ca8bbcfe231e3594e5aae57e1edbf17a6eb3ca2506",
-# #     # strip_prefix = "bazel-skylib-1.3.0",
-# # )
-
-# # http_archive(
-# #     name = "rules_python",
-# #      urls = ["file:///Users/ashwinmahesh/Documents/playground/dnd-ai/backend/rules_python-0.40.0.tar.gz"],
-# #     sha256 = "690e0141724abb568267e003c7b6d9a54925df40c275a870a4d934161dc9dd53",
-# #     strip_prefix = "rules_python-0.40.0",
-# # )
-
-# # # Parse Python dependencies
-# # load("@rules_python//python:pip.bzl", "pip_parse")
-
-# # pip_parse(
-# #     name = "python_deps",
-# #     requirements_lock = "//backend:requirements_lock.txt",
-# # )
-
 # workspace(name = "dnd_ai")
 
 # load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
@@ -66,7 +5,7 @@
 # # Python rules
 # http_archive(
 #     name = "rules_python",
-#     sha256 = "9acc0944c94adb23fba1c9bb45f758769e0cb614f707d6fae407ed9fd3af4897",
+#     sha256 = "9acc0944c94adb23fba1c9988b48768b1bacc6583b52a2586895c5b7491e2e31",
 #     strip_prefix = "rules_python-0.27.0",
 #     url = "https://github.com/bazelbuild/rules_python/releases/download/0.27.0/rules_python-0.27.0.tar.gz",
 # )
@@ -74,8 +13,81 @@
 # load("@rules_python//python:repositories.bzl", "py_repositories")
 # py_repositories()
 
-# # Root BUILD file
-# # BUILD
-# load("@rules_python//python:defs.bzl", "py_binary")
+# # # Load the pip_install rule
+# # load("@rules_python//python:pip.bzl", "pip_install")
 
-# package(default_visibility = ["//visibility:public"])
+# # # Specify your requirements.txt file
+# # pip_install(
+# #     requirements = "//backend:requirements.txt",
+# # )
+# load("@rules_python//python:pip.bzl", "pip_parse")
+
+# pip_parse(
+#     name = "pip_deps",
+#     requirements_lock = "//backend:requirements.txt",
+# )
+
+# load("@pip_deps//:requirements.bzl", "install_deps")
+
+# install_deps()
+# load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# # Update the snippet based on the latest release below
+# # https://github.com/bazelbuild/rules_python/releases
+
+# http_archive(
+#     name = "rules_python",
+#     sha256 = "ca77768989a7f311186a29747e3e95c936a41dffac779aff6b443db22290d913",
+#     strip_prefix = "rules_python-0.36.0",
+#     url = "https://github.com/bazelbuild/rules_python/releases/download/0.36.0/rules_python-0.36.0.tar.gz",
+# )
+
+# load("@rules_python//python:repositories.bzl", "py_repositories")
+
+# py_repositories()
+
+# load("@rules_python//python:repositories.bzl", "python_register_toolchains")
+
+# python_register_toolchains(
+#     name = "python_3_11",
+#     # Available versions are listed in @rules_python//python:versions.bzl.
+#     # We recommend using the same version your team is already standardized on.
+#     python_version = "3.11",
+# )
+
+# load("@rules_python//python:pip.bzl", "pip_parse")
+
+# pip_parse(
+#     name = "pypi",
+#     python_interpreter_target = "@python_3_11_host//:python",
+#     requirements_lock = "//:requirements.txt",
+# )
+
+
+# ATEMPT 3
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "rules_python",
+    sha256 = "4f7e2aa1eb9aa722d96498f5ef514f426c1f55161c3c9ae628c857a7128ceb07",
+    strip_prefix = "rules_python-1.0.0",
+    url = "https://github.com/bazelbuild/rules_python/releases/download/1.0.0/rules_python-1.0.0.tar.gz",
+)
+
+load("@rules_python//python:repositories.bzl", "py_repositories")
+
+py_repositories()
+
+load("@rules_python//python:pip.bzl", "pip_parse")
+
+# Create a central repo that knows about the dependencies needed from
+# requirements_lock.txt.
+pip_parse(
+   name = "my_deps",
+   requirements_lock = "//backend:requirements_lock.txt",
+)
+# Load the starlark macro, which will define your dependencies.
+load("@my_deps//:requirements.bzl", "install_deps")
+# Call it to define repos for your requirements.
+install_deps()
