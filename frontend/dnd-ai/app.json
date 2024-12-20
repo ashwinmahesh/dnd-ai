@@ -16,6 +16,9 @@
       ]
     ],
     "name": "dnd-ai",
-    "slug": "dnd-ai"
+    "slug": "dnd-ai",
+    "experiments": {
+      "typedRoutes": true
+    }
   }
 }

@@ -21,7 +21,7 @@ class OpenAILibrary:
         },
         {
           'role': 'user',
-          "content": f"I need a list of 20 random {descriptor} NPC first and last names. Return them in a comma separated list and nothing else. Don't number them",
+          "content": f"I need a list of 20 random {descriptor} NPC first and last names. Return them in a comma separated list and nothing else. DO NOT NUMBER THEM OR SEPARATE THEM IN ANY WAY EXCEPT A COMMA. DO NOT RETURN ANYTHING IN THE MESSAGE EXCEPT THE NAMES",
         }
       ])
 
@@ -50,6 +50,7 @@ class OpenAILibrary:
       ])
 
       try:
+        print(completion.choices[0].message.content)
         results = completion.choices[0].message.content.split("\n")
         return results
       except Exception as e:
