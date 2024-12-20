@@ -21,11 +21,12 @@ class OpenAILibrary:
         },
         {
           'role': 'user',
-          "content": f"I need a list of 20 random {descriptor} NPC first & last names. Return them in a comma separated list and nothing else. Don't number them",
+          "content": f"I need a list of 20 random {descriptor} NPC first and last names. Return them in a comma separated list and nothing else. Don't number them",
         }
       ])
 
       try:
+        print(completion.choices[0].message.content)
         results = completion.choices[0].message.content.split(",")
         return results
       except Exception as e:
@@ -44,12 +45,12 @@ class OpenAILibrary:
         },
         {
           'role': 'user',
-          "content": f"I need a list of {num_encounters} random encounters for a party of level {party_level}. The encounters should take place in a {scenario}. Return them in a new-line separated list with the format of 'Encounter Description - {'{}'}, Reason for Encounter - {'{}'} . Don't number them",
+          "content": f"I need a list of {num_encounters} random encounters for a party of level {party_level}. The encounters should take place in a {scenario}. Return them in a new-line separated list with the format of 'Encounter Description - {'{}'} | Reason for Encounter - {'{}'}' . Don't number them",
         }
       ])
 
       try:
-        results = completion.choices[0].message.content.split(",")
+        results = completion.choices[0].message.content.split("\n")
         return results
       except Exception as e:
         raise Exception("Unable to properly parse OpenAI response")
