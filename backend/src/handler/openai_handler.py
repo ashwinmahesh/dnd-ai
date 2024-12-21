@@ -23,7 +23,7 @@ class OpenAIHandler:
     def get_encounters():
       party_level = request.args.get("party_level", type=int)
       scenario = request.args.get('scenario', type=str)
-      num_encounters = request.args.get('num', 10, type=int)
+      num_encounters = request.args.get('num_encounters', 10, type=int)
 
       try:
         random_encounters = self.openAILibrary.get_random_encounters(party_level=party_level, scenario=scenario, num_encounters=num_encounters)
