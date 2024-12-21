@@ -34,7 +34,7 @@ class OpenAILibrary:
     except openai.OpenAIError as e:
       raise Exception(f"OpenAI Error: {e}")
 
-  def get_random_encounters(self, party_level: int, scenario: str, num_encounters: int = 10) -> List[str]:
+  def get_random_encounters(self, party_level: int, scenario: str, num_encounters: int = 10) -> List[Dict[str, str]]:
     try:
       completion = self.client.chat.completions.create(
         model = "gpt-3.5-turbo",
@@ -45,14 +45,22 @@ class OpenAILibrary:
         },
         {
           'role': 'user',
-          "content": f"I need a list of {num_encounters} random encounters for a party of level {party_level}. The encounters should take place in a {scenario}. Return them in a new-line separated list with the format of 'Encounter Description - {'{}'} | Reason for Encounter - {'{}'}' . Don't number them",
+          "content": f"I need a list of {num_encounters} random encounters for a party of level {party_level}. The encounters should take place be about {scenario}. Return them in a new-line separated list with the format of '{'{ENCOUNTER DESCRIPTION}'} - {'{REASON FOR ENCOUNTER}'}'. Don't number them or return anything else in the output except the encounters in my desired format. If it is a combat encounter, include the number and types of enemies. In reason for encounter, provide context as to why the encounter might be happening. The context should be 2 sentences",
         }
       ])
 
       try:
         print(completion.choices[0].message.content)
         results = completion.choices[0].message.content.split("\n")
-        return results
+        for i in range(len(results)):
+          if results[i].startswith("- "):
+            results[i] = results[i][2:]
+
+        output = []
+        for entry in results:
+          encounter, context = entry.split(" - ", 1)
+          output.append({'encounter': encounter, 'context': context})
+        return output
       except Exception as e:
         raise Exception("Unable to properly parse OpenAI response")
     except openai.OpenAIError as e:

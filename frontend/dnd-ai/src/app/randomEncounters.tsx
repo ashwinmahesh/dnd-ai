@@ -14,6 +14,7 @@ import {
   Text,
 } from '@ui-kitten/components';
 import useFetch from '@/api/useFetch';
+import { ActionStatus } from '@/api/types';
 
 const RandomEncounters = () => {
   const [partyLevel, setPartyLevel] = useState<IndexPath>(new IndexPath(0));
@@ -26,12 +27,12 @@ const RandomEncounters = () => {
     item,
     index,
   }: {
-    item: { description: string; context: string };
+    item: { encounter: string; context: string };
     index: number;
   }): React.ReactElement => {
     return (
       <ListItem
-        title={`${index + 1} | ${item.description}`}
+        title={`${index + 1} | ${item.encounter}`}
         description={item.context}
       />
     );
@@ -92,7 +93,7 @@ const RandomEncounters = () => {
           <Text status="danger">{fetchRandomEncounters.error}</Text>
         </Layout>
       )}
-      {fetchRandomEncounters.data && (
+      {fetchRandomEncounters.status === ActionStatus.FULFILLED && (
         <List
           data={fetchRandomEncounters.data.data}
           ItemSeparatorComponent={Divider}

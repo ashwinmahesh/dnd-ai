@@ -29,4 +29,5 @@ class OpenAIHandler:
         random_encounters = self.openAILibrary.get_random_encounters(party_level=party_level, scenario=scenario, num_encounters=num_encounters)
         return jsonify(make_response(data=random_encounters)), 200
       except Exception as e:
+        print("Catching error")
         return jsonify(make_response(data=None, error=e)), 500
