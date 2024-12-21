@@ -12,5 +12,6 @@ export const getRandomNamesAPI = async (descriptor: string = '') => {
   } catch (err: any) {
     console.error("Received error: ", err?.response?.data?.error)
     console.error("Axios error: ", err)
+    return []
   }
 }

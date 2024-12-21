@@ -1,15 +1,13 @@
 import { Link } from "expo-router";
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { getRandomNamesAPI } from "./api/inference";
+import { getRandomNamesAPI } from "../api/inference";
 
 export default function Page() {
   return (
     <View className="flex flex-1">
-      <Header />
-      <Content />
-      <Footer />
+      <Button title="Random Names" />
     </View>
   );
 }
