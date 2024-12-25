@@ -9,7 +9,7 @@ clean:
 compile-deps:
 	pip-compile --output-file=requirements_lock.txt requirements.txt
 
-build: clean # compile-deps
+build: clean compile-deps
 	mkdir -p $(project_dir)/backend/build
 	bazel build //backend/src:dnd_ai_assistant_zip
 	cp $(project_dir)/bazel-bin/backend/src/dnd_ai_assistant_binary.zip $(project_dir)/backend/build/dnd_ai_assistant.zip
