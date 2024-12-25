@@ -1,6 +1,3 @@
-from typing import Dict, List
-from flask import Flask, jsonify, request
-
 from backend.src.core.openai import OpenAILibrary
 from backend.src.handler.handler import Server
 
