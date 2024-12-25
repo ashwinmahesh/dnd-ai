@@ -1,5 +1,5 @@
-current_dir = $(shell pwd)
-project_dir = $(shell realpath $(current_dir)/../)
+current_dir = $(CURDIR)
+project_dir = $(current_dir)/..
 
 # bazel build --platforms=//backend:macos //backend/src:dnd_ai_assistant_zip
 
@@ -20,7 +20,7 @@ runlocal:
 
 .PHONY: build-docker
 build-docker: build
-	docker build --platform=linux/arm64 -t dnd-ai:latest .
+	docker build -t dnd-ai:latest .
 	docker tag dnd-ai:latest ashwinmahesh1/dnd-ai:$(shell git rev-parse HEAD)
 
 run-docker:
