@@ -45,21 +45,8 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-          # Store the original location
-          WORK_DIR="/home/runner/work/dnd-ai/dnd-ai"
           cd backend
-          
-          # Create bazel user
-          sudo useradd -m bazel_user
-          
-          # Give bazel_user ownership of entire workspace
-          sudo chown -R bazel_user:bazel_user $WORK_DIR
-          
-          # Execute build as bazel_user
-          sudo -u bazel_user make build-docker
-          
-          # Restore permissions for docker commands
-          sudo chown -R $USER:$USER $WORK_DIR
-          
-          # Push docker image
+          sudo mkdir -p build
+          sudo chown -R $(id -u):$(id -g) .
+          make build-docker
           make push-docker
