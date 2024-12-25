@@ -12,7 +12,7 @@ compile-deps:
 build: clean # compile-deps
 	mkdir -p $(project_dir)/backend/build
 	bazel build //backend/src:dnd_ai_assistant_zip
-	cp $(project_dir)/bazel-out/darwin_x86_64-fastbuild/bin/backend/src/dnd_ai_assistant_binary.zip $(project_dir)/backend/build/dnd_ai_assistant.zip
+	cp $(project_dir)/bazel-bin/backend/src/dnd_ai_assistant_binary.zip $(project_dir)/backend/build/dnd_ai_assistant.zip
 
 runlocal:
 	@env $$(cat .env | xargs) \
@@ -20,8 +20,11 @@ runlocal:
 
 .PHONY: build-docker
 build-docker: build
-	docker build -t dnd-ai:latest .
+	docker build --platform=linux/arm64 -t dnd-ai:latest .
+	docker tag dnd-ai:latest ashwinmahesh1/dnd-ai:$(shell git rev-parse HEAD)
 
 run-docker:
 	docker run --pull=never --env-file .env dnd-ai
 
+push-docker:
+	docker push ashwinmahesh1/dnd-ai:$(shell git rev-parse HEAD)
