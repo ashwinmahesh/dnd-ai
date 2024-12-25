@@ -22,9 +22,11 @@ runlocal:
 build-docker: build
 	docker build -t dnd-ai:latest .
 	docker tag dnd-ai:latest ashwinmahesh1/dnd-ai:$(shell git rev-parse HEAD)
+	docker tag dnd-ai:latest ashwinmahesh1/dnd-ai:latest
 
 run-docker:
-	docker run --pull=never --env-file .env dnd-ai
+	docker run --platform linux/amd64 --env-file .env ashwinmahesh1/dnd-ai:latest
 
 push-docker:
 	docker push ashwinmahesh1/dnd-ai:$(shell git rev-parse HEAD)
+	docker push ashwinmahesh1/dnd-ai:latest
