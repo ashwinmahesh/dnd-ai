@@ -1,8 +1,6 @@
 current_dir = $(CURDIR)
 project_dir = $(current_dir)/..
 
-# bazel build --platforms=//backend:macos //backend/src:dnd_ai_assistant_zip
-
 clean:
 	rm -rf $(project_dir)/backend/build
 
@@ -25,7 +23,7 @@ build-docker: build
 	docker tag dnd-ai:latest ashwinmahesh1/dnd-ai:latest
 
 run-docker:
-	docker run --platform linux/amd64 --env-file .env ashwinmahesh1/dnd-ai:latest
+	docker run --platform linux/amd64 -p 6875:6875 --env-file .env ashwinmahesh1/dnd-ai:latest
 
 push-docker:
 	docker push ashwinmahesh1/dnd-ai:$(shell git rev-parse HEAD)
