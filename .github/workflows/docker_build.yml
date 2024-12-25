@@ -36,8 +36,8 @@ jobs:
       - name: Build and Push Docker image
         run: |
           cd backend
-          # Create non-root user for Bazel
           sudo useradd -m bazel_user
-          sudo chown -R bazel_user .
+          sudo chown -R bazel_user:bazel_user /home/runner/work/dnd-ai
           sudo -u bazel_user make build-docker
+          sudo chown -R $USER:$USER /home/runner/work/dnd-ai  # Restore ownership
           make push-docker
