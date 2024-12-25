@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, Blueprint
+from flask import Flask, jsonify, Blueprint
 from backend.src.handler.openai_handler import OpenAIHandler
 from backend.src.core.openai import OpenAILibrary
 from backend.src.utils.http import make_response
@@ -27,11 +27,12 @@ class Server:
 
     @self.app.errorhandler(404)
     def not_found(e):
-      return make_response(None, "Page not Found"), 404
+      return jsonify(make_response(None, "Page not Found")), 404
 
     self.app.register_blueprint(self.router)
 
   
   def run(self):
     print(f"Starting server on port {self.port}")
-    self.app.run(port=self.port, host="0.0.0.0", debug=True)
+    self.app.run(port=self.port, host="0.0.0.0")
+
