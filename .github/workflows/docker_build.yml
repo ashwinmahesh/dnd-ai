@@ -37,7 +37,13 @@ jobs:
         run: |
           cd backend
           sudo useradd -m bazel_user
+          # Create build directory with proper permissions
+          sudo mkdir -p /home/runner/work/dnd-ai/dnd-ai/backend/build
+          # Give bazel_user ownership of the entire project directory
           sudo chown -R bazel_user:bazel_user /home/runner/work/dnd-ai
+          # Run the build as bazel_user
           sudo -u bazel_user make build-docker
-          sudo chown -R $USER:$USER /home/runner/work/dnd-ai  # Restore ownership
+          # Restore ownership to runner user for docker commands
+          sudo chown -R $USER:$USER /home/runner/work/dnd-ai
+          # Run docker commands as current user
           make push-docker
