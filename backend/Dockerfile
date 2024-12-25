@@ -18,6 +18,6 @@ COPY --chown=9999:9999 build/dnd_ai_assistant.zip /usr/local/bin/dnd_ai_assistan
 WORKDIR /
 USER 9999:9999
 
-EXPOSE 6875
+EXPOSE ${PORT}
 
 CMD ["python3", "/usr/local/bin/dnd_ai_assistant.zip"]
