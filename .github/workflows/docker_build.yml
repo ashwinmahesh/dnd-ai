@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: gcr.io/bazel-public/bazel:8.0.0
+      options: --user root
 
     steps:
       - name: Checkout repository
