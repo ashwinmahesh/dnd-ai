@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, Blueprint
 from backend.src.handler.openai_handler import OpenAIHandler
 from backend.src.core.openai import OpenAILibrary
+from backend.src.utils.http import make_response
 
 class Server:
   def __init__(
@@ -8,7 +9,7 @@ class Server:
       openAILibrary: OpenAILibrary,
       port: int
     ):
-    self.app = Flask(__name__)
+    self.app = Flask("DND AI Assistant")
     self.router = Blueprint('api_v1', __name__, url_prefix="/api/v1")
     self.openai_library = openAILibrary
     self.port = port
@@ -22,7 +23,11 @@ class Server:
 
     @self.app.get("/")
     def healthy():
-      return 'Healthy'
+      return 'Healthy', 200
+
+    @self.app.errorhandler(404)
+    def not_found(e):
+      return make_response(None, "Page not Found"), 404
 
     self.app.register_blueprint(self.router)
 
