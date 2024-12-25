@@ -50,3 +50,17 @@ jobs:
           sudo chown -R $(id -u):$(id -g) .
           make build-docker
           make push-docker
+
+      # Add Google Cloud authentication
+      - name: Google Auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCLOUD_KEYS }}
+
+      # Deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: dnd-ai
+          region: us-east1 # Your region
+          image: ashwinmahesh1/dnd-ai:${{ github.sha }}
