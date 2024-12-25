@@ -6,7 +6,7 @@ class Server:
   def __init__(
       self,
       openAILibrary: OpenAILibrary,
-      port: int = 6875
+      port: int
     ):
     self.app = Flask(__name__)
     self.router = Blueprint('api_v1', __name__, url_prefix="/api/v1")
