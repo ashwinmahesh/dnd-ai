@@ -28,4 +28,5 @@ class Server:
 
   
   def run(self):
-    self.app.run(port=self.port, host="0.0.0.0")
+    print(f"Starting server on port {self.port}")
+    self.app.run(port=self.port, host="0.0.0.0", debug=True)
