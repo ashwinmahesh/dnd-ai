@@ -28,4 +28,4 @@ class Server:
 
   
   def run(self):
-    self.app.run(port=self.port)
+    self.app.run(port=self.port, host="0.0.0.0")
