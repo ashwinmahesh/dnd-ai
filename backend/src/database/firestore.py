@@ -1,7 +1,7 @@
 
 from firebase_admin import credentials, firestore, initialize_app
 import os
-from typing import Tuple, Optional, Dict, Any
+from typing import Tuple, Optional, Dict, Any, List
 from datetime import datetime
 
 from backend.src.database.models import Campaign
@@ -11,6 +11,9 @@ from backend.src.database.models import Campaign
 # print(firebase_certificate_str)
 # firebase_cert = json.loads(firebase_certificate_str)
 
+class Collections:
+  Campaigns: str = "campaigns"
+
 
 class FirestoreClient:
   def __init__(self):
@@ -19,28 +22,38 @@ class FirestoreClient:
 
     self.client = firestore.client()
 
-    campaign: Campaign = {'name': 'Test2', 'owner':'mahesh.ashwin1998@gmail.com', 'major_events': [], 'members': {
-      'john': 'Loves to adventure'
-    }, 'overview': "Tomb of Annihilation"}
+    # campaign: Campaign = {'name': 'Test2', 'owner':'mahesh.ashwin1998@gmail.com', 'major_events': [], 'members': {
+    #   'john': 'Loves to adventure'
+    # }, 'overview': "Tomb of Annihilation"}
 
-    # ok, err = self.create_campaign(campaign)
+    # # ok, err = self.create_campaign(campaign)
+    # # if err is not None:
+    # #   print('Error:', err)
+    # # else:
+    # #   print("created campaign")
+
+    # campaigns, err = self.get_campaigns(owner='mahesh.ashwin1998@gmail.com')
     # if err is not None:
-    #   print('Error:', err)
+    #   print("Failed to get campaigns:", campaigns)
     # else:
-    #   print("created campaign")
+    #   print("Campaigns:", campaigns)
 
 
 
   def create_campaign(self, campaign: Campaign) -> Tuple[bool, Optional[str]]:
     doc_id = f'{campaign["owner"]}_{campaign["name"]}'
     try:
-      self.client.collection('campaigns').add(document_data=_add_timestamps(campaign), document_id=doc_id)
+      self.client.collection(Collections.Campaigns).add(document_data=_add_timestamps(campaign), document_id=doc_id)
       return True, None
     except Exception as e:
       return False, str(e)
     
-  def get_campaigns(self, owner: str):
-    pass
+  def get_campaigns(self, owner: str) -> Tuple[List[Dict[str, Any]], Optional[str]]:
+    try:
+      docs = self.client.collection(Collections.Campaigns).where("owner", '==', owner).stream()
+      return [doc.to_dict() for doc in docs], None
+    except Exception as e:
+      None, str(e)
 
 
 def _add_timestamps(data: Dict[str, Any], is_update: bool=False) -> Dict[str, Any]:
@@ -71,15 +84,3 @@ def _get_firestore_creds_path():
       return runfiles_path
       
   raise FileNotFoundError(f"Could not find firebase_creds.json in either {local_path} or {runfiles_path}")
-  # runfiles_dir = (
-  #         os.environ.get("RUNFILES_DIR") or 
-  #         os.environ.get("RUNFILES") or
-  #         os.environ.get("TEST_SRCDIR")
-  #     )
-
-  # workspace = "dnd_ai"
-  # if runfiles_dir:
-  #   return os.path.join(runfiles_dir, workspace, "firebase_creds.json")
-  
-  # current_dir = os.path.dirname(os.path.abspath(__file__))
-  # return os.path.join(current_dir, "../../firebase_creds.json")
