@@ -1,15 +1,16 @@
 import axios from 'axios';
-
-const BACKEND_URL = 'http://localhost:6875';
+import Config from 'react-native-config';
 
 const http = axios.create({
-  baseURL: `${BACKEND_URL}/api/v1`,
-  timeout: 15000,
+  baseURL: `${Config.API_BASE}/api/v1`,
+  timeout: 25000,
 });
+
+console.log(`API_BASE: ${Config.API_BASE}, API_KEY: ${Config.API_KEY}`);
 
 http.interceptors.request.use(
   (config) => {
-    config.headers.Authorization = `Bearer 8f4e2a1b9c7d5h3j6k8m2n4p5q7r9t1v`;
+    config.headers.Authorization = `Bearer ${Config.API_KEY}`;
     return config;
   },
   (err) => {

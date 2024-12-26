@@ -44,7 +44,12 @@ const RandomNames = () => {
   };
 
   const renderItem = ({ item, index }: { item: { title: string }; index: number }): React.ReactElement => {
-    return <ListItem title={`${index + 1} | ${item.title}`} />;
+    return (
+      <ListItem
+        title={`${index + 1} | ${item.title}`}
+        key={item.title}
+      />
+    );
   };
 
   return (

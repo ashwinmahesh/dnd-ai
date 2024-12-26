@@ -10,3 +10,4 @@ build/
 *.egg-info/
 .pytest_cache/
 frontend/dnd-ai/node-modules
+frontend/dnd-ai/.env

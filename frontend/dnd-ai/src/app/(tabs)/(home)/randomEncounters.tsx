@@ -35,6 +35,7 @@ const RandomEncounters = () => {
       <ListItem
         title={`${index + 1} | ${item.encounter}`}
         description={item.context}
+        key={item.encounter}
       />
     );
   };
