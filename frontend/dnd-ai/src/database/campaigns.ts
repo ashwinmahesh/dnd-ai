@@ -16,8 +16,8 @@ export type TCampaign = {
   major_events?: string[];
   owner: string;
   ownerUID: string;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export const createCampaignDB = async (params: TCreateCampaignParams) => {
@@ -32,8 +32,8 @@ export const createCampaignDB = async (params: TCreateCampaignParams) => {
     ...params,
     owner: user.email,
     ownerUID: user.uid,
-    createdAt: firestore.Timestamp,
-    updatedAt: firestore.Timestamp,
+    createdAt: firestore.Timestamp.now().toDate().toISOString(),
+    updatedAt: firestore.Timestamp.now().toDate().toISOString(),
   });
 };
 
