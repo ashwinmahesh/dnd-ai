@@ -1,10 +1,7 @@
-import Index from '@/app';
 import { createCampaignDB, getCampaignsDB, TCampaign } from '@/database/campaigns';
 import { Button, Icon, IconElement, IndexPath, Layout, Select, SelectItem, Text } from '@ui-kitten/components';
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
-
-type TProps = {};
 
 const StarIcon = (props): IconElement => (
   <Icon
@@ -13,7 +10,14 @@ const StarIcon = (props): IconElement => (
   />
 );
 
-const Campaigns = (props: TProps) => {
+const PlusIcon = (props): IconElement => (
+  <Icon
+    {...props}
+    name="plus"
+  />
+);
+
+const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<TCampaign[]>([]);
   const [campaignsLoading, setCampaignsLoading] = useState(true);
   const [fetchCampaignsErr, setFetchCampaignsErr] = useState('');
@@ -39,7 +43,7 @@ const Campaigns = (props: TProps) => {
 
   return (
     <Layout style={{ flex: 1, padding: 6 }}>
-      <Layout>
+      <Layout style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Select
           label="Current Campaign"
           selectedIndex={selectedIndex}
@@ -48,6 +52,7 @@ const Campaigns = (props: TProps) => {
           }}
           disabled={campaignsLoading || !!fetchCampaignsErr}
           value={campaigns[selectedIndex.row].name || 'No Campaign Selected'}
+          style={{ flexGrow: 1 }}
         >
           {campaigns.map((c) => {
             return (
@@ -58,6 +63,10 @@ const Campaigns = (props: TProps) => {
             );
           })}
         </Select>
+        <Button
+          appearance="outline"
+          accessoryLeft={PlusIcon}
+        />
       </Layout>
       <Button
         onPress={() => {
