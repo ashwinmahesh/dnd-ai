@@ -1,22 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getRandomNamesAPI } from '../api/inference';
 import { Button, Input, Layout, List, ListItem, Divider, Spinner } from '@ui-kitten/components';
 import { ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const storageKey = 'RANDOM_NAMES';
 
 const RandomNames = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [randomNames, setRandomNames] = useState<{ title: string }[]>([]);
-  const [descrition, setDescription] = useState('');
+  const [description, setDescription] = useState('');
+
+  useEffect(() => {
+    AsyncStorage.getItem(storageKey)
+      .then((namesStr?: string) => {
+        if (!namesStr) {
+          return;
+        }
+        setRandomNames(JSON.parse(namesStr));
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   const getRandomNames = async () => {
     setLoading(true);
-    const names = await getRandomNamesAPI({ descriptor: 'Chultan' });
-    setRandomNames(
-      names.map((name) => {
+    try {
+      const names = await getRandomNamesAPI({ descriptor: description });
+      const mappedNames = names.map((name) => {
         return { title: name };
-      })
-    );
-    setLoading(false);
+      });
+      setRandomNames(mappedNames);
+      await AsyncStorage.setItem(storageKey, JSON.stringify(mappedNames));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderItem = ({ item, index }: { item: { title: string }; index: number }): React.ReactElement => {
@@ -35,7 +59,7 @@ const RandomNames = () => {
         >
           <Input
             placeholder={'One Word Description'}
-            value={descrition}
+            value={description}
             onChangeText={setDescription}
           />
           <Button

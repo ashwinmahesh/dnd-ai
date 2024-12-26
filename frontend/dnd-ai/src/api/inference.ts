@@ -3,8 +3,8 @@ import axios from 'axios';
 import http, { encodeGetParams } from './http';
 import { ApiResponse } from './types';
 
-type TGetRandomNamesAPI = string[];
-type TGetRandomEncountersAPI = { encounter: string; context: string }[];
+export type TGetRandomNamesAPI = string[];
+export type TGetRandomEncountersAPI = { encounter: string; context: string }[];
 
 export const getRandomNamesAPI = async (params: { descriptor: string }) => {
   try {
