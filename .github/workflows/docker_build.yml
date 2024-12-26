@@ -46,16 +46,11 @@ jobs:
       - name: Create Firebase credentials file
         shell: bash
         run: |
-          # Print first few characters to see format (avoid exposing full secret)
-          echo '${{ secrets.FIREBASE_CERT }}' | base64 -d | cut -c1-50
-          # Check if it's valid JSON
-          echo '${{ secrets.FIREBASE_CERT }}' | base64 -d | jq type || echo "Invalid JSON"
           echo '${{ secrets.FIREBASE_CERT }}' | base64 -d > backend/firebase_creds.json
 
       - name: Build and Push Docker image
         run: |
           cd backend
-          cat firebase_creds.json
           sudo mkdir -p build
           sudo chown -R $(id -u):$(id -g) .
           make build-docker
