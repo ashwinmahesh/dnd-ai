@@ -22,7 +22,7 @@ const Login = () => {
       await firebaseAuth.signInWithEmailAndPassword(email, password);
       router.dismissAll();
     } catch (errMsg) {
-      setError(errMsg);
+      setError(errMsg.toString());
     }
   };
 
