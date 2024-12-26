@@ -11,14 +11,10 @@ export default function CampaignsLayout() {
         name="index"
         options={{ headerShown: true, headerTitle: 'Campaigns' }}
       />
-      {/* <Stack.Screen
-        name="randomNames"
-        options={{ headerShown: true, headerTitle: 'Random Names' }}
-      />
       <Stack.Screen
-        name="randomEncounters"
-        options={{ headerShown: true, headerTitle: 'Random Encounters' }}
-      /> */}
+        name="createCampaign"
+        options={{ headerShown: true, headerTitle: 'Create Campaign' }}
+      />
     </Stack>
   );
 }

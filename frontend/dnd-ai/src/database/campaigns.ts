@@ -21,6 +21,9 @@ export type TCampaign = {
 };
 
 export const createCampaignDB = async (params: TCreateCampaignParams) => {
+  if (params.name.length < 3) {
+    throw new Error('Campaign name must be atleast 3 character');
+  }
   const user = firebaseAuth.currentUser;
   if (!user) {
     throw new Error('User not authenticated');

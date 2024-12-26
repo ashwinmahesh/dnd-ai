@@ -1,5 +1,7 @@
 import { createCampaignDB, getCampaignsDB, TCampaign } from '@/database/campaigns';
+import { generateRandomString } from '@/utils/string';
 import { Button, Icon, IconElement, IndexPath, Layout, Select, SelectItem, Text } from '@ui-kitten/components';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 
@@ -24,6 +26,8 @@ const Campaigns = () => {
 
   const [selectedIndex, setSelectedIndex] = useState<IndexPath>(new IndexPath(0));
 
+  const router = useRouter();
+
   const getCampaigns = async () => {
     try {
       setCampaignsLoading(true);
@@ -43,7 +47,15 @@ const Campaigns = () => {
 
   return (
     <Layout style={{ flex: 1, padding: 6 }}>
-      <Layout style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Layout
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+          marginBottom: 12,
+        }}
+      >
         <Select
           label="Current Campaign"
           selectedIndex={selectedIndex}
@@ -51,7 +63,7 @@ const Campaigns = () => {
             setSelectedIndex(index);
           }}
           disabled={campaignsLoading || !!fetchCampaignsErr}
-          value={campaigns[selectedIndex.row].name || 'No Campaign Selected'}
+          value={campaigns[selectedIndex.row]?.name || 'No Campaign Selected'}
           style={{ flexGrow: 1 }}
         >
           {campaigns.map((c) => {
@@ -59,6 +71,7 @@ const Campaigns = () => {
               <SelectItem
                 title={c.name}
                 accessoryLeft={StarIcon}
+                key={c.name + generateRandomString(4)}
               />
             );
           })}
@@ -66,15 +79,19 @@ const Campaigns = () => {
         <Button
           appearance="outline"
           accessoryLeft={PlusIcon}
+          style={{ marginLeft: 12 }}
+          onPress={() => {
+            router.push('/(tabs)/(campaigns)/createCampaign');
+          }}
         />
       </Layout>
-      <Button
+      {/* <Button
         onPress={() => {
           createCampaignDB({ name: 'Frontend Test', overview: 'Something happens' });
         }}
       >
         Click
-      </Button>
+      </Button> */}
       <ScrollView></ScrollView>
     </Layout>
   );
