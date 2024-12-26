@@ -10,7 +10,7 @@ import { firebaseAuth, app } from '@/FirebaseConfig';
 
 const Register = () => {
   // const { firebaseAuth } = useFirebaseInit();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [error, setError] = useState('');
@@ -19,7 +19,10 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
-      const ok = await firebaseAuth.createUserWithEmailAndPassword(username, password);
+      setError('');
+      const userCredentials = await firebaseAuth.createUserWithEmailAndPassword(email, password);
+      await firebaseAuth.signInWithEmailAndPassword(email, password);
+      router.dismissAll();
     } catch (errMsg) {
       setError(errMsg);
     }
@@ -35,9 +38,11 @@ const Register = () => {
       <Input
         placeholder="Email"
         style={{ marginTop: 16 }}
-        onChangeText={setUsername}
+        onChangeText={setEmail}
         autoComplete="email"
         autoCapitalize="none"
+        caption={error}
+        status={error ? 'danger' : undefined}
       />
       <Input
         placeholder="Password"
@@ -47,6 +52,7 @@ const Register = () => {
         onChangeText={setPassword}
         autoComplete="password"
         autoCapitalize="none"
+        status={error ? 'danger' : undefined}
       />
       <Button
         onPress={() => {

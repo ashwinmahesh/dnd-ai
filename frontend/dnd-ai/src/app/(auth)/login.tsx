@@ -5,41 +5,26 @@ import auth, { signInWithCredential, getAuth } from '@react-native-firebase/auth
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { firebaseAuth } from '@/FirebaseConfig';
 // import { useFirebaseInit } from '@/FirebaseConfig';
 
 const Login = () => {
   // const { firebaseAuth } = useFirebaseInit();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const router = useRouter();
 
   const handleLogin = async () => {
-    console.log(`Username ${username}, Password ${password}`);
+    try {
+      setError('');
+      await firebaseAuth.signInWithEmailAndPassword(email, password);
+      router.dismissAll();
+    } catch (errMsg) {
+      setError(errMsg);
+    }
   };
-
-  // async function onGoogleButtonPress() {
-  //   console.log('Calling function');
-  //   // Check if your device supports Google Play
-  //   await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-  //   // Get the users ID token
-  //   console.log('Waiting for google signin');
-  //   const signInResult = await GoogleSignin.signIn();
-
-  //   console.log('Sign In Result: ', signInResult);
-
-  //   // Try the new style of google-sign in result, from v13+ of that module
-  //   const idToken = signInResult.data?.idToken;
-  //   if (!idToken) {
-  //     throw new Error('No ID token found');
-  //   }
-
-  //   // Create a Google credential with the token
-  //   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-  //   // Sign-in the user with the credential
-  //   return signInWithCredential(getAuth(), googleCredential);
-  // }
 
   return (
     <Layout
@@ -54,9 +39,11 @@ const Login = () => {
       <Input
         placeholder="Email"
         style={{ marginTop: 16 }}
-        onChangeText={setUsername}
+        onChangeText={setEmail}
         autoComplete="email"
         autoCapitalize="none"
+        caption={error}
+        status={error ? 'danger' : undefined}
       />
       <Input
         placeholder="Password"
@@ -66,9 +53,10 @@ const Login = () => {
         onChangeText={setPassword}
         autoComplete="password"
         autoCapitalize="none"
+        status={error ? 'danger' : undefined}
       />
       <Button
-        onPress={() => {}}
+        onPress={handleLogin}
         style={{ marginTop: 16 }}
       >
         Login
