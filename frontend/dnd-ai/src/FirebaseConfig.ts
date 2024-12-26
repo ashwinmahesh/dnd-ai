@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import firebase, { getApp, initializeApp } from '@react-native-firebase/app';
+import firebase, { getApp, initializeApp, ReactNativeFirebase } from '@react-native-firebase/app';
 // import { getAnalytics } from '@react-native-firebase/analytics';
 import auth, { FirebaseAuthTypes, initializeAuth } from '@react-native-firebase/auth';
 import { useState, useEffect } from 'react';
@@ -21,7 +21,7 @@ const firebaseConfig = {
   measurementId: 'G-5782WCNKTH',
 };
 
-let app;
+let app: ReactNativeFirebase.FirebaseApp;
 
 // Check if Firebase app is already initialized
 if (!firebase.apps.length) {
@@ -34,7 +34,7 @@ if (!firebase.apps.length) {
 
 console.log('Initializaing auth');
 // Initialize Firebase Authentication
-const firebaseAuth = initializeAuth(app);
+const firebaseAuth = initializeAuth(app as any);
 console.log('Initialized auth');
 
 // Export both app and firebaseAuth

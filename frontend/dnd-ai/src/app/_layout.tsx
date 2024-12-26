@@ -3,12 +3,13 @@ import '../global.css';
 import { Stack } from 'expo-router/stack';
 import { Slot, useNavigation, useRouter } from 'expo-router';
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Spinner, Text } from '@ui-kitten/components';
+import { ApplicationProvider, Spinner, Text, IconRegistry } from '@ui-kitten/components';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AuthenticatedStack from './authenticatedStack';
-import UnauthenticatedStack from './unauthenticatedStack';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+// import AuthenticatedStack from './authenticatedStack';
+// import UnauthenticatedStack from './unauthenticatedStack';
 // import { useFirebaseInit } from '@/FirebaseConfig';
 
 export default function Layout() {
@@ -19,57 +20,20 @@ export default function Layout() {
   const router = useRouter();
   const nav = useNavigation();
 
-  // const { initialized } = useFirebaseInit();
-
-  // if (!initialized) {
-  //   return <Spinner size="large" />;
-  // }
-
-  // Handle user state changes
-  // function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
-  //   // setUser(user);
-  //   // if (initializing) setInitializing(false);
-  //   if (!user) {
-  //     router.replace('/login');
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (!initialized) return;
-  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-  //   return subscriber; // unsubscribe on unmount
-  // }, [initialized]);
-
-  // useEffect(() => {
-  //   if (!user) {
-  //     router.replace('/login');
-  //   }
-  // }, []);
-
-  // if (initializing) return null;
-
-  // return (
-  //   <ApplicationProvider
-  //     {...eva}
-  //     theme={eva.dark}
-  //   >
-  //     <Stack>
-  //       <Stack.Screen name="Login" />
-  //     </Stack>
-  //     {/* {user ? <Text>Hello {user.email}</Text> : <Login />} */}
-  //     {/* <Text style={{ color: 'red' }}>Load something</Text> */}
-  //   </ApplicationProvider>
-  // );
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider
         {...eva}
         theme={eva.dark}
       >
-        <Stack>
+        <Stack initialRouteName="loading">
           <Stack.Screen
-            name="login"
+            name="loading"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(auth)"
             options={{ headerShown: false }}
           />
           <Stack.Screen

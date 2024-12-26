@@ -17,6 +17,7 @@ export default function Page() {
       >
         Random Encounters
       </Button>
+      <Button onPress={() => router.push('/loading')}>Fake</Button>
     </Layout>
   );
 }
