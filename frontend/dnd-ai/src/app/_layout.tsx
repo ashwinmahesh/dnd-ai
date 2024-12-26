@@ -1,25 +1,13 @@
 import '../global.css';
 
 import { Stack } from 'expo-router/stack';
-import { Slot, useNavigation, useRouter } from 'expo-router';
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Spinner, Text, IconRegistry } from '@ui-kitten/components';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import React, { useEffect, useState } from 'react';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-// import AuthenticatedStack from './authenticatedStack';
-// import UnauthenticatedStack from './unauthenticatedStack';
-// import { useFirebaseInit } from '@/FirebaseConfig';
 
 export default function Layout() {
-  // Set an initializing state whilst Firebase connects
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState<any>();
-
-  const router = useRouter();
-  const nav = useNavigation();
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <IconRegistry icons={EvaIconsPack} />
@@ -27,7 +15,11 @@ export default function Layout() {
         {...eva}
         theme={eva.dark}
       >
-        <Stack initialRouteName="loading">
+        <Stack>
+          <Stack.Screen
+            name="index"
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="loading"
             options={{ headerShown: false }}

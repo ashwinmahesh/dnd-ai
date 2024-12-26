@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
-import { Layout, Text, Button, Input, Icon } from '@ui-kitten/components';
-// import { FirebaseAuth } from '@/FirebaseConfig';
-import auth, { signInWithCredential, getAuth } from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Layout, Button, Input, Icon } from '@ui-kitten/components';
 import { useRouter } from 'expo-router';
 import { firebaseAuth } from '@/FirebaseConfig';
-// import { useFirebaseInit } from '@/FirebaseConfig';
 
 const Login = () => {
-  // const { firebaseAuth } = useFirebaseInit();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -20,7 +14,8 @@ const Login = () => {
     try {
       setError('');
       await firebaseAuth.signInWithEmailAndPassword(email, password);
-      router.dismissAll();
+      // router.dismissAll();
+      router.replace('/(tabs)');
     } catch (errMsg) {
       setError(errMsg.toString());
     }

@@ -19,7 +19,8 @@ export default function Page() {
     if (!confirm) return;
     try {
       await firebaseAuth.signOut();
-      router.dismissAll();
+      router.replace('/loading');
+      // router.dismissAll();
     } catch (err) {
       Alert.alert('Failed to Sign-Out', err.toString());
     }

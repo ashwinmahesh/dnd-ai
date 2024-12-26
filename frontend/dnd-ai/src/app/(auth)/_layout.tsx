@@ -6,7 +6,7 @@ export default function AuthLayout() {
       screenOptions={{
         headerShown: false,
         // header: () => null,
-        animation: 'slide_from_right', // Optional: adds nice transition
+        // animation: 'slide_from_right', // Optional: adds nice transition
       }}
     >
       <Stack.Screen
