@@ -30,15 +30,7 @@ export default function Layout() {
           />
           <Stack.Screen
             name="(tabs)"
-            options={{ headerShown: true, headerTitle: 'Home' }}
-          />
-          <Stack.Screen
-            name="randomNames"
-            options={{ headerShown: true, headerTitle: 'Random Names' }}
-          />
-          <Stack.Screen
-            name="randomEncounters"
-            options={{ headerShown: true, headerTitle: 'Random Encounters' }}
+            options={{ headerShown: false, headerTitle: 'Home' }}
           />
         </Stack>
       </ApplicationProvider>

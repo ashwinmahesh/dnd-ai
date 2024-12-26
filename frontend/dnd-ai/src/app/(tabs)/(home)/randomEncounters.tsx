@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getRandomEncounters } from '../api/inference';
+import { getRandomEncounters } from '../../../api/inference';
 import {
   Button,
   Input,

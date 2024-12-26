@@ -9,13 +9,18 @@ export default function Page() {
       level="1"
       style={{ flex: 1, padding: 16 }}
     >
-      <Button onPress={() => router.push('/randomNames')}>Random Names</Button>
+      <Button onPress={() => router.push('/(tabs)/(home)/randomNames')}>Random Names</Button>
       <Button
-        onPress={() => router.push('/randomEncounters')}
-        className="mt-8"
+        onPress={() => router.push('/(tabs)/(home)/randomEncounters')}
         style={{ marginTop: 16 }}
       >
         Random Encounters
+      </Button>
+      <Button
+        onPress={() => router.push('/')}
+        style={{ marginTop: 16 }}
+      >
+        Quest Hooks
       </Button>
     </Layout>
   );

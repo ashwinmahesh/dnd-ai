@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getRandomNamesAPI } from '../api/inference';
+import { getRandomNamesAPI } from '../../../api/inference';
 import { Button, Input, Layout, List, ListItem, Divider, Spinner } from '@ui-kitten/components';
 import { ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
