@@ -1,11 +1,4 @@
-import { Link } from 'expo-router';
-import React, { useState } from 'react';
-import {
-  // Button, Text,
-  View,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getRandomNamesAPI } from '../../api/inference';
+import React from 'react';
 import { Button, Layout, Text } from '@ui-kitten/components';
 
 export default function Page() {
@@ -13,10 +6,9 @@ export default function Page() {
     <Layout
       className="flex flex-1 align-middle"
       level="1"
+      style={{ flex: 1 }}
     >
-      <Layout className="">
-        <Text>Not Implemented</Text>
-      </Layout>
+      <Text>Settings Page Not Implemented</Text>
     </Layout>
   );
 }

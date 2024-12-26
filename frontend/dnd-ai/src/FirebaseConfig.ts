@@ -1,7 +1,10 @@
 // Import the functions you need from the SDKs you need
-import firebase from '@react-native-firebase/app';
+import firebase, { getApp, initializeApp } from '@react-native-firebase/app';
 // import { getAnalytics } from '@react-native-firebase/analytics';
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes, initializeAuth } from '@react-native-firebase/auth';
+import { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
+import AsyncStorag from '@react-native-async-storage/async-storage';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -19,16 +22,22 @@ const firebaseConfig = {
 };
 
 let app;
-try {
-  if (firebase.apps.length === 0) {
-    app = firebase.initializeApp(firebaseConfig);
-  } else {
-    app = firebase.app();
-  }
-} catch (error) {
-  console.error('Firebase initialization error:', error);
+
+// Check if Firebase app is already initialized
+if (!firebase.apps.length) {
+  console.log('Initializing app?');
+  app = initializeApp(firebaseConfig);
+} else {
+  console.log('Getting app');
+  app = getApp();
 }
 
-console.log('INITIALIZED', app);
+console.log('Initializaing auth');
+// Initialize Firebase Authentication
+const firebaseAuth = initializeAuth(app);
+console.log('Initialized auth');
 
-export const FirebaseAuth = auth(app);
+// Export both app and firebaseAuth
+export { app, firebaseAuth };
+
+// export { app, firebaseAuth };

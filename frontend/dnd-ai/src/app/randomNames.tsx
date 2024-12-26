@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getRandomNamesAPI } from '../api/inference';
 import { Button, Input, Layout, List, ListItem, Divider, Spinner } from '@ui-kitten/components';
+import { ScrollView } from 'react-native';
 
 const RandomNames = () => {
   const [loading, setLoading] = useState(false);
@@ -23,35 +24,51 @@ const RandomNames = () => {
   };
 
   return (
-    <Layout className="flex-1 px-3 py-3">
-      <Layout className="flex">
-        <Input
-          placeholder={'One Word Description'}
-          value={descrition}
-          onChangeText={setDescription}
-          className="flex-1 flex-grow"
-        />
-        <Button
-          onPress={getRandomNames}
-          className="mt-3"
+    <Layout
+      className="flex-1 px-3 py-3"
+      style={{ flex: 1, paddingHorizontal: 12, paddingVertical: 12 }}
+    >
+      <ScrollView style={{ flex: 1 }}>
+        <Layout
+          className="flex"
+          style={{ display: 'flex', flex: 1 }}
         >
-          Generate
-        </Button>
-      </Layout>
-      {loading ? (
-        <Layout className="flex-1 flex justify-middle items-center pt-6">
-          <Spinner
-            size="giant"
-            className="mt-6"
+          <Input
+            placeholder={'One Word Description'}
+            value={descrition}
+            onChangeText={setDescription}
           />
+          <Button
+            onPress={getRandomNames}
+            style={{ marginTop: 6 }}
+          >
+            Generate
+          </Button>
         </Layout>
-      ) : (
-        <List
-          data={randomNames}
-          renderItem={renderItem}
-          ItemSeparatorComponent={Divider}
-        />
-      )}
+        {loading ? (
+          <Layout
+            style={{
+              flex: 1,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingTop: 18,
+              flexDirection: 'row',
+            }}
+          >
+            <Spinner
+              size="giant"
+              style={{ marginTop: 3 }}
+            />
+          </Layout>
+        ) : (
+          <List
+            data={randomNames}
+            renderItem={renderItem}
+            ItemSeparatorComponent={Divider}
+          />
+        )}
+      </ScrollView>
     </Layout>
   );
 };

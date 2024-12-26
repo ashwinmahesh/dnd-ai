@@ -15,6 +15,14 @@
         {
           "origin": "https://n"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
       ]
     ],
     "name": "dnd-ai",
@@ -22,13 +30,17 @@
     "experiments": {
       "typedRoutes": true
     },
+    "babel": {
+      "plugins": ["nativewind/babel"]
+    },
     "ios": {
-      "bundleIdentifier": "com.anonymous.dnd-ai",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "bundleIdentifier": "com.ashwinmahesh.dndai",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "supportsTables": true
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "package": "com.mycorp.myapp"
+      "package": "com.ashwinmahesh.dndai"
     }
   }
 }

@@ -28,7 +28,13 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>acme</string>
-          <string>com.anonymous.dnd-ai</string>
+          <string>com.ashwinmahesh.dndai</string>
+        </array>
+      </dict>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.googleusercontent.apps.1016458162515-id7l9akbd5s78043cquqqh36f7mkiql2</string>
         </array>
       </dict>
     </array>

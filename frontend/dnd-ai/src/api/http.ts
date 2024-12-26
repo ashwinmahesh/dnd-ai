@@ -9,7 +9,7 @@ const http = axios.create({
 
 http.interceptors.request.use(
   (config) => {
-    config.headers.Authorization = `Bearer fake`;
+    config.headers.Authorization = `Bearer 8f4e2a1b9c7d5h3j6k8m2n4p5q7r9t1v`;
     return config;
   },
   (err) => {
