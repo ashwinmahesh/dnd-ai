@@ -1,3 +1,5 @@
 mypy-extensions
 openai
 flask
+google-cloud-firestore
+firebase_admin

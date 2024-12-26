@@ -15,7 +15,7 @@ const Login = () => {
       setError('');
       await firebaseAuth.signInWithEmailAndPassword(email, password);
       // router.dismissAll();
-      router.replace('/(tabs)');
+      router.replace('/(tabs)/(home)');
     } catch (errMsg) {
       setError(errMsg.toString());
     }

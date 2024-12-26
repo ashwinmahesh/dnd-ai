@@ -6,8 +6,6 @@ const http = axios.create({
   timeout: 25000,
 });
 
-console.log(`API_BASE: ${Config.API_BASE}, API_KEY: ${Config.API_KEY}`);
-
 http.interceptors.request.use(
   (config) => {
     config.headers.Authorization = `Bearer ${Config.API_KEY}`;

@@ -10,6 +10,7 @@ class OpenAILibrary:
       Dragons 5th edition in the Tomb of Annihilation campaign setting. \
       The party is in the dangerous jungles of Chult."
     
+  # todo(ashwin) - Also add a quick description of everyone
   def get_random_names(self, descriptor: str) -> List[str]:
     try:
       completion = self.client.chat.completions.create(
@@ -66,3 +67,10 @@ class OpenAILibrary:
     except openai.OpenAIError as e:
       raise Exception(f"OpenAI Error: {e}")
     
+  
+  def get_random_quest_hooks(self, party_level: int, location: str, num_hooks: int = 10) -> List[Dict[str, str]]:
+    # return details about the quest giver, and the quest they have to give
+    pass
+    
+  def generate_images(self, description: str):
+    pass

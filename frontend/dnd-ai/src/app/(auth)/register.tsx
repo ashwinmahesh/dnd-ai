@@ -17,7 +17,7 @@ const Register = () => {
       const userCredentials = await firebaseAuth.createUserWithEmailAndPassword(email, password);
       await firebaseAuth.signInWithEmailAndPassword(email, password);
       // router.dismissAll();
-      router.replace('/(tabs)');
+      router.replace('/(tabs)/(home)');
     } catch (errMsg) {
       setError(errMsg.toString());
     }

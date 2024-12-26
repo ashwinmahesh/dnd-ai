@@ -20,6 +20,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="(campaigns)"
+        options={{
+          title: 'Campaigns',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome
+              size={28}
+              name="database"
+              color={color}
+            />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',

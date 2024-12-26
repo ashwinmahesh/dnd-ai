@@ -13,7 +13,8 @@ build: clean compile-deps
 	cp $(project_dir)/bazel-bin/backend/src/dnd_ai_assistant_binary.zip $(project_dir)/backend/build/dnd_ai_assistant.zip
 
 runlocal:
-	@env $$(cat .env | xargs) \
+	@FIREBASE_CREDS="$$(cat firebase_creds.json)" \
+	env $$(cat .env | xargs) \
 	bazel run //backend/src:dnd_ai_assistant_binary
 
 .PHONY: build-docker

@@ -11,3 +11,4 @@ build/
 .pytest_cache/
 frontend/dnd-ai/node-modules
 frontend/dnd-ai/.env
+backend/firebase_creds.json

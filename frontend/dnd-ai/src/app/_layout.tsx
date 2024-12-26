@@ -30,7 +30,7 @@ export default function Layout() {
           />
           <Stack.Screen
             name="(tabs)"
-            options={{ headerShown: false, headerTitle: 'Home' }}
+            options={{ headerShown: false }}
           />
         </Stack>
       </ApplicationProvider>

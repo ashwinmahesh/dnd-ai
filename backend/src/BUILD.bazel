@@ -8,6 +8,7 @@ py_library(
         requirement("flask"),
         "//backend/src/core",
         "//backend/src/handler",
+        "//backend/src/database",
     ],
 )
 

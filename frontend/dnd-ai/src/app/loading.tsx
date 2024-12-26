@@ -13,7 +13,7 @@ const Loading = () => {
 
   useEffect(() => {
     if (initializing) return;
-    if (user) router.replace('/(tabs)');
+    if (user) router.replace('/(tabs)/(home)');
     else router.replace('/(auth)/login');
   }, [user, initializing]);
 

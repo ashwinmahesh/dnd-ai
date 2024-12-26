@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import firebase, { getApp, initializeApp, ReactNativeFirebase } from '@react-native-firebase/app';
 import { initializeAuth } from '@react-native-firebase/auth';
+import { getFirestore } from '@react-native-firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBn4wr-uQ6Crc8Sup2K-3cMslHSDtWwK4c',
@@ -28,4 +29,6 @@ console.log('Initializaing auth');
 const firebaseAuth = initializeAuth(app as any);
 console.log('Initialized auth');
 
-export { app, firebaseAuth };
+const firestore = getFirestore(app);
+
+export { app, firebaseAuth, firestore };
