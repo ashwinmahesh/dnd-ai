@@ -22,28 +22,9 @@ class FirestoreClient:
 
     self.client = firestore.client()
 
-    # campaign: Campaign = {'name': 'Test2', 'owner':'mahesh.ashwin1998@gmail.com', 'major_events': [], 'members': {
-    #   'john': 'Loves to adventure'
-    # }, 'overview': "Tomb of Annihilation"}
-
-    # # ok, err = self.create_campaign(campaign)
-    # # if err is not None:
-    # #   print('Error:', err)
-    # # else:
-    # #   print("created campaign")
-
-    # campaigns, err = self.get_campaigns(owner='mahesh.ashwin1998@gmail.com')
-    # if err is not None:
-    #   print("Failed to get campaigns:", campaigns)
-    # else:
-    #   print("Campaigns:", campaigns)
-
-
-
   def create_campaign(self, campaign: Campaign) -> Tuple[bool, Optional[str]]:
-    doc_id = f'{campaign["owner"]}_{campaign["name"]}'
     try:
-      self.client.collection(Collections.Campaigns).add(document_data=_add_timestamps(campaign), document_id=doc_id)
+      self.client.collection(Collections.Campaigns).add(document_data=_add_timestamps(campaign))
       return True, None
     except Exception as e:
       return False, str(e)
