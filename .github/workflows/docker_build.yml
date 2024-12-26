@@ -43,6 +43,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Create Firebase credentials file
+        shell: bash
+        run: |
+          echo '${{ secrets.FIREBASE_CERT }}' | jq '.' > backend/firebase_creds.json
+
       - name: Build and Push Docker image
         run: |
           cd backend
