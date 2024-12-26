@@ -2,6 +2,8 @@ import { createCampaignDB } from '@/database/campaigns';
 import { Button, Input, Layout, Text } from '@ui-kitten/components';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SelectedCampaignKey } from '@/constants/AsyncStorageKeys';
 
 export default function CreateCampaign() {
   const [name, setName] = useState('');
@@ -17,6 +19,11 @@ export default function CreateCampaign() {
     setAPIError('');
     try {
       await createCampaignDB({ name, overview, major_events: [], members: {} });
+      try {
+        await AsyncStorage.setItem(SelectedCampaignKey, name);
+      } catch (err) {
+        console.error('Failed to update selected campaign: ', err);
+      }
       router.back();
     } catch (err) {
       setAPIError(err.toString());
