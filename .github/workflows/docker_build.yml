@@ -55,6 +55,7 @@ jobs:
       - name: Build and Push Docker image
         run: |
           cd backend
+          cat firebase_creds.json
           sudo mkdir -p build
           sudo chown -R $(id -u):$(id -g) .
           make build-docker
