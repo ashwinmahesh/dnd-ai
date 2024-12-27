@@ -26,13 +26,13 @@ def _get_firestore_creds_path():
 
 
 def main():
-  oai = OpenAILibrary()
-  server = Server(openAILibrary=oai, port=int(os.getenv("PORT", 6875)))
-
   creds = credentials.Certificate(cert=_get_firestore_creds_path())
   firebaseAdmin = initialize_app(creds)
 
   dbClient = FirestoreClient()
+
+  oai = OpenAILibrary(firestoreClient=dbClient)
+  server = Server(openAILibrary=oai, port=int(os.getenv("PORT", 6875)))
 
   server.run()
 

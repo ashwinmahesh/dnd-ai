@@ -1,17 +1,31 @@
 import openai
 from typing import Dict, List
+from backend.src.database.firestore import FirestoreClient
 
 class OpenAILibrary:
-  def __init__(self):
+  def __init__(self, firestoreClient: FirestoreClient):
     self.client = openai.OpenAI()
     self.SYSTEM_PROMPT = "You are a dungeon master's assistant. The user is \
       coming to you in their time of need to get answers during a live session. \
       Keep answers short and concise. The game we are playing is Dungeons and \
       Dragons 5th edition in the Tomb of Annihilation campaign setting. \
       The party is in the dangerous jungles of Chult."
+    self.firestore_client = firestoreClient
     
   # todo(ashwin) - Also add a quick description of everyone
-  def get_random_names(self, descriptor: str) -> List[str]:
+  def get_random_names(self, descriptor: str,
+                       current_campaign_id: str = None, userUID: str = None) -> List[str]:
+
+    if current_campaign_id is not None and userUID is not None:
+      try:
+        campaign = self.firestore_client.get_campaign(current_campaign_id, userUID)
+        if campaign:
+          # todo - add to context
+          pass
+      except Exception as e:
+        # ignore error, continue with inference without extra context
+        print(str(e))
+    
     try:
       completion = self.client.chat.completions.create(
         model = "gpt-3.5-turbo",
@@ -35,7 +49,20 @@ class OpenAILibrary:
     except openai.OpenAIError as e:
       raise Exception(f"OpenAI Error: {e}")
 
-  def get_random_encounters(self, party_level: int, scenario: str, num_encounters: int = 10) -> List[Dict[str, str]]:
+  def get_random_encounters(self, party_level: int, scenario: str,
+                             num_encounters: int = 10, current_campaign_id: str = None,
+                               userUID: str = None) -> List[Dict[str, str]]:
+
+    if current_campaign_id is not None and userUID is not None:
+      try:
+        campaign = self.firestore_client.get_campaign(current_campaign_id, userUID)
+        if campaign:
+          # todo - add to context
+          pass
+      except Exception as e:
+        # ignore error, continue with inference without extra context
+        print(str(e))
+
     try:
       completion = self.client.chat.completions.create(
         model = "gpt-3.5-turbo",

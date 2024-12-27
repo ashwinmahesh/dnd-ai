@@ -29,6 +29,21 @@ class FirestoreClient:
     except Exception as e:
       None, str(e)
 
+  def get_campaign(self, campaign_id: str, ownerUID: str):
+    try:
+      doc = self.client.collection(Collections.Campaigns).document(document_id=campaign_id).get()
+      data: Campaign = doc.to_dict()
+      if doc.exists and data.get('ownerUID') == ownerUID:
+        return {
+            'id': doc.id,
+            **data
+        }
+      
+      return None
+    except Exception as e:
+      print(f"failed to get campaign {campaign_id}: {e}")
+      raise e
+
 
 def _add_timestamps(data: Dict[str, Any], is_update: bool=False) -> Dict[str, Any]:
   now = math.ceil(datetime.now().timestamp())

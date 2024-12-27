@@ -3,6 +3,7 @@ from typing import TypedDict, List, Dict, Optional
 class Campaign(TypedDict):
   name: str
   owner: str
+  ownerUID: str
   overview: str
   major_events: List[str]
   members: Dict[str,str]

@@ -13,7 +13,7 @@ class OpenAIHandler:
     @protected_route
     def get_names():
       user: FirebaseUser = request.user
-      current_campaign = request.headers.get('CurrentCampaignID')
+      current_campaign_id = request.headers.get('CurrentCampaignID')
 
       desciption = request.args.get("description", '', type=str)
 
@@ -27,7 +27,7 @@ class OpenAIHandler:
     @protected_route
     def get_encounters():
       user: FirebaseUser = request.user
-      current_campaign = request.headers.get('CurrentCampaignID')
+      current_campaign_id = request.headers.get('CurrentCampaignID')
 
       party_level = request.args.get("party_level", type=int)
       scenario = request.args.get('scenario', type=str)
