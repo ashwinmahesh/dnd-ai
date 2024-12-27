@@ -4,10 +4,11 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 
 export default function AddAdventurer() {
-  const { campaignID }: { campaignID: string } = useLocalSearchParams();
+  const { params } = useLocalSearchParams();
+  const campaignID = params[0];
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState(params.length > 0 ? params[1] : '');
+  const [description, setDescription] = useState(params.length > 1 ? params[2] : '');
 
   const [loading, setLoading] = useState(false);
   const [apiError, setAPIError] = useState('');

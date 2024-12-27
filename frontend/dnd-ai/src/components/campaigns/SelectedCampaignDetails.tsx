@@ -111,7 +111,6 @@ export default function SelectedCampaignDetails(props: TProps) {
   };
 
   const renderPartyMemberItem = ({ item, index }: { item: { memberName: string; details: string }; index: number }) => {
-    console.log('Item:', item);
     return (
       <ListItem
         description={item.details}
@@ -127,7 +126,11 @@ export default function SelectedCampaignDetails(props: TProps) {
           handleAdventurerDelete(item.memberName);
         }}
         onPress={() => {
-          console.log('TODO -> edit adventurer');
+          router.push(
+            `/(tabs)/(campaigns)/adventurer/${selectedCampaign.id}/${encodeURIComponent(
+              item.memberName
+            )}/${encodeURIComponent(item.details)}`
+          );
         }}
         disabled={deleteAdventurerLoading}
       />
