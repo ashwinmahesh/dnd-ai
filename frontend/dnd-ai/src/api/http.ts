@@ -1,6 +1,8 @@
 import axios from 'axios';
 import Config from 'react-native-config';
 import { firebaseAuth } from '@/FirebaseConfig';
+import { SelectedCampaignKey } from '@/constants/AsyncStorageKeys';
+import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 const http = axios.create({
   // baseURL: `${Config.API_BASE}/api/v1`,
@@ -12,6 +14,15 @@ const http = axios.create({
 
 http.interceptors.request.use(
   async (config) => {
+    try {
+      const storedCampaignId = await AsyncStorage.getItem(SelectedCampaignKey);
+      if (storedCampaignId) {
+        config.headers['CurrentCampaignID'] = storedCampaignId;
+      }
+    } catch (err) {
+      // Do nothing, just don't pass header
+      console.log('failed to get stored campaign id to set in request header:', err);
+    }
     const token = await firebaseAuth.currentUser?.getIdToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

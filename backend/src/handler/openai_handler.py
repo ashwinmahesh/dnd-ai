@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, Blueprint
 from backend.src.core.openai import OpenAILibrary
-from backend.src.utils.http import make_response, protected_route
+from backend.src.utils.http import make_response, protected_route, FirebaseUser
 
 class OpenAIHandler:
   def __init__(self, app: Flask, router: Blueprint, openAILibrary: OpenAILibrary):
@@ -12,6 +12,9 @@ class OpenAIHandler:
     @self.router.get('/names')
     @protected_route
     def get_names():
+      user: FirebaseUser = request.user
+      current_campaign = request.headers.get('CurrentCampaignID')
+
       desciption = request.args.get("description", '', type=str)
 
       try:
@@ -23,6 +26,9 @@ class OpenAIHandler:
     @self.router.get('/encounters')
     @protected_route
     def get_encounters():
+      user: FirebaseUser = request.user
+      current_campaign = request.headers.get('CurrentCampaignID')
+
       party_level = request.args.get("party_level", type=int)
       scenario = request.args.get('scenario', type=str)
       num_encounters = request.args.get('num_encounters', 10, type=int)
