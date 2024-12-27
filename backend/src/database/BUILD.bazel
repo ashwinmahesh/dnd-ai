@@ -5,7 +5,6 @@ py_library(
     srcs = glob(["**/*.py"]),
     visibility = ["//visibility:public"],
     deps = [
-        "//backend/src/core",
         "//backend/src/utils",
         requirement("firebase_admin"),
         requirement("google-cloud-firestore"),

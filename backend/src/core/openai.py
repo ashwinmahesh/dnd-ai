@@ -1,44 +1,49 @@
 import openai
 from typing import Dict, List
-from backend.src.database.firestore import FirestoreClient
+from backend.src.database.firestore import FirestoreClient, Campaign
 
 class OpenAILibrary:
   def __init__(self, firestoreClient: FirestoreClient):
     self.client = openai.OpenAI()
-    self.SYSTEM_PROMPT = "You are a dungeon master's assistant. The user is \
-      coming to you in their time of need to get answers during a live session. \
-      Keep answers short and concise. The game we are playing is Dungeons and \
-      Dragons 5th edition in the Tomb of Annihilation campaign setting. \
-      The party is in the dangerous jungles of Chult."
+    self.SYSTEM_PROMPT = '''
+    1. You are a dungeon master's assistant.
+    2. The user is coming to you in their time of need to get answers during a live session.
+    3. Keep answers short and concise. 
+    4. The game we are playing is Dungeons and Dragons 5th edition in the Tomb of Annihilation campaign setting.
+    5. The party is in the dangerous jungles of Chult. 
+    6. If extra information about the campaign is provided by the user, use this to fine tune your results.
+    '''
     self.firestore_client = firestoreClient
     
   # todo(ashwin) - Also add a quick description of everyone
   def get_random_names(self, descriptor: str,
                        current_campaign_id: str = None, userUID: str = None) -> List[str]:
-
+    
+    campaign_context: str = None
     if current_campaign_id is not None and userUID is not None:
       try:
         campaign = self.firestore_client.get_campaign(current_campaign_id, userUID)
         if campaign:
-          # todo - add to context
-          pass
+          campaign_context = format_campaign_into_context_str(campaign)
       except Exception as e:
         # ignore error, continue with inference without extra context
         print(str(e))
     
+    primary_message = f"I need a list of 20 random {descriptor} NPC first and last names. Return them in a comma separated list and nothing else. DO NOT NUMBER THEM OR SEPARATE THEM IN ANY WAY EXCEPT A COMMA. DO NOT RETURN ANYTHING IN THE MESSAGE EXCEPT THE NAMES"
+
+    messages = [
+      { "role": "system","content": self.SYSTEM_PROMPT},
+      {'role': 'user', "content": primary_message},
+    ]
+
+    if campaign_context:
+      messages.append({"role": 'user', "content":campaign_context})
+
     try:
       completion = self.client.chat.completions.create(
         model = "gpt-3.5-turbo",
-        messages=[
-        {
-          "role": "system",
-          "content": self.SYSTEM_PROMPT
-        },
-        {
-          'role': 'user',
-          "content": f"I need a list of 20 random {descriptor} NPC first and last names. Return them in a comma separated list and nothing else. DO NOT NUMBER THEM OR SEPARATE THEM IN ANY WAY EXCEPT A COMMA. DO NOT RETURN ANYTHING IN THE MESSAGE EXCEPT THE NAMES",
-        }
-      ])
+        messages=messages
+      )
 
       try:
         print(completion.choices[0].message.content)
@@ -53,29 +58,26 @@ class OpenAILibrary:
                              num_encounters: int = 10, current_campaign_id: str = None,
                                userUID: str = None) -> List[Dict[str, str]]:
 
+    messages = [{ "role": "system","content": self.SYSTEM_PROMPT}]
     if current_campaign_id is not None and userUID is not None:
       try:
         campaign = self.firestore_client.get_campaign(current_campaign_id, userUID)
         if campaign:
-          # todo - add to context
-          pass
+          campaign_context = format_campaign_into_context_str(campaign)
+          messages.append({"role": 'user', "content": campaign_context})
+          
       except Exception as e:
         # ignore error, continue with inference without extra context
         print(str(e))
 
+    primary_message = f"I need a list of {num_encounters} random encounters for a party of level {party_level}. The encounters should take place be about {scenario}. Return them in a new-line separated list with the format of '{'{ENCOUNTER DESCRIPTION}'} - {'{REASON FOR ENCOUNTER}'}'. Don't number them or return anything else in the output except the encounters in my desired format. If it is a combat encounter, include the number and types of enemies. In reason for encounter, provide context as to why the encounter might be happening. The context should be 2 sentences"
+    messages.append({'role': 'user', "content": primary_message})
+
     try:
       completion = self.client.chat.completions.create(
         model = "gpt-3.5-turbo",
-        messages=[
-        {
-          "role": "system",
-          "content": self.SYSTEM_PROMPT
-        },
-        {
-          'role': 'user',
-          "content": f"I need a list of {num_encounters} random encounters for a party of level {party_level}. The encounters should take place be about {scenario}. Return them in a new-line separated list with the format of '{'{ENCOUNTER DESCRIPTION}'} - {'{REASON FOR ENCOUNTER}'}'. Don't number them or return anything else in the output except the encounters in my desired format. If it is a combat encounter, include the number and types of enemies. In reason for encounter, provide context as to why the encounter might be happening. The context should be 2 sentences",
-        }
-      ])
+        messages=messages
+      )
 
       try:
         print(completion.choices[0].message.content)
@@ -86,8 +88,9 @@ class OpenAILibrary:
 
         output = []
         for entry in results:
-          encounter, context = entry.split(" - ", 1)
-          output.append({'encounter': encounter, 'context': context})
+          if entry.strip():  # Skip empty lines
+            encounter, context = entry.split(" - ", 1)
+            output.append({'encounter': encounter, 'context': context})
         return output
       except Exception as e:
         raise Exception("Unable to properly parse OpenAI response")
@@ -101,3 +104,16 @@ class OpenAILibrary:
     
   def generate_images(self, description: str):
     pass
+
+
+def format_campaign_into_context_str(campaign: Campaign) -> str:
+  output = f'''Here is some information about the current campaign. Use this information to
+  fine tune your results.
+
+  1. Campaign Overview - {campaign.get('overview')}
+  2. Campaign Members & Backstory / Interests - {campaign.get('members')}
+  3. Campaign Major Events (Events which have already ocurred and shaped the narrative) - {campaign.get('major_events')}
+
+'''
+
+  return output

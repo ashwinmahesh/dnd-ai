@@ -18,7 +18,11 @@ class OpenAIHandler:
       desciption = request.args.get("description", '', type=str)
 
       try:
-        names = self.openAILibrary.get_random_names(descriptor=desciption)
+        names = self.openAILibrary.get_random_names(
+          descriptor=desciption,
+          current_campaign_id=current_campaign_id,
+          userUID=user.get('uid')
+        )
         return jsonify(make_response(data=names)), 200
       except Exception as e:
         return jsonify(make_response(error=e)), 500
@@ -34,7 +38,13 @@ class OpenAIHandler:
       num_encounters = request.args.get('num_encounters', 10, type=int)
 
       try:
-        random_encounters = self.openAILibrary.get_random_encounters(party_level=party_level, scenario=scenario, num_encounters=num_encounters)
+        random_encounters = self.openAILibrary.get_random_encounters(
+          party_level=party_level,
+          scenario=scenario,
+          num_encounters=num_encounters,
+          current_campaign_id=current_campaign_id,
+          userUID=user.get('uid'),
+        )
         return jsonify(make_response(data=random_encounters)), 200
       except Exception as e:
         print("Catching error")
