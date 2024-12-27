@@ -19,6 +19,10 @@ export default function HomeLayout() {
         name="randomEncounters"
         options={{ headerShown: true, headerTitle: 'Random Encounters' }}
       />
+      <Stack.Screen
+        name="(monsters)"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 }
