@@ -9,6 +9,7 @@ py_library(
         "//backend/src/core",
         "//backend/src/handler",
         "//backend/src/database",
+        requirement("firebase_admin"),
     ],
     data=["//backend:credentials"],
 )

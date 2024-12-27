@@ -1,14 +1,22 @@
 import axios from 'axios';
 import Config from 'react-native-config';
+import { firebaseAuth } from '@/FirebaseConfig';
 
 const http = axios.create({
-  baseURL: `${Config.API_BASE}/api/v1`,
+  // baseURL: `${Config.API_BASE}/api/v1`,
+  baseURL: `http://localhost:6875/api/v1`,
   timeout: 25000,
 });
 
+// console.log('BASE URL:', Config.API_BASE);
+
 http.interceptors.request.use(
-  (config) => {
-    config.headers.Authorization = `Bearer ${Config.API_KEY}`;
+  async (config) => {
+    const token = await firebaseAuth.currentUser?.getIdToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    // config.headers.Authorization = `Bearer ${Config.API_KEY}`;
     return config;
   },
   (err) => {

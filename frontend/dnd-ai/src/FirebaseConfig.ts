@@ -17,17 +17,13 @@ let app: ReactNativeFirebase.FirebaseApp;
 
 // Check if Firebase app is already initialized
 if (!firebase.apps.length) {
-  console.log('Initializing app?');
   app = initializeApp(firebaseConfig);
 } else {
-  console.log('Getting app');
   app = getApp();
 }
 
-console.log('Initializaing auth');
 // Initialize Firebase Authentication
 const firebaseAuth = initializeAuth(app as any);
-console.log('Initialized auth');
 
 const firestore = getFirestore(app);
 
