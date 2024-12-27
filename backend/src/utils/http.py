@@ -2,8 +2,9 @@ from typing import Any, Dict
 from functools import wraps
 from flask import request, jsonify
 import os
+from firebase_admin import get_app, auth
 
-expected_auth_token = os.getenv("API_TOKEN", "2n7x9p4k6m8v3b1q5w7t9h4j6d8s3f5")
+api_token = os.getenv("API_TOKEN", "2n7x9p4k6m8v3b1q5w7t9h4j6d8s3f5")
 
 def make_response(data: Any = None, error: str = None) -> Dict[str, Any]:
   resp: Dict[str, Any] = {}
@@ -25,13 +26,21 @@ def protected_route(f):
     if not auth_header or not auth_header.startswith("Bearer"):
       return jsonify(make_response(None, "Missing Authorization header")), 401
     
-    if auth_header == f'Bearer {expected_auth_token}':
+    token = auth_header.split('Bearer ')[1]
+    if token == api_token:
       # return jsonify(make_response(None, "Invalid authorization")), 401
       return f(*args, **kwargs)
     
-    # VERIFY OKTA
-
     
-    return jsonify(make_response(None, "Invalid authorization")), 401
+    # VERIFY Firebase
+    try:
+      decoded_token = auth.verify_id_token(token, check_revoked=True)
+      print("Decoded user: ", decoded_token)
+      request.user = decoded_token
+      return f(*args, **kwargs)
+    except auth.InvalidIdTokenError:
+      return jsonify(make_response(None, "Invalid authorization")), 401
+    except Exception as e:
+      return jsonify(make_response(None, str(e))), 500
   
   return decorated_fn
