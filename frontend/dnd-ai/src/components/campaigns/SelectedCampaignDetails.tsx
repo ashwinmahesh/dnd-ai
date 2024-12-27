@@ -1,34 +1,16 @@
-import { deleteMajorEventDB, getCampaignsDB, TCampaign, updateCampaignDB } from '@/database/campaigns';
-import { formatSecondsSinceEpoch, generateRandomString } from '@/utils/string';
-import {
-  Button,
-  Divider,
-  Icon,
-  IconElement,
-  IndexPath,
-  Input,
-  Layout,
-  List,
-  ListItem,
-  Modal,
-  Select,
-  SelectItem,
-  Text,
-} from '@ui-kitten/components';
-import { useRouter, useFocusEffect } from 'expo-router';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, ScrollView } from 'react-native';
-import { SelectedCampaignKey } from '@/constants/AsyncStorageKeys';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { deleteMajorEventDB, TCampaign, updateCampaignDB } from '@/database/campaigns';
+import { formatSecondsSinceEpoch } from '@/utils/string';
+import { Divider, Icon, Layout, List, ListItem, Text } from '@ui-kitten/components';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { Alert } from 'react-native';
 import IconButton from '@/components/common/IconButton';
 import DynamicInputMajorEvents from './DynamicInputMajorEvents';
 
 type TProps = {
   selectedCampaign: TCampaign;
-  // updateCampaigns: ((prev: TCampaign[]) => TCampaign[]) => null
   updateCampaigns: React.Dispatch<React.SetStateAction<TCampaign[]>>;
   selectedIndex: number;
-  //
 };
 
 export default function SelectedCampaignDetails(props: TProps) {
@@ -43,19 +25,14 @@ export default function SelectedCampaignDetails(props: TProps) {
   const handleUpdateMajorEvents = async (entries: string[]) => {
     setUpdateEventsErr('');
     setUpdateEventsLoading(true);
-
-    console.log('Calling function');
     try {
       await updateCampaignDB(selectedCampaign.id, { major_events: entries });
-      // campaigns[selectedIndex.row].major_events.push(...entries);
       updateCampaigns((prev) => {
         prev[selectedIndex].major_events.push(...entries);
         return prev;
       });
-      // selectedCampaign.major_events.push(...entries);
     } catch (err) {
       setUpdateEventsErr(err.toString());
-      console.error('Error:', err);
     } finally {
       setUpdateEventsLoading(false);
     }
@@ -80,14 +57,6 @@ export default function SelectedCampaignDetails(props: TProps) {
         ];
         return campaigns;
       });
-      // campaigns[selectedIndex.row].major_events = [
-      //   ...campaigns[selectedIndex.row].major_events.slice(0, index),
-      //   ...campaigns[selectedIndex.row].major_events.slice(index + 1),
-      // ];
-      // selectedCampaign.major_events = [
-      //   ...selectedCampaign.major_events.slice(0, index),
-      //   ...selectedCampaign.major_events.slice(index + 1),
-      // ];
     } catch (error) {
       setDeleteMajorEventErr(error);
     } finally {
