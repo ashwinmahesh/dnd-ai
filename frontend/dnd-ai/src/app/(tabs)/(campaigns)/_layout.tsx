@@ -12,7 +12,7 @@ export default function CampaignsLayout() {
         options={{ headerShown: true, headerTitle: 'Campaigns' }}
       />
       <Stack.Screen
-        name="createCampaign"
+        name="[...campaignParams]"
         options={{ headerShown: true, headerTitle: 'Create Campaign' }}
       />
       <Stack.Screen

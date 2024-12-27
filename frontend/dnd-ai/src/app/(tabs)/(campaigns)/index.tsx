@@ -98,7 +98,7 @@ const Campaigns = () => {
             icon="plus"
             style={{ marginLeft: 12 }}
             onPress={() => {
-              router.push('/(tabs)/(campaigns)/createCampaign');
+              router.push('/(tabs)/(campaigns)/create');
             }}
           />
         </Layout>

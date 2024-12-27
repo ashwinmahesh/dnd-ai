@@ -1,13 +1,20 @@
-import { createCampaignDB } from '@/database/campaigns';
+import { createCampaignDB, updateCampaignDB } from '@/database/campaigns';
 import { Button, Input, Layout, Text } from '@ui-kitten/components';
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SelectedCampaignKey } from '@/constants/AsyncStorageKeys';
 
 export default function CreateCampaign() {
-  const [name, setName] = useState('');
-  const [overview, setOverview] = useState('');
+  const { campaignParams } = useLocalSearchParams();
+
+  // Empty if creation
+  const campaignID = campaignParams[0];
+
+  const [name, setName] = useState(campaignParams.length > 0 ? campaignParams[1] : '');
+  const [overview, setOverview] = useState(campaignParams.length > 1 ? campaignParams[2] : '');
+
+  const isEditMode = campaignParams.length > 1;
 
   const [loading, setLoading] = useState(false);
   const [apiError, setAPIError] = useState('');
@@ -24,6 +31,19 @@ export default function CreateCampaign() {
       } catch (err) {
         console.error('Failed to update selected campaign: ', err);
       }
+      router.back();
+    } catch (err) {
+      setAPIError(err.toString());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editCampaign = async () => {
+    setLoading(true);
+    setAPIError('');
+    try {
+      await updateCampaignDB(campaignID, { name, overview });
       router.back();
     } catch (err) {
       setAPIError(err.toString());
@@ -49,10 +69,10 @@ export default function CreateCampaign() {
         textStyle={{ minHeight: 128 }}
       />
       <Button
-        onPress={createCampaign}
+        onPress={isEditMode ? editCampaign : createCampaign}
         disabled={loading}
       >
-        Create
+        {isEditMode ? 'Update' : 'Create'}
       </Button>
       <Text status="danger">{apiError}</Text>
     </Layout>

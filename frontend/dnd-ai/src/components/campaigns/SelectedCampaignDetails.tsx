@@ -145,7 +145,17 @@ export default function SelectedCampaignDetails(props: TProps) {
       >
         CAMPAIGN OVERVIEW
       </Text>
-      <Text>{selectedCampaign.overview}</Text>
+      <Text
+        onLongPress={() => {
+          router.push(
+            `/(tabs)/(campaigns)/${selectedCampaign.id}/${encodeURIComponent(
+              selectedCampaign.name
+            )}/${encodeURIComponent(selectedCampaign.overview)}`
+          );
+        }}
+      >
+        {selectedCampaign.overview}
+      </Text>
       <Divider />
       <Text category="label">MAJOR EVENTS</Text>
       {updateEventsErr && <Text status="danger">{updateEventsErr}</Text>}
