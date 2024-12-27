@@ -24,3 +24,7 @@ export const getRandomEncounters = async (params: {
 }) => {
   return await http.get<ApiResponse<TGetRandomEncountersAPI>>('/encounters?' + encodeGetParams(params));
 };
+
+export const generateMonsterStatblockAPI = async (description: string, challenge_rating: number) => {
+  return await http.get('/monster?' + encodeGetParams({ description, challenge_rating }));
+};

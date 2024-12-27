@@ -1,8 +1,17 @@
 import os
+import logging
+
+from firebase_admin import credentials, initialize_app
+
 from backend.src.core.openai import OpenAILibrary
 from backend.src.handler.handler import Server
 from backend.src.database.firestore import FirestoreClient
-from firebase_admin import credentials, initialize_app
+
+
+logging.basicConfig(level=logging.INFO,
+                    format='[%(levelname)s] %(asctime)s - %(message)s',
+                    datefmt='%b %d %I:%M:%S %p')
+
 
 def _get_firestore_creds_path():
   # First try local development path

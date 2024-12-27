@@ -47,5 +47,24 @@ class OpenAIHandler:
         )
         return jsonify(make_response(data=random_encounters)), 200
       except Exception as e:
-        print("Catching error")
         return jsonify(make_response(data=None, error=e)), 500
+      
+    @self.router.get('/monster')
+    @protected_route
+    def generate_monster_stablock():
+      user: FirebaseUser = request.user
+      current_campaign_id = request.headers.get('CurrentCampaignID')
+
+      monster_description = request.args.get('description', type=str)
+      challenge_rating = request.args.get('challenge_rating', type=int)
+
+      try:
+        monster = self.openAILibrary.generate_monster(
+          challenge_rating=challenge_rating,
+          monster_description=monster_description,
+          current_campaign_id=current_campaign_id,
+          user_uid=user.get('uid')
+        )
+        return jsonify(make_response(data=monster)), 200
+      except Exception as e:
+        return jsonify(make_response(data=None, error=str(e))), 500

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Layout } from '@ui-kitten/components';
 import { router } from 'expo-router';
+import http from '@/api/http';
+import { generateMonsterStatblockAPI } from '@/api/inference';
 
 export default function Page() {
   return (
@@ -15,6 +17,15 @@ export default function Page() {
         style={{ marginTop: 16 }}
       >
         Encounters
+      </Button>
+      <Button
+        // disabled
+        style={{ marginTop: 16 }}
+        onPress={() => {
+          generateMonsterStatblockAPI('A normally good creature which is corrupted by a dark magic', 12);
+        }}
+      >
+        Monster Statblock
       </Button>
       <Button
         disabled
