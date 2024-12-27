@@ -21,6 +21,7 @@ import { Alert, ScrollView } from 'react-native';
 import { SelectedCampaignKey } from '@/constants/AsyncStorageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IconButton from '@/components/common/IconButton';
+import SelectedCampaignDetails from '@/components/campaigns/SelectedCampaignDetails';
 
 const StarIcon = (props): IconElement => (
   <Icon
@@ -347,7 +348,12 @@ const Campaigns = () => {
             }}
           />
         </Layout>
-        {renderSelectedCampaignDetails()}
+        {/* {renderSelectedCampaignDetails()} */}
+        <SelectedCampaignDetails
+          selectedCampaign={campaigns[selectedIndex.row]}
+          selectedIndex={selectedIndex.row}
+          updateCampaigns={setCampaigns}
+        />
       </ScrollView>
     </Layout>
   );
