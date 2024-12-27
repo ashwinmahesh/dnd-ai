@@ -292,6 +292,7 @@ const Campaigns = () => {
           accessoryLeft={PlusIcon}
           appearance="ghost"
           status="basic"
+          onPress={() => router.push('/(tabs)/(campaigns)/addAdventurer')}
         />
         <Divider />
         <Text category="label">CREATED AT</Text>
