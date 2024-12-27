@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getRandomEncounters } from '../../../api/inference';
 import {
   Button,
@@ -16,13 +16,42 @@ import {
 import useFetch from '@/api/useFetch';
 import { ActionStatus } from '@/api/types';
 import { ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LastRandomEncountersKey } from '@/constants/AsyncStorageKeys';
 
 const RandomEncounters = () => {
   const [partyLevel, setPartyLevel] = useState<IndexPath>(new IndexPath(0));
   const [numEncounters, setNumEncounters] = useState<IndexPath>(new IndexPath(9));
   const [scenario, setScenario] = useState('');
 
-  const fetchRandomEncounters = useFetch(getRandomEncounters);
+  const fetchRandomEncounters = useFetch(getRandomEncounters, {
+    onSuccess: async (data, _) => {
+      try {
+        await AsyncStorage.setItem(LastRandomEncountersKey, JSON.stringify(data.data));
+      } catch (err) {
+        console.error('failed to set last retrieved encounters in Async Storage: ', err);
+      }
+    },
+  });
+
+  useEffect(() => {
+    AsyncStorage.getItem(LastRandomEncountersKey)
+      .then((encountersStr?: string) => {
+        if (!encountersStr) {
+          return;
+        }
+        fetchRandomEncounters.setData((prev) => {
+          if (!prev) {
+            return { data: JSON.parse(encountersStr) } as any;
+          }
+          prev.data = JSON.parse(encountersStr);
+          return prev;
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   const renderItem = ({
     item,
@@ -119,13 +148,12 @@ const RandomEncounters = () => {
             <Text status="danger">{fetchRandomEncounters.error}</Text>
           </Layout>
         )}
-        {fetchRandomEncounters.status === ActionStatus.FULFILLED && (
-          <List
-            data={fetchRandomEncounters.data.data}
-            ItemSeparatorComponent={Divider}
-            renderItem={renderItem}
-          />
-        )}
+
+        <List
+          data={fetchRandomEncounters.data?.data || []}
+          ItemSeparatorComponent={Divider}
+          renderItem={renderItem}
+        />
       </ScrollView>
     </Layout>
   );

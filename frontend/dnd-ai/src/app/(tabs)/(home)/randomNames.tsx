@@ -3,8 +3,9 @@ import { getRandomNamesAPI } from '../../../api/inference';
 import { Button, Input, Layout, List, ListItem, Divider, Spinner } from '@ui-kitten/components';
 import { ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LastRandomNamesKey } from '@/constants/AsyncStorageKeys';
 
-const storageKey = 'RANDOM_NAMES';
+// const storageKey = 'RANDOM_NAMES';
 
 const RandomNames = () => {
   const [loading, setLoading] = useState(true);
@@ -12,7 +13,7 @@ const RandomNames = () => {
   const [description, setDescription] = useState('');
 
   useEffect(() => {
-    AsyncStorage.getItem(storageKey)
+    AsyncStorage.getItem(LastRandomNamesKey)
       .then((namesStr?: string) => {
         if (!namesStr) {
           return;
@@ -35,7 +36,11 @@ const RandomNames = () => {
         return { title: name };
       });
       setRandomNames(mappedNames);
-      await AsyncStorage.setItem(storageKey, JSON.stringify(mappedNames));
+      try {
+        await AsyncStorage.setItem(LastRandomNamesKey, JSON.stringify(mappedNames));
+      } catch (err) {
+        console.error('failed to store last retrieved random names in async storage: %v', err);
+      }
     } catch (err) {
       console.error(err);
     } finally {
