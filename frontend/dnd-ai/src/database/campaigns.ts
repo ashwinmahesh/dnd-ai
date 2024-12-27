@@ -78,13 +78,16 @@ export const deleteMajorEventDB = async (id: string, event: string): Promise<voi
 };
 
 export const addOrUpdateAdventurerDB = async (campaignId: string, name: string, description: string): Promise<void> => {
-  return await firestoreClient.collection(CAMPAIGN_COLLECTION).doc(campaignId).set(
-    {
-      members: { name, description },
-      updatedAt: firestore.FieldValue.serverTimestamp(),
-    },
-    { merge: true }
-  );
+  return await firestoreClient
+    .collection(CAMPAIGN_COLLECTION)
+    .doc(campaignId)
+    .set(
+      {
+        members: { [name]: description },
+        updatedAt: firestore.FieldValue.serverTimestamp(),
+      },
+      { merge: true }
+    );
 };
 
 export const deleteAdventurerDB = async (campaignId: string, name: string): Promise<void> => {
@@ -92,5 +95,5 @@ export const deleteAdventurerDB = async (campaignId: string, name: string): Prom
   return await firestoreClient
     .collection(CAMPAIGN_COLLECTION)
     .doc(campaignId)
-    .update({ key: firestore.FieldValue.delete(), updatedAt: firestore.FieldValue.serverTimestamp });
+    .update({ [key]: firestore.FieldValue.delete(), updatedAt: firestore.FieldValue.serverTimestamp });
 };

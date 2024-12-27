@@ -111,6 +111,7 @@ export default function SelectedCampaignDetails(props: TProps) {
   };
 
   const renderPartyMemberItem = ({ item, index }: { item: { memberName: string; details: string }; index: number }) => {
+    console.log('Item:', item);
     return (
       <ListItem
         description={item.details}
@@ -163,12 +164,10 @@ export default function SelectedCampaignDetails(props: TProps) {
       </Text>
       {deleteAdventurerErr && <Text status="danger">{deleteAdventurerErr}</Text>}
       <List
-        data={
-          Object.keys(selectedCampaign.members || []).map((memberName) => ({
-            memberName,
-            details: selectedCampaign.members[memberName],
-          })) || []
-        }
+        data={Object.keys(selectedCampaign.members || []).map((memberName) => ({
+          memberName,
+          details: selectedCampaign.members[memberName],
+        }))}
         renderItem={renderPartyMemberItem}
       />
       <IconButton
