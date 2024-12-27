@@ -1,8 +1,7 @@
-import { createCampaignDB, getCampaignsDB, TCampaign, updateCampaignDB } from '@/database/campaigns';
-import { formatSecondsSinceEpoch, formatTimestamp, generateRandomString } from '@/utils/string';
+import { getCampaignsDB, TCampaign, updateCampaignDB } from '@/database/campaigns';
+import { formatSecondsSinceEpoch, generateRandomString } from '@/utils/string';
 import {
   Button,
-  Card,
   Divider,
   Icon,
   IconElement,
@@ -70,7 +69,7 @@ const DynamicInputMajorEvents = ({
         return (
           <Layout style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <Input
-              placeholder={`Major Event ${idx + 1}`}
+              placeholder={`Major Event`}
               value={input}
               onChangeText={(text) => updateInput(text, idx)}
               style={{ marginBottom: 12, flexGrow: 1 }}
@@ -184,9 +183,14 @@ const Campaigns = () => {
   const renderMajorEventItem = ({ item, index }: { item: string; index: number }): React.ReactElement => {
     return (
       <ListItem
-        description={item}
+        title={item}
         key={`major_event_${index}`}
-        accessoryLeft={StarIcon}
+        accessoryLeft={(props) => (
+          <Icon
+            {...props}
+            name="chevron-right-outline"
+          />
+        )}
       />
     );
   };
@@ -197,7 +201,12 @@ const Campaigns = () => {
         description={item.details}
         title={item.memberName}
         key={`party_member_${index}`}
-        accessoryLeft={StarIcon}
+        accessoryLeft={(props) => (
+          <Icon
+            {...props}
+            name="arrow-right-outline"
+          />
+        )}
       />
     );
   };
