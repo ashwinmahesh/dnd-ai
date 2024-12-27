@@ -10,6 +10,7 @@ export type TCreateCampaignParams = {
 };
 
 export type TCampaign = {
+  id: string;
   name: string;
   overview: string;
   members?: { [key: string]: string };
@@ -20,6 +21,8 @@ export type TCampaign = {
   updatedAt: string;
 };
 
+export const CAMPAIGN_COLLECTION = 'campaigns';
+
 export const createCampaignDB = async (params: TCreateCampaignParams) => {
   if (params.name.length < 3) {
     throw new Error('Campaign name must be atleast 3 character');
@@ -28,12 +31,13 @@ export const createCampaignDB = async (params: TCreateCampaignParams) => {
   if (!user) {
     throw new Error('User not authenticated');
   }
-  await firestoreClient.collection('campaigns').add({
+  return await firestoreClient.collection(CAMPAIGN_COLLECTION).add({
     ...params,
     owner: user.email,
     ownerUID: user.uid,
-    createdAt: firestore.Timestamp.now().toDate().toISOString(),
-    updatedAt: firestore.Timestamp.now().toDate().toISOString(),
+    createdAt: firestore.FieldValue.serverTimestamp(),
+    // updatedAt: firestore.Timestamp.now().toDate().toISOString(),
+    updatedAt: firestore.FieldValue.serverTimestamp(),
   });
 };
 
@@ -42,8 +46,19 @@ export const getCampaignsDB = async (): Promise<TCampaign[]> => {
   if (!user) {
     throw new Error('User not authenticated');
   }
-  const querySnapshot = await firestoreClient.collection('campaigns').where('ownerUID', '==', user.uid).get();
+  const querySnapshot = await firestoreClient.collection(CAMPAIGN_COLLECTION).where('ownerUID', '==', user.uid).get();
 
-  const items = querySnapshot.docs.map((doc) => ({ ...doc.data() } as TCampaign));
+  const items = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TCampaign));
   return items;
+};
+
+export const updateCampaignDB = async (id: string, params: Partial<TCreateCampaignParams>): Promise<void> => {
+  return await firestoreClient
+    .collection(CAMPAIGN_COLLECTION)
+    .doc(id)
+    .set({
+      name: params.name,
+      overview: params.overview,
+      major_events: firestore.FieldValue.arrayUnion(...params.major_events),
+    });
 };

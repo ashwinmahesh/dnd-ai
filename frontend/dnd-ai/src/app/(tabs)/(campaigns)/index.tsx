@@ -1,14 +1,17 @@
-import { createCampaignDB, getCampaignsDB, TCampaign } from '@/database/campaigns';
-import { generateRandomString } from '@/utils/string';
+import { createCampaignDB, getCampaignsDB, TCampaign, updateCampaignDB } from '@/database/campaigns';
+import { formatTimestamp, generateRandomString } from '@/utils/string';
 import {
   Button,
   Card,
+  Divider,
   Icon,
   IconElement,
   IndexPath,
+  Input,
   Layout,
   List,
   ListItem,
+  Modal,
   Select,
   SelectItem,
   Text,
@@ -18,6 +21,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { SelectedCampaignKey } from '@/constants/AsyncStorageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import IconButton from '@/components/common/IconButton';
 
 const StarIcon = (props): IconElement => (
   <Icon
@@ -32,6 +36,71 @@ const PlusIcon = (props): IconElement => (
     name="plus"
   />
 );
+
+const DynamicInputMajorEvents = ({ handleSave }: { handleSave: (inputs: string[]) => void }) => {
+  const [inputs, setInputs] = useState<string[]>([]);
+
+  const addInputField = () => {
+    setInputs((prev) => [...prev, '']);
+  };
+
+  const updateInput = (val: string, index: number) => {
+    setInputs((prev) => {
+      const newInputs = [...prev];
+      newInputs[index] = val;
+      return newInputs;
+    });
+  };
+
+  const removeInputField = (idx: number) => {
+    setInputs((prev) => {
+      return [...prev.slice(0, idx), ...prev.slice(idx + 1)];
+    });
+  };
+
+  return (
+    <Layout>
+      {inputs.map((input, idx) => {
+        return (
+          <Layout style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <Input
+              placeholder={`Major Event ${idx + 1}`}
+              value={input}
+              onChangeText={(text) => updateInput(text, idx)}
+              style={{ marginBottom: 12, flexGrow: 1 }}
+              textStyle={{ minHeight: 60 }}
+              multiline
+            />
+            <IconButton
+              icon="close-outline"
+              size="small"
+              appearance="ghost"
+              onPress={() => removeInputField(idx)}
+            />
+          </Layout>
+        );
+      })}
+      <Layout style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+        <IconButton
+          appearance="ghost"
+          status="basic"
+          onPress={addInputField}
+          style={{ flexGrow: 1 }}
+          icon="plus"
+        />
+        {inputs.length > 0 && (
+          <IconButton
+            icon="checkmark-outline"
+            appearance="ghost"
+            status="success"
+            style={{ flexGrow: 1 }}
+            onPress={() => handleSave(inputs)}
+          />
+        )}
+      </Layout>
+    </Layout>
+  );
+};
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<TCampaign[]>([]);
@@ -81,6 +150,13 @@ const Campaigns = () => {
     });
   };
 
+  const handleUpdateMajorEvents = (entries: string[]) => {
+    const selectedCampaign = campaigns[selectedIndex.row];
+    try {
+      updateCampaignDB(selectedCampaign.id, { major_events: entries });
+    } catch (err) {}
+  };
+
   const renderMajorEventItem = ({ item, index }: { item: string; index: number }): React.ReactElement => {
     return (
       <ListItem
@@ -109,70 +185,57 @@ const Campaigns = () => {
     const selectedCampaign = campaigns[selectedIndex.row];
 
     return (
-      <Layout style={{ display: 'flex', gap: 12 }}>
-        <Card>
-          <Text
-            category="label"
-            style={{ marginBottom: 12 }}
-          >
-            CAMPAIGN OVERVIEW
-          </Text>
-          <Text>{selectedCampaign.overview}</Text>
-        </Card>
-        <Card>
-          <Text
-            category="label"
-            style={{ marginBottom: 12 }}
-          >
-            MAJOR EVENTS
-          </Text>
-          <ScrollView style={{ maxHeight: 180 }}>
-            <List
-              data={selectedCampaign.major_events || []}
-              renderItem={renderMajorEventItem}
-            />
-            <Button
-              accessoryLeft={PlusIcon}
-              appearance="ghost"
-              status="basic"
-            />
-          </ScrollView>
-        </Card>
-        <Card>
-          <Text
-            category="label"
-            style={{ marginBottom: 12 }}
-          >
-            ADVENTURERS
-          </Text>
-          <ScrollView style={{ maxHeight: 180 }}>
-            <List
-              data={
-                Object.keys(selectedCampaign.members || []).map((memberName) => ({
-                  memberName,
-                  details: selectedCampaign.members[memberName],
-                })) || []
-              }
-              renderItem={renderPartyMemberItem}
-            />
-            <Button
-              accessoryLeft={PlusIcon}
-              appearance="ghost"
-              status="basic"
-            />
-          </ScrollView>
-        </Card>
-        <Card>
-          <Text category="label">CREATED AT</Text>
-          <Text>{selectedCampaign.createdAt}</Text>
-          <Text
-            category="label"
-            style={{ marginTop: 12 }}
-          >
-            LAST UPDATED
-          </Text>
-          <Text>{selectedCampaign.updatedAt}</Text>
-        </Card>
+      <Layout style={{ display: 'flex', gap: 12, padding: 12 }}>
+        <Text
+          category="label"
+          style={{ marginBottom: 12 }}
+        >
+          CAMPAIGN OVERVIEW
+        </Text>
+        <Text>{selectedCampaign.overview}</Text>
+        <Divider />
+        <Text
+          category="label"
+          style={{ marginBottom: 12 }}
+        >
+          MAJOR EVENTS
+        </Text>
+        <List
+          data={selectedCampaign.major_events || []}
+          renderItem={renderMajorEventItem}
+        />
+        <DynamicInputMajorEvents handleSave={handleUpdateMajorEvents} />
+        <Divider />
+        <Text
+          category="label"
+          style={{ marginBottom: 12 }}
+        >
+          ADVENTURERS
+        </Text>
+        <List
+          data={
+            Object.keys(selectedCampaign.members || []).map((memberName) => ({
+              memberName,
+              details: selectedCampaign.members[memberName],
+            })) || []
+          }
+          renderItem={renderPartyMemberItem}
+        />
+        <Button
+          accessoryLeft={PlusIcon}
+          appearance="ghost"
+          status="basic"
+        />
+        <Divider />
+        <Text category="label">CREATED AT</Text>
+        <Text>{formatTimestamp(selectedCampaign.createdAt)}</Text>
+        <Text
+          category="label"
+          style={{ marginTop: 12 }}
+        >
+          LAST UPDATED
+        </Text>
+        <Text>{formatTimestamp(selectedCampaign.updatedAt)}</Text>
       </Layout>
     );
   }, [selectedIndex, campaignsLoading]);
