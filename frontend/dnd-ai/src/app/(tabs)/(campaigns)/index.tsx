@@ -33,10 +33,9 @@ const Campaigns = () => {
       setCampaigns(res);
       // Find current selected
       try {
-        const storedCampaignNameBlob = await AsyncStorage.getItem(SelectedCampaignKey);
-        if (storedCampaignNameBlob) {
-          const storedCampaignName = storedCampaignNameBlob;
-          const idx = res.findIndex((campaign) => campaign.name === storedCampaignName);
+        const storedCampaignId = await AsyncStorage.getItem(SelectedCampaignKey);
+        if (storedCampaignId) {
+          const idx = res.findIndex((campaign) => campaign.id === storedCampaignId);
           if (idx >= 0) setSelectedIndex(new IndexPath(idx));
         }
       } catch (err) {
@@ -57,7 +56,7 @@ const Campaigns = () => {
 
   const onUpdateSelectedCampaign = (index: IndexPath) => {
     setSelectedIndex(index);
-    const selectedValue = campaigns[index.row]?.name;
+    const selectedValue = campaigns[index.row]?.id;
     if (!selectedValue) return;
     AsyncStorage.setItem(SelectedCampaignKey, selectedValue).catch((err) => {
       console.error(`Failed to update selected index to ${index.row}: ${err}`);

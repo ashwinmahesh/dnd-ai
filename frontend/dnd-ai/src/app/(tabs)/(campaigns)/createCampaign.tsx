@@ -18,9 +18,9 @@ export default function CreateCampaign() {
     setLoading(true);
     setAPIError('');
     try {
-      await createCampaignDB({ name, overview, major_events: [], members: {} });
+      const docID = await createCampaignDB({ name, overview, major_events: [], members: {} });
       try {
-        await AsyncStorage.setItem(SelectedCampaignKey, name);
+        await AsyncStorage.setItem(SelectedCampaignKey, docID);
       } catch (err) {
         console.error('Failed to update selected campaign: ', err);
       }

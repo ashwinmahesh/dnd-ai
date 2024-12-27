@@ -23,6 +23,7 @@ export type TCampaign = {
 
 export const CAMPAIGN_COLLECTION = 'campaigns';
 
+// Returns the ID of newly created document
 export const createCampaignDB = async (params: TCreateCampaignParams) => {
   if (params.name.length < 3) {
     throw new Error('Campaign name must be atleast 3 character');
@@ -31,14 +32,15 @@ export const createCampaignDB = async (params: TCreateCampaignParams) => {
   if (!user) {
     throw new Error('User not authenticated');
   }
-  return await firestoreClient.collection(CAMPAIGN_COLLECTION).add({
+  const docRef = await firestoreClient.collection(CAMPAIGN_COLLECTION).add({
     ...params,
     owner: user.email,
     ownerUID: user.uid,
     createdAt: firestore.FieldValue.serverTimestamp(),
-    // updatedAt: firestore.Timestamp.now().toDate().toISOString(),
     updatedAt: firestore.FieldValue.serverTimestamp(),
   });
+
+  return docRef.id;
 };
 
 export const getCampaignsDB = async (): Promise<TCampaign[]> => {
