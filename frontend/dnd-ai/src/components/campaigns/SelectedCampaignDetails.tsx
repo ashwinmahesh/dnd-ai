@@ -1,4 +1,4 @@
-import { deleteMajorEventDB, TCampaign, updateCampaignDB } from '@/database/campaigns';
+import { deleteAdventurerDB, deleteMajorEventDB, TCampaign, updateCampaignDB } from '@/database/campaigns';
 import { formatSecondsSinceEpoch } from '@/utils/string';
 import { Divider, Icon, Layout, List, ListItem, Text } from '@ui-kitten/components';
 import { useRouter } from 'expo-router';
@@ -21,6 +21,10 @@ export default function SelectedCampaignDetails(props: TProps) {
   const [updateEventsErr, setUpdateEventsErr] = useState('');
   const [deleteMajorEventLoading, setDeleteMajorEventLoading] = useState(false);
   const [deleteMajorEventErr, setDeleteMajorEventErr] = useState('');
+
+  // Adventurer Updates
+  const [deleteAdventurerLoading, setDeleteAdventurerLoading] = useState(false);
+  const [deleteAdventurerErr, setDeleteAdventurerErr] = useState('');
 
   const handleUpdateMajorEvents = async (entries: string[]) => {
     setUpdateEventsErr('');
@@ -64,6 +68,29 @@ export default function SelectedCampaignDetails(props: TProps) {
     }
   };
 
+  const handleAdventurerDelete = async (name: string) => {
+    const confirm = await new Promise((resolve) => {
+      Alert.alert('Confirm Deletion', `Are you sure you want to delete adventurer ${name}?`, [
+        { text: 'Confirm', onPress: () => resolve(true) },
+        { text: 'Cancel', onPress: () => resolve(false), style: 'cancel' },
+      ]);
+    });
+    if (!confirm) return;
+    try {
+      setDeleteAdventurerLoading(true);
+      setDeleteAdventurerErr('');
+      await deleteAdventurerDB(selectedCampaign.id, name);
+      updateCampaigns((campaigns) => {
+        delete campaigns[selectedIndex].members[name];
+        return campaigns;
+      });
+    } catch (error) {
+      setDeleteAdventurerErr(error);
+    } finally {
+      setDeleteAdventurerLoading(false);
+    }
+  };
+
   const renderMajorEventItem = ({ item, index }: { item: string; index: number }): React.ReactElement => {
     return (
       <ListItem
@@ -92,9 +119,16 @@ export default function SelectedCampaignDetails(props: TProps) {
         accessoryLeft={(props) => (
           <Icon
             {...props}
-            name="arrow-right-outline"
+            name="person-outline"
           />
         )}
+        onLongPress={() => {
+          handleAdventurerDelete(item.memberName);
+        }}
+        onPress={() => {
+          console.log('TODO -> edit adventurer');
+        }}
+        disabled={deleteAdventurerLoading}
       />
     );
   };
@@ -127,6 +161,7 @@ export default function SelectedCampaignDetails(props: TProps) {
       >
         ADVENTURERS
       </Text>
+      {deleteAdventurerErr && <Text status="danger">{deleteAdventurerErr}</Text>}
       <List
         data={
           Object.keys(selectedCampaign.members || []).map((memberName) => ({
@@ -140,7 +175,7 @@ export default function SelectedCampaignDetails(props: TProps) {
         appearance="ghost"
         icon="plus"
         status="basic"
-        onPress={() => router.push('/(tabs)/(campaigns)/addAdventurer')}
+        onPress={() => router.push(`/(tabs)/(campaigns)/adventurer/${selectedCampaign.id}`)}
       />
       <Divider />
       <Text category="label">CREATED AT</Text>

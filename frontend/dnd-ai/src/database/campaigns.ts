@@ -13,8 +13,8 @@ export type TCampaign = {
   id: string;
   name: string;
   overview: string;
-  members?: { [key: string]: string };
-  major_events?: string[];
+  members: { [key: string]: string };
+  major_events: string[];
   owner: string;
   ownerUID: string;
   createdAt: { seconds: number };
@@ -75,4 +75,22 @@ export const deleteMajorEventDB = async (id: string, event: string): Promise<voi
       major_events: firestore.FieldValue.arrayRemove(event),
       updatedAt: firestore.FieldValue.serverTimestamp(),
     });
+};
+
+export const addOrUpdateAdventurerDB = async (campaignId: string, name: string, description: string): Promise<void> => {
+  return await firestoreClient.collection(CAMPAIGN_COLLECTION).doc(campaignId).set(
+    {
+      members: { name, description },
+      updatedAt: firestore.FieldValue.serverTimestamp(),
+    },
+    { merge: true }
+  );
+};
+
+export const deleteAdventurerDB = async (campaignId: string, name: string): Promise<void> => {
+  const key = `members.${name}`;
+  return await firestoreClient
+    .collection(CAMPAIGN_COLLECTION)
+    .doc(campaignId)
+    .update({ key: firestore.FieldValue.delete(), updatedAt: firestore.FieldValue.serverTimestamp });
 };

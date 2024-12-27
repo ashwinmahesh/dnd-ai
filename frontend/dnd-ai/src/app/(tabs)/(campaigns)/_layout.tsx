@@ -16,7 +16,7 @@ export default function CampaignsLayout() {
         options={{ headerShown: true, headerTitle: 'Create Campaign' }}
       />
       <Stack.Screen
-        name="addAdventurer"
+        name="adventurer/[campaignID]"
         options={{ headerShown: true, headerTitle: 'Add Adventurer' }}
       />
     </Stack>
