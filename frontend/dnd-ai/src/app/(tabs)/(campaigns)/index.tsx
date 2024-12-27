@@ -1,4 +1,4 @@
-import { getCampaignsDB, TCampaign, updateCampaignDB } from '@/database/campaigns';
+import { deleteMajorEventDB, getCampaignsDB, TCampaign, updateCampaignDB } from '@/database/campaigns';
 import { formatSecondsSinceEpoch, generateRandomString } from '@/utils/string';
 import {
   Button,
@@ -17,7 +17,7 @@ import {
 } from '@ui-kitten/components';
 import { useRouter, useFocusEffect } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { SelectedCampaignKey } from '@/constants/AsyncStorageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IconButton from '@/components/common/IconButton';
@@ -120,8 +120,11 @@ const Campaigns = () => {
 
   const [selectedIndex, setSelectedIndex] = useState<IndexPath>(new IndexPath(-1));
 
+  // Major Event Updaates
   const [updateEventsLoading, setUpdateEventsLoading] = useState(false);
   const [updateEventsErr, setUpdateEventsErr] = useState('');
+  const [deleteMajorEventLoading, setDeleteMajorEventLoading] = useState(false);
+  const [deleteMajorEventErr, setDeleteMajorEventErr] = useState('');
 
   const router = useRouter();
 
@@ -180,6 +183,31 @@ const Campaigns = () => {
     }
   };
 
+  const handleMajorEventDelete = async (index: number, item: string) => {
+    const selectedCampaign = campaigns[selectedIndex.row];
+
+    const confirm = await new Promise((resolve) => {
+      Alert.alert('Confirm Deletion', 'Are you sure you want to delete this major event?', [
+        { text: 'Confirm', onPress: () => resolve(true) },
+        { text: 'Cancel', onPress: () => resolve(false), style: 'cancel' },
+      ]);
+    });
+    if (!confirm) return;
+    try {
+      setDeleteMajorEventLoading(true);
+      setDeleteMajorEventErr('');
+      await deleteMajorEventDB(selectedCampaign.id, item);
+      campaigns[selectedIndex.row].major_events = [
+        ...campaigns[selectedIndex.row].major_events.slice(0, index),
+        ...campaigns[selectedIndex.row].major_events.slice(index + 1),
+      ];
+    } catch (error) {
+      setDeleteMajorEventErr(error);
+    } finally {
+      setDeleteMajorEventLoading(false);
+    }
+  };
+
   const renderMajorEventItem = ({ item, index }: { item: string; index: number }): React.ReactElement => {
     return (
       <ListItem
@@ -191,6 +219,10 @@ const Campaigns = () => {
             name="chevron-right-outline"
           />
         )}
+        onLongPress={() => {
+          handleMajorEventDelete(index, item);
+        }}
+        disabled={deleteMajorEventLoading}
       />
     );
   };
@@ -231,6 +263,7 @@ const Campaigns = () => {
         <Divider />
         <Text category="label">MAJOR EVENTS</Text>
         {updateEventsErr && <Text status="danger">{updateEventsErr}</Text>}
+        {deleteMajorEventErr && <Text status="danger">{deleteMajorEventErr}</Text>}
         <List
           data={selectedCampaign.major_events || []}
           renderItem={renderMajorEventItem}
@@ -272,7 +305,7 @@ const Campaigns = () => {
         <Text>{formatSecondsSinceEpoch(selectedCampaign.updatedAt?.seconds || -1)}</Text>
       </Layout>
     );
-  }, [selectedIndex, campaignsLoading, updateEventsLoading]);
+  }, [selectedIndex, campaignsLoading, updateEventsLoading, deleteMajorEventLoading]);
 
   return (
     <Layout style={{ flex: 1, padding: 6 }}>

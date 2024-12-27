@@ -66,3 +66,13 @@ export const updateCampaignDB = async (id: string, params: Partial<TCreateCampai
   }
   return await firestoreClient.collection(CAMPAIGN_COLLECTION).doc(id).update(updates);
 };
+
+export const deleteMajorEventDB = async (id: string, event: string): Promise<void> => {
+  return await firestoreClient
+    .collection(CAMPAIGN_COLLECTION)
+    .doc(id)
+    .update({
+      major_events: firestore.FieldValue.arrayRemove(event),
+      updatedAt: firestore.FieldValue.serverTimestamp(),
+    });
+};

@@ -9,18 +9,42 @@ export default function Page() {
       level="1"
       style={{ flex: 1, padding: 16 }}
     >
-      <Button onPress={() => router.push('/(tabs)/(home)/randomNames')}>Random Names</Button>
+      <Button onPress={() => router.push('/(tabs)/(home)/randomNames')}>Names</Button>
       <Button
         onPress={() => router.push('/(tabs)/(home)/randomEncounters')}
         style={{ marginTop: 16 }}
       >
-        Random Encounters
+        Encounters
       </Button>
       <Button
-        onPress={() => router.push('/')}
+        disabled
         style={{ marginTop: 16 }}
       >
         Quest Hooks
+      </Button>
+      <Button
+        disabled
+        style={{ marginTop: 16 }}
+      >
+        Loot Tables
+      </Button>
+      <Button
+        disabled
+        style={{ marginTop: 16 }}
+      >
+        NPCs
+      </Button>
+      <Button
+        disabled
+        style={{ marginTop: 16 }}
+      >
+        Dungeon
+      </Button>
+      <Button
+        disabled
+        style={{ marginTop: 16 }}
+      >
+        Images
       </Button>
     </Layout>
   );
