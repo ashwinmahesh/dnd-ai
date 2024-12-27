@@ -1,4 +1,6 @@
+import os
 from flask import Flask, jsonify, Blueprint
+
 from backend.src.handler.openai_handler import OpenAIHandler
 from backend.src.core.openai import OpenAILibrary
 from backend.src.utils.http import make_response
@@ -33,6 +35,7 @@ class Server:
 
   
   def run(self):
-    print(f"Starting server on port {self.port}")
-    self.app.run(port=self.port, host="0.0.0.0")
+    debug = os.getenv("DEBUG", False)
+    print(f"Starting server on port {self.port}. Debug mode={debug}")
+    self.app.run(port=self.port, host="0.0.0.0", debug=debug)
 
