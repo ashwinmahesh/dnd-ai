@@ -10,5 +10,4 @@ py_library(
         requirement("firebase_admin"),
         requirement("google-cloud-firestore"),
     ],
-    data=["//backend:credentials"],
 )

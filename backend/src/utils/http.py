@@ -22,13 +22,16 @@ def protected_route(f):
   def decorated_fn(*args, **kwargs):
     auth_header = request.headers.get('Authorization')
 
-    if not auth_header:
+    if not auth_header or not auth_header.startswith("Bearer"):
       return jsonify(make_response(None, "Missing Authorization header")), 401
     
-    if auth_header != f'Bearer {expected_auth_token}':
-      print(f"Got: {auth_header}, Expected: {expected_auth_token}")
-      return jsonify(make_response(None, "Invalid authorization")), 401
+    if auth_header == f'Bearer {expected_auth_token}':
+      # return jsonify(make_response(None, "Invalid authorization")), 401
+      return f(*args, **kwargs)
     
-    return f(*args, **kwargs)
+    # VERIFY OKTA
+
+    
+    return jsonify(make_response(None, "Invalid authorization")), 401
   
   return decorated_fn

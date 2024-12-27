@@ -10,6 +10,7 @@ py_library(
         "//backend/src/handler",
         "//backend/src/database",
     ],
+    data=["//backend:credentials"],
 )
 
 py_binary(
