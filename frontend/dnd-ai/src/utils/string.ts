@@ -19,3 +19,20 @@ export function formatTimestamp(isoString: string): string {
     hour12: true,
   });
 }
+
+export function formatSecondsSinceEpoch(seconds: number) {
+  try {
+    const date = new Date(seconds * 1000);
+
+    return date.toLocaleString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  } catch (err) {
+    return 'Invalid timestamp';
+  }
+}

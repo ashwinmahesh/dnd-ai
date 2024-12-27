@@ -1,5 +1,5 @@
 import { createCampaignDB, getCampaignsDB, TCampaign, updateCampaignDB } from '@/database/campaigns';
-import { formatTimestamp, generateRandomString } from '@/utils/string';
+import { formatSecondsSinceEpoch, formatTimestamp, generateRandomString } from '@/utils/string';
 import {
   Button,
   Card,
@@ -37,7 +37,13 @@ const PlusIcon = (props): IconElement => (
   />
 );
 
-const DynamicInputMajorEvents = ({ handleSave }: { handleSave: (inputs: string[]) => void }) => {
+const DynamicInputMajorEvents = ({
+  handleSave,
+  disabled,
+}: {
+  handleSave: (inputs: string[]) => Promise<void>;
+  disabled: boolean;
+}) => {
   const [inputs, setInputs] = useState<string[]>([]);
 
   const addInputField = () => {
@@ -87,6 +93,7 @@ const DynamicInputMajorEvents = ({ handleSave }: { handleSave: (inputs: string[]
           onPress={addInputField}
           style={{ flexGrow: 1 }}
           icon="plus"
+          disabled={disabled}
         />
         {inputs.length > 0 && (
           <IconButton
@@ -94,7 +101,12 @@ const DynamicInputMajorEvents = ({ handleSave }: { handleSave: (inputs: string[]
             appearance="ghost"
             status="success"
             style={{ flexGrow: 1 }}
-            onPress={() => handleSave(inputs)}
+            onPress={() =>
+              handleSave(inputs).then(() => {
+                setInputs([]);
+              })
+            }
+            disabled={disabled}
           />
         )}
       </Layout>
@@ -108,6 +120,9 @@ const Campaigns = () => {
   const [fetchCampaignsErr, setFetchCampaignsErr] = useState('');
 
   const [selectedIndex, setSelectedIndex] = useState<IndexPath>(new IndexPath(-1));
+
+  const [updateEventsLoading, setUpdateEventsLoading] = useState(false);
+  const [updateEventsErr, setUpdateEventsErr] = useState('');
 
   const router = useRouter();
 
@@ -150,11 +165,20 @@ const Campaigns = () => {
     });
   };
 
-  const handleUpdateMajorEvents = (entries: string[]) => {
+  const handleUpdateMajorEvents = async (entries: string[]) => {
+    setUpdateEventsErr('');
+    setUpdateEventsLoading(true);
     const selectedCampaign = campaigns[selectedIndex.row];
+    console.log('Calling function');
     try {
-      updateCampaignDB(selectedCampaign.id, { major_events: entries });
-    } catch (err) {}
+      await updateCampaignDB(selectedCampaign.id, { major_events: entries });
+      campaigns[selectedIndex.row].major_events.push(...entries);
+    } catch (err) {
+      setUpdateEventsErr(err.toString());
+      console.error('Error:', err);
+    } finally {
+      setUpdateEventsLoading(false);
+    }
   };
 
   const renderMajorEventItem = ({ item, index }: { item: string; index: number }): React.ReactElement => {
@@ -184,6 +208,8 @@ const Campaigns = () => {
     }
     const selectedCampaign = campaigns[selectedIndex.row];
 
+    console.log('Selected Campaign:', selectedCampaign);
+
     return (
       <Layout style={{ display: 'flex', gap: 12, padding: 12 }}>
         <Text
@@ -194,17 +220,16 @@ const Campaigns = () => {
         </Text>
         <Text>{selectedCampaign.overview}</Text>
         <Divider />
-        <Text
-          category="label"
-          style={{ marginBottom: 12 }}
-        >
-          MAJOR EVENTS
-        </Text>
+        <Text category="label">MAJOR EVENTS</Text>
+        {updateEventsErr && <Text status="danger">{updateEventsErr}</Text>}
         <List
           data={selectedCampaign.major_events || []}
           renderItem={renderMajorEventItem}
         />
-        <DynamicInputMajorEvents handleSave={handleUpdateMajorEvents} />
+        <DynamicInputMajorEvents
+          handleSave={handleUpdateMajorEvents}
+          disabled={updateEventsLoading}
+        />
         <Divider />
         <Text
           category="label"
@@ -228,17 +253,17 @@ const Campaigns = () => {
         />
         <Divider />
         <Text category="label">CREATED AT</Text>
-        <Text>{formatTimestamp(selectedCampaign.createdAt)}</Text>
+        <Text>{formatSecondsSinceEpoch(selectedCampaign.createdAt?.seconds || -1)}</Text>
         <Text
           category="label"
           style={{ marginTop: 12 }}
         >
           LAST UPDATED
         </Text>
-        <Text>{formatTimestamp(selectedCampaign.updatedAt)}</Text>
+        <Text>{formatSecondsSinceEpoch(selectedCampaign.updatedAt?.seconds || -1)}</Text>
       </Layout>
     );
-  }, [selectedIndex, campaignsLoading]);
+  }, [selectedIndex, campaignsLoading, updateEventsLoading]);
 
   return (
     <Layout style={{ flex: 1, padding: 6 }}>

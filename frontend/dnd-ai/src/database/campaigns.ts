@@ -17,8 +17,8 @@ export type TCampaign = {
   major_events?: string[];
   owner: string;
   ownerUID: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: { seconds: number };
+  updatedAt: { seconds: number };
 };
 
 export const CAMPAIGN_COLLECTION = 'campaigns';
@@ -53,12 +53,16 @@ export const getCampaignsDB = async (): Promise<TCampaign[]> => {
 };
 
 export const updateCampaignDB = async (id: string, params: Partial<TCreateCampaignParams>): Promise<void> => {
-  return await firestoreClient
-    .collection(CAMPAIGN_COLLECTION)
-    .doc(id)
-    .set({
-      name: params.name,
-      overview: params.overview,
-      major_events: firestore.FieldValue.arrayUnion(...params.major_events),
-    });
+  console.log(`Update campaign ${id}: ${JSON.stringify(params)}`);
+  const updates = { updatedAt: firestore.FieldValue.serverTimestamp() };
+  if (params.name) {
+    updates['name'] = params.name;
+  }
+  if (params.overview) {
+    updates['overview'] = params.overview;
+  }
+  if (params.major_events) {
+    updates['major_events'] = firestore.FieldValue.arrayUnion(...params.major_events);
+  }
+  return await firestoreClient.collection(CAMPAIGN_COLLECTION).doc(id).update(updates);
 };
