@@ -15,29 +15,22 @@ class OpenAILibrary:
     '''
     self.firestore_client = firestoreClient
     
-  # todo(ashwin) - Also add a quick description of everyone
+  # todo(ashwin) - Also add a quick description of everyone. More of an NPC generator
   def get_random_names(self, descriptor: str,
                        current_campaign_id: str = None, userUID: str = None) -> List[str]:
-    
-    campaign_context: str = None
+    messages = [{ "role": "system","content": self.SYSTEM_PROMPT}]
     if current_campaign_id is not None and userUID is not None:
       try:
         campaign = self.firestore_client.get_campaign(current_campaign_id, userUID)
         if campaign:
-          campaign_context = format_campaign_into_context_str(campaign)
+          messages.append({"role": 'user', "content": format_campaign_into_context_str(campaign)})
+          
       except Exception as e:
         # ignore error, continue with inference without extra context
         print(str(e))
     
     primary_message = f"I need a list of 20 random {descriptor} NPC first and last names. Return them in a comma separated list and nothing else. DO NOT NUMBER THEM OR SEPARATE THEM IN ANY WAY EXCEPT A COMMA. DO NOT RETURN ANYTHING IN THE MESSAGE EXCEPT THE NAMES"
-
-    messages = [
-      { "role": "system","content": self.SYSTEM_PROMPT},
-      {'role': 'user', "content": primary_message},
-    ]
-
-    if campaign_context:
-      messages.append({"role": 'user', "content":campaign_context})
+    messages.append({'role': 'user', "content": primary_message})
 
     try:
       completion = self.client.chat.completions.create(
@@ -63,8 +56,7 @@ class OpenAILibrary:
       try:
         campaign = self.firestore_client.get_campaign(current_campaign_id, userUID)
         if campaign:
-          campaign_context = format_campaign_into_context_str(campaign)
-          messages.append({"role": 'user', "content": campaign_context})
+          messages.append({"role": 'user', "content": format_campaign_into_context_str(campaign)})
           
       except Exception as e:
         # ignore error, continue with inference without extra context
