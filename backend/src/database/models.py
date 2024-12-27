@@ -4,7 +4,7 @@ class Campaign(TypedDict):
   name: str
   owner: str
   overview: str
-  major_events: Optional[List[str]]
-  members: Optional[Dict[str,str]]
-  created_at: Optional[str]
-  updated_at: Optional[str]
+  major_events: List[str]
+  members: Dict[str,str]
+  createdAt: Dict[str, int]
+  updated_at: Dict[str, int]

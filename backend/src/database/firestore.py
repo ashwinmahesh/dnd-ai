@@ -3,13 +3,9 @@ from firebase_admin import credentials, firestore, initialize_app
 import os
 from typing import Tuple, Optional, Dict, Any, List
 from datetime import datetime
+import math
 
 from backend.src.database.models import Campaign
-
-
-# firebase_certificate_str = os.getenv('FIREBASE_CREDS')
-# print(firebase_certificate_str)
-# firebase_cert = json.loads(firebase_certificate_str)
 
 class Collections:
   Campaigns: str = "campaigns"
@@ -38,10 +34,10 @@ class FirestoreClient:
 
 
 def _add_timestamps(data: Dict[str, Any], is_update: bool=False) -> Dict[str, Any]:
-  now = datetime.now().isoformat()
+  now = math.ceil(datetime.now().timestamp())
   if not is_update:
-    data['created_at'] = now
-  data['updated_at'] = now
+    data['createdAt'] = {'seconds': now}
+  data['updatedAt'] = {'seconds': now}
 
   return data
 
