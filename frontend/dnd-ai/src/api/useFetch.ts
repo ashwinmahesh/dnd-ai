@@ -27,6 +27,7 @@ export type TFetchFunction<T, K extends any[]> = {
   reset: () => void;
   execute: (...args: K) => Promise<T | undefined>;
   setData: (fn: (prev: T) => T) => void;
+  setError: (fn: ((prev: string) => string) | string) => void;
 };
 
 const useFetch = <T extends any = any, K extends any[] = any[]>(
@@ -99,6 +100,7 @@ const useFetch = <T extends any = any, K extends any[] = any[]>(
     isLoading: status === 'IN_PROGRESS',
     isRejected: status === 'REJECTED',
     setData,
+    setError,
   };
 };
 

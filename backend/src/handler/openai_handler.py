@@ -86,6 +86,7 @@ class OpenAIHandler:
       loot_val_max = request.args.get('loot_val_max', default=loot_val_min * 5, type=int)
       magic_item_rarities = request.args.get('magic_item_rarities', default=['Uncommon'], type=List[str])
       context = request.args.get('context', default='', type=str)
+      include_magic_items = request.args.get('include_magic_items', default=False, type=bool)
 
       try:
         loot_table = self.openAILibrary.generate_loot_table(
@@ -95,6 +96,7 @@ class OpenAIHandler:
           loot_val_max=loot_val_max,
           magic_item_rarities=magic_item_rarities,
           context=context,
+          include_magic_items=include_magic_items,
           current_campaign_id=current_campaign_id,
           user_uid = user.get('uid')
         )

@@ -31,6 +31,10 @@ export default function HomeLayout() {
         name="monsters/[statblockID]"
         options={{ headerShown: true, headerTitle: 'Statblock' }}
       />
+      <Stack.Screen
+        name="lootTable"
+        options={{ headerShown: true, headerTitle: 'Loot Table' }}
+      />
     </Stack>
   );
 }

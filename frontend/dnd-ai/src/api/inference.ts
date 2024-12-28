@@ -5,6 +5,7 @@ import { ApiResponse, TMonsterStatblock } from './types';
 
 export type TGetRandomNamesAPI = string[];
 export type TGetRandomEncountersAPI = { encounter: string; context: string }[];
+export type TGenLootTableAPI = string[];
 
 export const getRandomNamesAPI = async (params: { descriptor: string }) => {
   try {
@@ -38,6 +39,7 @@ export const generateLootTableAPI = async (params: {
   loot_val_max?: number;
   magic_item_rarites?: string[];
   context?: string;
+  include_magic_items?: boolean;
 }) => {
-  return await http.get('/loot_table?' + encodeGetParams(params));
+  return await http.get<ApiResponse<TGenLootTableAPI>>('/loot_table?' + encodeGetParams(params));
 };

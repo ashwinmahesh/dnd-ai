@@ -38,8 +38,9 @@ export default function Page() {
         </Button>
         <Button
           style={{ marginTop: 16 }}
-          onPress={() =>
-            generateLootTableAPI({ loot_cr_min: 6, loot_val_min: 50, magic_item_rarites: ['Uncommon', 'Rare'] })
+          onPress={
+            () => router.push('/(tabs)/(home)/lootTable')
+            // generateLootTableAPI({ loot_cr_min: 6, loot_val_min: 50, magic_item_rarites: ['Uncommon', 'Rare'] })
           }
         >
           Loot Tables
