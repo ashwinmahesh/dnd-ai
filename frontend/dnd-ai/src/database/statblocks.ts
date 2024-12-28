@@ -2,10 +2,11 @@ import { TMonsterStatblock } from '@/api/types';
 import { firestore as firestoreClient, firebaseAuth } from '@/FirebaseConfig';
 import firestore from '@react-native-firebase/firestore';
 
-export type TSaveStatblockParams = TMonsterStatblock;
+export type TSaveStatblockParams = TMonsterStatblock & { cr: number };
 
 export type TStatblock = TMonsterStatblock & {
   id: string;
+  cr: number;
   owner: string;
   ownerUID: string;
   createdAt: { seconds: number };

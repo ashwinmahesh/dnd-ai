@@ -29,7 +29,7 @@ export default function GenerateMonsterStatblock() {
   const fetchGenerateStatblock = useFetch(generateMonsterStatblockAPI, {
     onSuccess: async (data) => {
       try {
-        await setItem(JSON.stringify(data.data));
+        await setItem(JSON.stringify({ ...data.data, cr }));
       } catch (err) {
         console.error('Failed to store last generated statblock: ', err);
       }
@@ -41,8 +41,9 @@ export default function GenerateMonsterStatblock() {
       if (err) console.error('failed to get last statblock from storage:', err);
       if (!data) return;
       try {
-        const statblock: TMonsterStatblock = JSON.parse(data);
+        const statblock: TMonsterStatblock & { cr: string } = JSON.parse(data);
         fetchGenerateStatblock.setData((prev) => {
+          setCR(statblock.cr);
           if (!prev) return { data: statblock, error: null };
 
           prev.data = statblock;
@@ -65,7 +66,7 @@ export default function GenerateMonsterStatblock() {
     if (!fetchGenerateStatblock.data?.data) return;
     try {
       setSaveLoading(true);
-      await saveStatblockDB(fetchGenerateStatblock.data.data);
+      await saveStatblockDB({ ...fetchGenerateStatblock.data.data, cr: parseInt(cr) });
       router.back();
     } catch (err) {
       setSaveErr(err.toString());

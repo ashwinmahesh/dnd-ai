@@ -19,14 +19,6 @@ export default function HomeLayout() {
         name="randomEncounters"
         options={{ headerShown: true, headerTitle: 'Random Encounters' }}
       />
-      {/* <Stack.Screen
-        name="monsters/savedStatblocks"
-        options={{ headerShown: false }}
-      /> */}
-      {/* <Stack.Screen
-        name="index"
-        options={{ headerShown: true, headerTitle: 'Monsters' }}
-      /> */}
       <Stack.Screen
         name="monsters/savedStatblocks"
         options={{ headerShown: true, headerTitle: 'Monsters' }}
@@ -34,6 +26,10 @@ export default function HomeLayout() {
       <Stack.Screen
         name="monsters/generateStats"
         options={{ headerShown: true, headerTitle: 'Generate Statblock' }}
+      />
+      <Stack.Screen
+        name="monsters/[statblockID]"
+        options={{ headerShown: true, headerTitle: 'Statblock' }}
       />
     </Stack>
   );
