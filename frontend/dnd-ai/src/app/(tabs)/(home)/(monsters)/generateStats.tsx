@@ -1,7 +1,7 @@
 import { generateMonsterStatblockAPI } from '@/api/inference';
 import { ActionStatus } from '@/api/types';
 import useFetch from '@/api/useFetch';
-import { Button, Input, Layout, Spinner, Text } from '@ui-kitten/components';
+import { Button, Divider, Input, Layout, Spinner, Text } from '@ui-kitten/components';
 import React, { useState } from 'react';
 import { ImageProps, ScrollView, View, ViewProps } from 'react-native';
 
@@ -21,6 +21,53 @@ export default function GenerateMonsterStatblock() {
       return;
     }
     fetchGenerateStatblock.execute(description, parseInt(cr));
+  };
+
+  const renderMonsterDetails = () => {
+    const statblock = fetchGenerateStatblock.data.data;
+
+    const renderStats = () => {
+      const abilities = statblock.abilities;
+      const output: React.ReactElement[] = [];
+
+      Object.keys(abilities).map((ability) => {
+        const modifier = Math.floor((abilities[ability] - 10) / 2);
+        const modifierStr = modifier >= 0 ? `+${modifier}` : `${modifier}`;
+
+        return (
+          <Layout style={{ alignItems: 'flex-start', flexDirection: 'row' }}>
+            <Text category="label">{ability.substring(0, 3).toUpperCase()}</Text>
+            <Text>
+              {abilities[ability]} {`(${modifierStr})`}
+            </Text>
+          </Layout>
+        );
+      });
+
+      return output;
+    };
+
+    return (
+      <Layout>
+        <Divider />
+        <Text category="h5">{statblock.name}</Text>
+        <Text category="p2">
+          {statblock.size} {statblock.type}, {statblock.alignment}
+        </Text>
+        <Text>
+          AC: {statblock.armor_class} | HP: {statblock.hit_points} ({statblock.hit_dice})
+        </Text>
+        <Text>
+          Speed:{' '}
+          {Object.keys(statblock.speed)
+            .map((motion) => `${motion} ${statblock.speed[motion]} ft.`)
+            .join(',')}
+        </Text>
+        <Divider />
+
+        <Layout style={{ flexDirection: 'row' }}></Layout>
+      </Layout>
+    );
   };
 
   return (
@@ -52,9 +99,12 @@ export default function GenerateMonsterStatblock() {
           {!fetchGenerateStatblock.isLoading ? 'Generate' : ''}
         </Button>
         {fetchGenerateStatblock.error && <Text status="danger">{fetchGenerateStatblock.error}</Text>}
-        {fetchGenerateStatblock.status == ActionStatus.FULFILLED && (
-          <Text>{JSON.stringify(fetchGenerateStatblock.data.data)}</Text>
-        )}
+        {
+          fetchGenerateStatblock.status == ActionStatus.FULFILLED &&
+            // <Text>{JSON.stringify(fetchGenerateStatblock.data.data)}</Text>
+            renderMonsterDetails()
+          // renderMonsterDetails()
+        }
       </ScrollView>
     </Layout>
   );

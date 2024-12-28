@@ -8,6 +8,10 @@ export default function MonstersLayout() {
       }}
     >
       <Stack.Screen
+        name="index"
+        options={{ headerShown: true, headerTitle: 'Monsters' }}
+      />
+      <Stack.Screen
         name="savedStatblocks"
         options={{ headerShown: true, headerTitle: 'Monsters' }}
       />

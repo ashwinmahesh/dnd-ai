@@ -98,7 +98,7 @@ class OpenAILibrary:
     '''
     messages.append({'role': 'user', "content": primary_message})
 
-    logging.info("Generating monster...")
+    logging.info(f"Generating monster ({monster_description}) of CR {challenge_rating}...")
 
     try:
       completion = self.client.chat.completions.create(
@@ -108,7 +108,8 @@ class OpenAILibrary:
 
       try:
         statblock = completion.choices[0].message.content
-        statblock_obj: Dict[str, Any] = json.loads(statblock[statblock.find("{"):])# Remove extraneous characters
+        logging.debug(f"Statblock: {statblock}")
+        statblock_obj: Dict[str, Any] = json.loads(statblock[statblock.find("{"):statblock.rfind("}") + 1])# Remove extraneous characters
         return statblock_obj
       except Exception as e:
         raise Exception("Unable to properly parse OpenAI response")
