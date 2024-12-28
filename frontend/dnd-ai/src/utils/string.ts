@@ -36,3 +36,8 @@ export function formatSecondsSinceEpoch(seconds: number) {
     return 'Invalid timestamp';
   }
 }
+
+export function capitalize(word) {
+  if (!word) return ''; // Handle empty or undefined input
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+}
