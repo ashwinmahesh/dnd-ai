@@ -7,10 +7,11 @@ from backend.src.core.openai import OpenAILibrary
 from backend.src.handler.handler import Server
 from backend.src.database.firestore import FirestoreClient
 
-
-logging.basicConfig(level=logging.INFO,
-                    format='[%(levelname)s] %(asctime)s - %(message)s',
-                    datefmt='%b %d %I:%M:%S %p')
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(levelname)s] %(asctime)s - %(message)s (%(filename)s Line: %(lineno)d)',
+    datefmt='%b %d %I:%M:%S %p'
+)
 
 
 def _get_firestore_creds_path():

@@ -30,3 +30,14 @@ export const generateMonsterStatblockAPI = async (description: string, challenge
     '/monster?' + encodeGetParams({ description, challenge_rating })
   );
 };
+
+export const generateLootTableAPI = async (params: {
+  loot_cr_min: number;
+  loot_cr_max?: number;
+  loot_val_min: number;
+  loot_val_max?: number;
+  magic_item_rarites?: string[];
+  context?: string;
+}) => {
+  return await http.get('/loot_table?' + encodeGetParams(params));
+};

@@ -35,9 +35,15 @@ http.interceptors.request.use(
   }
 );
 
-export const encodeGetParams = (params: { [key: string]: string | boolean | number }) =>
+export const encodeGetParams = (params: {
+  [key: string]: string | boolean | number | Array<string | boolean | number>;
+}) =>
   Object.entries(params)
-    .map((kv) => kv.map(encodeURIComponent).join('='))
+    .flatMap(
+      ([key, value]) =>
+        Array.isArray(value)
+          ? value.map((item) => `${encodeURIComponent(key)}=${encodeURIComponent(String(item))}`) // Handle array items
+          : `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}` // Handle single values
+    )
     .join('&');
-
 export default http;

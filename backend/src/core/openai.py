@@ -12,11 +12,9 @@ class OpenAILibrary:
   def __init__(self, firestoreClient: FirestoreClient):
     self.client = openai.OpenAI()
     self.SYSTEM_PROMPT = '''
-    1. You are a dungeon master's assistant.
+    1. You are a dungeon master's assistant. The game we are playing is Dungeons and Dragons 5th edition
     2. The user is coming to you in their time of need to get answers during a live session.
     3. Keep answers short and concise. 
-    4. The game we are playing is Dungeons and Dragons 5th edition in the Tomb of Annihilation campaign setting.
-    5. The party is in the dangerous jungles of Chult. 
     6. If extra information about the campaign is provided by the user, use this to fine tune your results.
     '''
     self.firestore_client = firestoreClient
@@ -118,6 +116,51 @@ class OpenAILibrary:
         return statblock_obj
       except Exception as e:
         print("Statblock: ", statblock)
+        raise Exception("Unable to properly parse OpenAI response: ", str(e))
+    except openai.OpenAIError as e:
+      raise Exception(f"OpenAI Error: {e}")
+    
+  
+  def generate_loot_table(
+    self,
+    loot_cr_min: int,
+    loot_cr_max:int,
+    loot_val_min: int,
+    loot_val_max: int,
+    magic_item_rarities: List[str],
+    include_magic_items: bool = False,
+    context: str = None,
+    current_campaign_id: str = None,
+    user_uid: str = None
+  ):
+    messages = self._init_messages(current_campaign_id, user_uid)
+    primary_message = f'''
+    1. Generate me a D20 loot table retrieved off monsters of CR {loot_cr_min} - {loot_cr_max}.
+    2. Include a mix of gold, potions, spell scrolls {", and magic items" if include_magic_items else ''} of rarities: {", ".join(magic_item_rarities)}.
+    3. The value of each entry should range between {loot_val_min}gp and {loot_val_max}gp.
+    4. Not every entry needs a spell scroll or a potion, sometimes just gold is enough.
+    5. Return the output as a list of strings, example: ["100gp, Spell Scroll (Darkness)", "75gp, Potion of Greater Healing, Spell Scroll (Thunderwave)", "50gp, Cloak of Displacement"...].
+    6. DO NOT RETURN ANYTHING EXCEPT THE LIST OF STRINGS, which should contain exactly 20 elements.
+    {f'7. A description of where the loot is found - {context}' if context else ''}
+    {f'8. Do not include magic items' if not include_magic_items else ''}
+'''
+    messages.append({'role': 'user', "content": primary_message})
+
+    logging.info(f"Generating loot table of CR {loot_cr_min}-{loot_cr_max} with value {loot_val_min}-{loot_val_max} using magic item rarities: [{', '.join(magic_item_rarities)}]...")
+    try:
+      completion = self.client.chat.completions.create(
+        model = "gpt-3.5-turbo",
+        messages=messages
+      )
+
+      try:
+        resp = completion.choices[0].message.content
+        logging.info(f"Loot table: {resp}")
+        loot_table: List[str] = json.loads(resp)
+        # statblock_obj: Dict[str, Any] = json.loads(statblock[statblock.find("{"):statblock.rfind("}") + 1])# Remove extraneous characters
+        # return statblock_obj
+        return loot_table
+      except Exception as e:
         raise Exception("Unable to properly parse OpenAI response: ", str(e))
     except openai.OpenAIError as e:
       raise Exception(f"OpenAI Error: {e}")

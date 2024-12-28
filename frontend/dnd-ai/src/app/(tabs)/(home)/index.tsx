@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Layout } from '@ui-kitten/components';
 import { router } from 'expo-router';
 
-import { generateMonsterStatblockAPI } from '@/api/inference';
+import { generateLootTableAPI, generateMonsterStatblockAPI } from '@/api/inference';
 import { Image, ScrollView } from 'react-native';
 import Logo from '@/images/logo';
 
@@ -37,8 +37,10 @@ export default function Page() {
           Quest Hooks
         </Button>
         <Button
-          disabled
           style={{ marginTop: 16 }}
+          onPress={() =>
+            generateLootTableAPI({ loot_cr_min: 6, loot_val_min: 50, magic_item_rarites: ['Uncommon', 'Rare'] })
+          }
         >
           Loot Tables
         </Button>
