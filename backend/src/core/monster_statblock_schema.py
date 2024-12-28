@@ -7,6 +7,10 @@ monster_statblock_schema = {
       "type": "string",
       "description": "The name of the monster."
     },
+    "description": {
+      "type": "string",
+      "description": "A physical description of the monster"
+    },
     "size": {
       "type": "string",
       "description": "The size category of the monster (e.g., Small, Medium, Large)."
@@ -181,6 +185,7 @@ monster_statblock_schema = {
   },
   "required": [
     "name",
+    "description",
     "size",
     "type",
     "alignment",

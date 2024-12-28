@@ -1,6 +1,7 @@
 from typing import Dict, List, Any
 import json
 import logging
+import re
 
 import openai
 
@@ -109,7 +110,7 @@ class OpenAILibrary:
       )
 
       try:
-        statblock = completion.choices[0].message.content
+        statblock = remove_trailing_commas(completion.choices[0].message.content)
         logging.debug(f"Statblock: {statblock}")
         statblock_obj: Dict[str, Any] = json.loads(statblock[statblock.find("{"):statblock.rfind("}") + 1])# Remove extraneous characters
         return statblock_obj
@@ -146,3 +147,8 @@ def format_campaign_into_context_str(campaign: Campaign) -> str:
 '''
 
   return output
+
+def remove_trailing_commas(json_string: str) -> str:
+    # Remove trailing commas after objects or arrays
+    cleaned = re.sub(r',(\s*[}\]])', r'\1', json_string)
+    return cleaned

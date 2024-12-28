@@ -19,6 +19,7 @@ export type TActionState = {
 
 export type TMonsterStatblock = {
   name: string;
+  description: string;
   size: string;
   type: string;
   alignment: string;
