@@ -1,5 +1,4 @@
 import { firestore as firestoreClient, firebaseAuth } from '@/FirebaseConfig';
-import { collection, addDoc } from '@react-native-firebase/firestore';
 import firestore from '@react-native-firebase/firestore';
 
 export type TCreateCampaignParams = {

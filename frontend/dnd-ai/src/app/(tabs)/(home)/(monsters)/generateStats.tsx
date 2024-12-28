@@ -3,8 +3,10 @@ import { TMonsterStatblock } from '@/api/types';
 import useFetch from '@/api/useFetch';
 import MonsterStatblock from '@/components/monsters/Statblock';
 import { LastGeneratedMonsterStatblock } from '@/constants/AsyncStorageKeys';
+import { saveStatblockDB } from '@/database/statblocks';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import { Button, Input, Layout, Spinner, Text } from '@ui-kitten/components';
+import { Button, Icon, IconElement, Input, Layout, Spinner, Text } from '@ui-kitten/components';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
@@ -16,6 +18,13 @@ const LoadingIndicator = (props): React.ReactElement => (
 
 export default function GenerateMonsterStatblock() {
   const { getItem, setItem } = useAsyncStorage(LastGeneratedMonsterStatblock);
+  const router = useRouter();
+
+  const [description, setDescription] = useState('');
+  const [cr, setCR] = useState('');
+
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [saveErr, setSaveErr] = useState('');
 
   const fetchGenerateStatblock = useFetch(generateMonsterStatblockAPI, {
     onSuccess: async (data) => {
@@ -45,14 +54,24 @@ export default function GenerateMonsterStatblock() {
     });
   }, []);
 
-  const [description, setDescription] = useState('');
-  const [cr, setCR] = useState('');
-
   const handleGenerate = async () => {
     if (!description || !cr) {
       return;
     }
     fetchGenerateStatblock.execute(description, parseInt(cr));
+  };
+
+  const handleSave = async () => {
+    if (!fetchGenerateStatblock.data?.data) return;
+    try {
+      setSaveLoading(true);
+      await saveStatblockDB(fetchGenerateStatblock.data.data);
+      router.back();
+    } catch (err) {
+      setSaveErr(err.toString());
+    } finally {
+      setSaveLoading(false);
+    }
   };
 
   return (
@@ -85,8 +104,20 @@ export default function GenerateMonsterStatblock() {
         </Button>
         {fetchGenerateStatblock.error && <Text status="danger">{fetchGenerateStatblock.error}</Text>}
         {fetchGenerateStatblock.data?.data && (
-          // <Text>{JSON.stringify(fetchGenerateStatblock.data.data)}</Text>
-          <MonsterStatblock statblock={fetchGenerateStatblock.data.data} />
+          <Layout>
+            <MonsterStatblock statblock={fetchGenerateStatblock.data.data} />
+            <Button
+              style={{ marginTop: 6 }}
+              onPress={handleSave}
+              disabled={saveLoading}
+              accessoryLeft={saveLoading ? LoadingIndicator : null}
+              status="success"
+              appearance="outline"
+            >
+              {!saveLoading ? 'SAVE' : ''}
+            </Button>
+            {saveErr && <Text status="danger">{saveErr}</Text>}
+          </Layout>
         )}
       </ScrollView>
     </Layout>

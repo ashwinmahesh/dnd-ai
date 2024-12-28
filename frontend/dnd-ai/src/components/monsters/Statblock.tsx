@@ -24,7 +24,7 @@ const MonsterStatblock = (props: TProps) => {
         </Text>
         <Text category="p1">
           Speed:{' '}
-          {Object.keys(statblock.speed)
+          {Object.keys(statblock.speed || {})
             .map((motion) => `${capitalize(motion)} ${statblock.speed[motion]} ft.`)
             .join(',')}
         </Text>

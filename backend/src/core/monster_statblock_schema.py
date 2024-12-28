@@ -9,7 +9,7 @@ monster_statblock_schema = {
     },
     "description": {
       "type": "string",
-      "description": "A physical description of the monster"
+      "description": "A evocative physical description of the monster, describe what it looks like. Include any interesting features about it."
     },
     "size": {
       "type": "string",
