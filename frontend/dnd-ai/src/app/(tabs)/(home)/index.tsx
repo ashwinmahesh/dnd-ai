@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Layout } from '@ui-kitten/components';
+import { Button, Layout, Text } from '@ui-kitten/components';
 import { router } from 'expo-router';
 
 import { ScrollView } from 'react-native';
@@ -14,9 +14,15 @@ export default function Page() {
     >
       <ScrollView>
         <Logo
-          image="logo"
+          image="protector"
           size={150}
         />
+        <Text
+          style={{ textAlign: 'center', marginVertical: 12 }}
+          category="h2"
+        >
+          Dungeons & Dragons Session Guardian
+        </Text>
         <Button onPress={() => router.push('/(tabs)/(home)/randomNames')}>Names</Button>
         <Button
           onPress={() => router.push('/(tabs)/(home)/randomEncounters')}

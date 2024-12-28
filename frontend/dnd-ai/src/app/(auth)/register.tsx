@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Layout, Button, Input, Icon } from '@ui-kitten/components';
+import { Layout, Button, Input, Icon, Text } from '@ui-kitten/components';
 import { useRouter } from 'expo-router';
 import { firebaseAuth } from '@/FirebaseConfig';
+import Logo from '@/images/logo';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -25,11 +26,16 @@ const Register = () => {
 
   return (
     <Layout style={{ flex: 1, padding: 12 }}>
-      <Icon
-        name="shield"
-        style={{ height: 80, marginTop: 16 }}
-        fill="#8F9BB3"
+      <Logo
+        image="protector"
+        size={200}
       />
+      <Text
+        category="h1"
+        style={{ textAlign: 'center' }}
+      >
+        Dungeons & Dragons Session Guardian
+      </Text>
       <Input
         placeholder="Email"
         style={{ marginTop: 16 }}

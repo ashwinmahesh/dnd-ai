@@ -8,6 +8,7 @@ import { SelectedCampaignKey } from '@/constants/AsyncStorageKeys';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IconButton from '@/components/common/IconButton';
 import SelectedCampaignDetails from '@/components/campaigns/SelectedCampaignDetails';
+import Logo from '@/images/logo';
 
 const StarIcon = (props): IconElement => (
   <Icon
@@ -102,6 +103,10 @@ const Campaigns = () => {
             }}
           />
         </Layout>
+        <Logo
+          image="mounted_head"
+          size={200}
+        />
         {!campaignsLoading && campaigns?.[selectedIndex.row] && (
           <SelectedCampaignDetails
             selectedCampaign={campaigns[selectedIndex.row]}
