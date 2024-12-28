@@ -1,6 +1,6 @@
 import IconButton from '@/components/common/IconButton';
 import { StatblockToView } from '@/constants/AsyncStorageKeys';
-import { getSavedStatblocksDB, TStatblock } from '@/database/statblocks';
+import { deleteSavedStatblockDB, getSavedStatblocksDB, TStatblock } from '@/database/statblocks';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { Button, Divider, Layout, List, ListItem, Text } from '@ui-kitten/components';
 import { useFocusEffect, useRouter } from 'expo-router';
@@ -12,8 +12,11 @@ export default function MonstersHome() {
   const { setItem } = useAsyncStorage(StatblockToView);
 
   const [statblocks, setStatblocks] = useState<TStatblock[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState('');
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteErr, setDeleteErr] = useState('');
 
   const getStatblocks = async () => {
     try {
@@ -43,13 +46,37 @@ export default function MonstersHome() {
     }
   };
 
-  const renderItem = ({ item }: { item: TStatblock; index: number }): React.ReactElement => (
+  const handleDelete = async (index: number, id: string, name: string) => {
+    const confirm = await new Promise((resolve) => {
+      Alert.alert('Confirm Deletion', `Are you sure you want to delete the statblock for ${name}?`, [
+        { text: 'Confirm', onPress: () => resolve(true) },
+        { text: 'Cancel', onPress: () => resolve(false), style: 'cancel' },
+      ]);
+    });
+    if (!confirm) return;
+    try {
+      setDeleteLoading(true);
+      setDeleteErr('');
+      await deleteSavedStatblockDB(id);
+      setStatblocks((prev) => {
+        return [...prev.slice(0, index), ...prev.slice(index + 1)];
+      });
+    } catch (error) {
+      setDeleteErr(error.toString());
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  const renderItem = ({ item, index }: { item: TStatblock; index: number }): React.ReactElement => (
     <ListItem
       title={`${item.name} (CR ${item.cr})`}
       description={`${item.description}`}
       onPress={() => {
         handleStatblockPress(item);
       }}
+      onLongPress={() => handleDelete(index, item.id, item.name)}
+      disabled={deleteLoading}
     />
   );
 
@@ -77,6 +104,14 @@ export default function MonstersHome() {
             onPress={() => router.push('/(tabs)/(home)/monsters/generateStats')}
           />
         </Layout>
+        {deleteErr && (
+          <Text
+            status="danger"
+            style={{ marginHorizontal: 12, marginVertical: 6 }}
+          >
+            {deleteErr}
+          </Text>
+        )}
         <List
           data={statblocks}
           renderItem={renderItem}

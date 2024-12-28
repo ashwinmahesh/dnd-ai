@@ -62,7 +62,7 @@ export default function SelectedCampaignDetails(props: TProps) {
         return campaigns;
       });
     } catch (error) {
-      setDeleteMajorEventErr(error);
+      setDeleteMajorEventErr(error.toString());
     } finally {
       setDeleteMajorEventLoading(false);
     }
