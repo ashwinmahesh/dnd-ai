@@ -35,7 +35,7 @@ const MonsterStatblock = (props: TProps) => {
           Speed:{' '}
           {Object.keys(statblock.speed || {})
             .map((motion) => `${capitalize(motion)} ${statblock.speed[motion]} ft.`)
-            .join(',')}
+            .join(', ')}
         </Text>
       </Layout>
       <Divider style={{ marginVertical: 12 }} />
