@@ -1,6 +1,8 @@
 import { generateLootTableAPI } from '@/api/inference';
 import useFetch from '@/api/useFetch';
 import LoadingButton from '@/components/common/LoadingButton';
+import { LastGeneratedLootTable } from '@/constants/AsyncStorageKeys';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import {
   Button,
   CheckBox,
@@ -14,7 +16,7 @@ import {
   SelectItem,
   Text,
 } from '@ui-kitten/components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 
 const rarities = ['Common', 'Uncommon', 'Rare', 'Very Rare', 'Legendary'];
@@ -30,7 +32,30 @@ export default function LootTable() {
 
   const selectedRarities = selectedIndex.map((idx) => rarities[idx.row]);
 
-  const fetchGenLootTable = useFetch(generateLootTableAPI);
+  const { getItem, setItem } = useAsyncStorage(LastGeneratedLootTable);
+
+  const fetchGenLootTable = useFetch(generateLootTableAPI, {
+    onSuccess: async (data) => {
+      try {
+        await setItem(JSON.stringify(data.data));
+      } catch (err) {
+        console.error(`failed to store ${LastGeneratedLootTable} in storage`);
+      }
+    },
+  });
+
+  useEffect(() => {
+    getItem().then((blob) => {
+      if (!blob) return;
+      fetchGenLootTable.setData((prev) => {
+        const table = JSON.parse(blob);
+        if (!prev) return { data: table, error: undefined };
+
+        prev.data = table;
+        return prev;
+      });
+    });
+  }, []);
 
   const handleGenerate = async () => {
     if (!parseInt(crMin) || !parseInt(valMin)) {
