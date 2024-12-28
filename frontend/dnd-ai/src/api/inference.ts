@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import http, { encodeGetParams } from './http';
-import { ApiResponse, MonsterStatblock } from './types';
+import { ApiResponse, TMonsterStatblock } from './types';
 
 export type TGetRandomNamesAPI = string[];
 export type TGetRandomEncountersAPI = { encounter: string; context: string }[];
@@ -26,7 +26,7 @@ export const getRandomEncounters = async (params: {
 };
 
 export const generateMonsterStatblockAPI = async (description: string, challenge_rating: number) => {
-  return await http.get<ApiResponse<MonsterStatblock>>(
+  return await http.get<ApiResponse<TMonsterStatblock>>(
     '/monster?' + encodeGetParams({ description, challenge_rating })
   );
 };

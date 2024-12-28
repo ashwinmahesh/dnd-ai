@@ -17,7 +17,7 @@ export type TActionState = {
   error?: string;
 };
 
-export type MonsterStatblock = {
+export type TMonsterStatblock = {
   name: string;
   size: string;
   type: string;
