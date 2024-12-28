@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Layout, Text } from '@ui-kitten/components';
 import { firebaseAuth } from '@/FirebaseConfig';
 import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AllKeys } from '@/constants/AsyncStorageKeys';
 
 export default function Page() {
   // TODO - subscribe to changes
   const user = firebaseAuth.currentUser;
   const router = useRouter();
+
+  const [cacheClearLoading, setCacheClearLoading] = useState(false);
 
   const handleLogout = async () => {
     const confirm = await new Promise((resolve) => {
@@ -26,6 +30,24 @@ export default function Page() {
     }
   };
 
+  const handleClearCache = async () => {
+    const confirm = await new Promise((resolve) => {
+      Alert.alert('Clear Cache', 'Are you sure you want to clear the cache?', [
+        { text: 'Confirm', onPress: () => resolve(true) },
+        { text: 'Cancel', onPress: () => resolve(false), style: 'cancel' },
+      ]);
+    });
+    if (!confirm) return;
+    try {
+      setCacheClearLoading(true);
+      await AsyncStorage.multiRemove(AllKeys);
+    } catch (err) {
+      Alert.alert('Failed to Clear Cache', err.toString());
+    } finally {
+      setCacheClearLoading(false);
+    }
+  };
+
   return (
     <Layout
       className="flex flex-1 align-middle"
@@ -41,15 +63,26 @@ export default function Page() {
           More Features Coming Soon...
         </Text>
       </Layout>
-      {user && (
+      <Layout style={{ gap: 12 }}>
+        {user && (
+          <Button
+            appearance="outline"
+            size="large"
+            onPress={handleLogout}
+          >
+            LOG OUT
+          </Button>
+        )}
         <Button
-          appearance="outline"
           size="large"
-          onPress={handleLogout}
+          appearance="outline"
+          status="warning"
+          onPress={handleClearCache}
+          disabled={cacheClearLoading}
         >
-          Log Out
+          CLEAR CACHE
         </Button>
-      )}
+      </Layout>
     </Layout>
   );
 }

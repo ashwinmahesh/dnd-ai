@@ -45,6 +45,7 @@ const MonsterStatblock = (props: TProps) => {
       {statblock.legendary_actions && <LegendaryActions legendaryActions={statblock.legendary_actions} />}
       <Divider style={{ marginVertical: 12 }} />
       {statblock.spells && statblock.spells.length > 0 && <Spells spells={statblock.spells} />}
+      <Divider style={{ marginVertical: 12 }} />
     </Layout>
   );
 };

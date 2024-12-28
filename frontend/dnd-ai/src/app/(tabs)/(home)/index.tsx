@@ -24,7 +24,7 @@ export default function Page() {
         // onPress={() => {
         //   generateMonsterStatblockAPI('A normally good creature which is corrupted by a dark magic', 12);
         // }}
-        onPress={() => router.push('/(tabs)/(home)/(monsters)/savedStatblocks')}
+        onPress={() => router.push('/(tabs)/(home)/monsters/savedStatblocks')}
       >
         Monster Statblock
       </Button>

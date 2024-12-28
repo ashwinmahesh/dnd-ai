@@ -8,7 +8,7 @@ export default function MonstersHome() {
   return (
     <Layout style={{ flex: 1 }}>
       <Text>Monsters page</Text>
-      <Button onPress={() => router.push('/(tabs)/(home)/(monsters)/generateStats')}>Create Monster</Button>
+      <Button onPress={() => router.push('/(tabs)/(home)/monsters/generateStats')}>Create Monster</Button>
     </Layout>
   );
 }
