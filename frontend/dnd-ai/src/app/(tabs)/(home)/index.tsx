@@ -2,8 +2,7 @@ import React from 'react';
 import { Button, Layout } from '@ui-kitten/components';
 import { router } from 'expo-router';
 
-import { generateLootTableAPI, generateMonsterStatblockAPI } from '@/api/inference';
-import { Image, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import Logo from '@/images/logo';
 
 export default function Page() {
@@ -14,9 +13,10 @@ export default function Page() {
       style={{ flex: 1, padding: 16 }}
     >
       <ScrollView>
-        <Layout style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 12 }}>
-          <Logo size={150} />
-        </Layout>
+        <Logo
+          image="logo"
+          size={150}
+        />
         <Button onPress={() => router.push('/(tabs)/(home)/randomNames')}>Names</Button>
         <Button
           onPress={() => router.push('/(tabs)/(home)/randomEncounters')}

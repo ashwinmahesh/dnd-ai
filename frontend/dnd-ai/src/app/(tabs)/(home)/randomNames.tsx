@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getRandomNamesAPI } from '../../../api/inference';
-import { Button, Input, Layout, List, ListItem, Divider, Spinner } from '@ui-kitten/components';
+import { Button, Input, Layout, List, ListItem, Divider, Spinner, Text } from '@ui-kitten/components';
 import { ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LastRandomNamesKey } from '@/constants/AsyncStorageKeys';
@@ -51,8 +51,16 @@ const RandomNames = () => {
   const renderItem = ({ item, index }: { item: { title: string }; index: number }): React.ReactElement => {
     return (
       <ListItem
-        title={`${index + 1} | ${item.title}`}
+        title={`${item.title}`}
         key={item.title}
+        accessoryLeft={(props) => (
+          <Text
+            {...props}
+            category="h6"
+          >
+            {index + 1}
+          </Text>
+        )}
       />
     );
   };

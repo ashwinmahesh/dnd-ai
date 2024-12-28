@@ -63,12 +63,10 @@ export default function Page() {
           More Features Coming Soon...
         </Text>
       </Layout>
-      <Layout style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Logo
-          alt
-          size={300}
-        />
-      </Layout>
+      <Logo
+        image="protector"
+        size={300}
+      />
       <Layout style={{ gap: 12 }}>
         {user && (
           <Button

@@ -2,9 +2,9 @@ import { generateLootTableAPI } from '@/api/inference';
 import useFetch from '@/api/useFetch';
 import LoadingButton from '@/components/common/LoadingButton';
 import { LastGeneratedLootTable } from '@/constants/AsyncStorageKeys';
+import Logo from '@/images/logo';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import {
-  Button,
   CheckBox,
   Divider,
   IndexPath,
@@ -17,7 +17,7 @@ import {
   Text,
 } from '@ui-kitten/components';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 
 const rarities = ['Common', 'Uncommon', 'Rare', 'Very Rare', 'Legendary'];
 
@@ -98,12 +98,10 @@ export default function LootTable() {
         >
           Loot Tables
         </Text>
-        <Layout style={{ justifyContent: 'center', alignItems: 'center', marginTop: 16 }}>
-          <Image
-            source={require('@/images/loot.png')}
-            style={{ resizeMode: 'contain', height: 200, width: 200 }}
-          />
-        </Layout>
+        <Logo
+          size={200}
+          image="loot"
+        />
         <Layout
           style={{
             flexDirection: 'row',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Spinner } from '@ui-kitten/components';
+import { Layout } from '@ui-kitten/components';
 import { useNavigation, useRouter } from 'expo-router';
 import auth from '@react-native-firebase/auth';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -35,8 +35,10 @@ const Loading = () => {
           className="flex-1 px-3 py-3 justify-center align-middle h-full w-full"
           style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         >
-          <Logo size={250} />
-          <Spinner size="giant" />
+          <Logo
+            size={250}
+            image="protector"
+          />
         </Layout>
       </SafeAreaView>
     );

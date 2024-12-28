@@ -62,9 +62,17 @@ const RandomEncounters = () => {
   }): React.ReactElement => {
     return (
       <ListItem
-        title={`${index + 1} | ${item.encounter}`}
+        title={`${item.encounter}`}
         description={item.context}
         key={item.encounter}
+        accessoryLeft={(props) => (
+          <Text
+            {...props}
+            category="h6"
+          >
+            {index + 1}
+          </Text>
+        )}
       />
     );
   };

@@ -1,11 +1,12 @@
 import IconButton from '@/components/common/IconButton';
 import { StatblockToView } from '@/constants/AsyncStorageKeys';
 import { deleteSavedStatblockDB, getSavedStatblocksDB, TStatblock } from '@/database/statblocks';
+import Logo from '@/images/logo';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import { Button, Divider, Layout, List, ListItem, Text } from '@ui-kitten/components';
+import { Divider, Layout, List, ListItem, Text } from '@ui-kitten/components';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { Alert, Image, ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 
 export default function MonstersHome() {
   const router = useRouter();
@@ -118,12 +119,10 @@ export default function MonstersHome() {
           renderItem={renderItem}
           ItemSeparatorComponent={Divider}
         />
-        <Layout style={{ justifyContent: 'center', alignItems: 'center', marginTop: 16 }}>
-          <Image
-            source={require('@/images/monster.png')}
-            style={{ resizeMode: 'contain', height: 200, width: 200 }}
-          />
-        </Layout>
+        <Logo
+          image="monster"
+          size={200}
+        />
       </ScrollView>
     </Layout>
   );
