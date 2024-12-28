@@ -91,12 +91,13 @@ class OpenAILibrary:
     1. Generate me a monster statblock with a bias for action economy.
     2. That means ALL monsters should ALWAYS have actions, reactions, bonus actions, and sometimes other cool abilities so the monster isnt just a bag of hit points.
     3. {'Use' if use_legendary_actions else 'Do not use'} legendary actions
-    4. ALL monsters should have multi-attack. If the monster has multi-attack, make sure to list how many attacks the monster can make
-    5. A description for the monster I want is: {monster_description}
-    6. The monster should be of Challenge Rating {challenge_rating}
-    7. If the character is a spellcaster, ensure it has spells of all levels up to the maximum level it can cast. Not all monsters need to have spells
-    8. Ensure between all of the different types of actions (action, bonus action, reaction, legendary action), some of them do more than just deal damage
-    9. Return the output in the following schema:
+    4. All monsters should have 1-2 reaction abilities
+    5. ALL monsters should have multi-attack. If the monster has multi-attack, make sure to list how many attacks the monster can make
+    6. A description for the monster I want is: {monster_description}
+    7. The monster should be of Challenge Rating {challenge_rating}
+    8. If the character is a spellcaster, ensure it has spells of all levels up to the maximum level it can cast. Not all monsters need to have spells
+    9. Ensure between all of the different types of actions (action, bonus action, reaction, legendary action), some of them do more than just deal damage
+    10. Return the output in the following schema:
 
     ${json.dumps(monster_statblock_schema)}    
     '''
