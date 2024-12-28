@@ -67,20 +67,18 @@ export default function Page() {
         {user && (
           <Button
             appearance="outline"
-            size="large"
             onPress={handleLogout}
           >
-            LOG OUT
+            Log Out
           </Button>
         )}
         <Button
-          size="large"
           appearance="outline"
           status="warning"
           onPress={handleClearCache}
           disabled={cacheClearLoading}
         >
-          CLEAR CACHE
+          Clear Cache
         </Button>
       </Layout>
     </Layout>

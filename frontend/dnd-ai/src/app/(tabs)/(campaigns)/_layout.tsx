@@ -6,6 +6,7 @@ export default function CampaignsLayout() {
       screenOptions={{
         headerShown: false,
       }}
+      initialRouteName="index"
     >
       <Stack.Screen
         name="index"
