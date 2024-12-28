@@ -13,7 +13,7 @@ const MonsterStatblock = (props: TProps) => {
 
   return (
     <Layout>
-      <Divider style={{ marginVertical: 12 }} />
+      <Divider style={{ marginBottom: 12 }} />
       <Layout style={{ gap: 3 }}>
         <Text category="h4">{statblock.name}</Text>
         <Text category="p1">

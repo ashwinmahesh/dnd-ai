@@ -1,12 +1,15 @@
 import IconButton from '@/components/common/IconButton';
+import { StatblockToView } from '@/constants/AsyncStorageKeys';
 import { getSavedStatblocksDB, TStatblock } from '@/database/statblocks';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { Button, Divider, Layout, List, ListItem, Text } from '@ui-kitten/components';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 
 export default function MonstersHome() {
   const router = useRouter();
+  const { setItem } = useAsyncStorage(StatblockToView);
 
   const [statblocks, setStatblocks] = useState<TStatblock[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,11 +34,22 @@ export default function MonstersHome() {
     }, [])
   );
 
+  const handleStatblockPress = async (statblock: TStatblock) => {
+    try {
+      await setItem(JSON.stringify(statblock));
+      router.push(`/(tabs)/(home)/monsters/${statblock.id}`);
+    } catch (err) {
+      Alert.alert('View Statblock Error', `Could not navigate to statblock details page: ${err}`);
+    }
+  };
+
   const renderItem = ({ item }: { item: TStatblock; index: number }): React.ReactElement => (
     <ListItem
       title={`${item.name} (CR ${item.cr})`}
       description={`${item.description}`}
-      onPress={() => router.push(`/(tabs)/(home)/monsters/${item.id}`)}
+      onPress={() => {
+        handleStatblockPress(item);
+      }}
     />
   );
 
@@ -60,6 +74,7 @@ export default function MonstersHome() {
             icon="plus"
             style={{ flexGrow: 0.5 }}
             appearance="outline"
+            onPress={() => router.push('/(tabs)/(home)/monsters/generateStats')}
           />
         </Layout>
         <List
