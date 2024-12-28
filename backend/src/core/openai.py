@@ -88,7 +88,7 @@ class OpenAILibrary:
 
     primary_message = f'''
     1. Generate me a monster statblock with a bias for action economy.
-    2. That means giving everything actions, reactions, bonus actions, and sometimes cool abilities
+    2. That means giving everything actions, reactions, bonus actions, and sometimes other cool abilities
     so the monster isnt just a bag of hit points
     3. A description for the monster I want is: {monster_description}
     3. The monster should be of Challenge Rating {challenge_rating}
