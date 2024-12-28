@@ -15,14 +15,14 @@ const MonsterStatblock = (props: TProps) => {
     <Layout>
       <Divider style={{ marginVertical: 12 }} />
       <Layout style={{ gap: 3 }}>
-        <Text category="h5">{statblock.name}</Text>
-        <Text category="p2">
+        <Text category="h4">{statblock.name}</Text>
+        <Text category="p1">
           {statblock.size} {statblock.type}, {statblock.alignment}
         </Text>
-        <Text category="p2">
+        <Text category="p1">
           AC: {statblock.armor_class} | HP: {statblock.hit_points} ({statblock.hit_dice})
         </Text>
-        <Text category="p2">
+        <Text category="p1">
           Speed:{' '}
           {Object.keys(statblock.speed)
             .map((motion) => `${capitalize(motion)} ${statblock.speed[motion]} ft.`)

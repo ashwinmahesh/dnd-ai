@@ -55,17 +55,16 @@ export type TMonsterStatblock = {
     description: string;
   }[];
   actions?: {
-    name: string; // x
-    type?: string; // e.g., "Melee Weapon Attack" // x
-    attack_bonus?: number; // x
-    reach?: number; // x
-    range?: number; // x
-    target?: string; // x
+    name: string;
+    type?: string; // e.g., "Melee Weapon Attack"
+    attack_bonus?: number;
+    reach?: number;
+    range?: number;
+    target?: string;
     damage?: string; // e.g., "2d6+4"
     damage_type?: string; // e.g., "slashing"
-    recharge?: string; // e.g., "5-6" // x
+    recharge?: string; // e.g., "5-6"
     additional_effects?: string;
-    x;
   }[];
   bonus_actions?: {
     name: string;
@@ -80,5 +79,9 @@ export type TMonsterStatblock = {
     name: string;
     cost?: number;
     description: string;
+  }[];
+  spells?: {
+    level: number; // Spell level, 0 for cantrips
+    spells: string[]; // List of spell names
   }[];
 };

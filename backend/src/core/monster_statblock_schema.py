@@ -161,6 +161,22 @@ monster_statblock_schema = {
           "description": { "type": "string", "description": "A detailed description of the legendary action." }
         }
       }
+    },
+    "spells": {
+      "type": "array",
+      "description": "Spells the monster can cast, organized by spell level.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "level": { "type": "integer", "description": "The spell level (0 for cantrips)." },
+          "spells": {
+            "type": "array",
+            "description": "A list of spells at this level.",
+            "items": { "type": "string", "description": "The name of the spell." }
+          }
+        },
+        "required": ["level", "spells"]
+      }
     }
   },
   "required": [

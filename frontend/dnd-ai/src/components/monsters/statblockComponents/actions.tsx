@@ -39,7 +39,7 @@ export default function Actions(props: TProps) {
         </Text>
         <Text category="p1">
           {renderSecondLine()}
-          {action.additional_effects && ` - ${action.additional_effects}`}
+          {action.additional_effects ? ` - ${action.additional_effects}` : ''}
         </Text>
       </Layout>
     );

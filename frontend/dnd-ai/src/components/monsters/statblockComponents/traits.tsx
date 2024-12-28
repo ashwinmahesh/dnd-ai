@@ -9,13 +9,18 @@ export default function Traits(props: TProps) {
 
   return (
     <Layout>
-      <Text category="h6">Traits</Text>
+      <Text category="h5">Traits</Text>
       <Layout style={{ gap: 12, marginTop: 12 }}>
         {traits.map((trait) => {
           return (
             <Layout>
-              <Text category="label">{trait.name}</Text>
-              <Text category="p2">{trait.description}</Text>
+              <Text
+                category="h6"
+                style={{ marginBottom: 3 }}
+              >
+                {trait.name}
+              </Text>
+              <Text category="p1">{trait.description}</Text>
             </Layout>
           );
         })}
