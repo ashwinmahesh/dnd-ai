@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Layout, Button, Input, Icon } from '@ui-kitten/components';
 import { useRouter } from 'expo-router';
 import { firebaseAuth } from '@/FirebaseConfig';
+import Logo from '@/images/logo';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -26,10 +27,14 @@ const Login = () => {
       className="flex-1 px-3 py-3 h-full w-full"
       style={{ flex: 1, padding: 12 }}
     >
-      <Icon
+      {/* <Icon
         name="shield"
         style={{ height: 80, marginTop: 16 }}
         fill="#8F9BB3"
+      /> */}
+      <Logo
+        image="protector"
+        size={150}
       />
       <Input
         placeholder="Email"

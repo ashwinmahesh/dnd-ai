@@ -1,9 +1,11 @@
-# Expo Router and Tailwind CSS
+## BUILD
 
-Use [Expo Router](https://docs.expo.dev/router/introduction/) with [Nativewind](https://www.nativewind.dev/v4/overview/) styling.
+eas build --platform ios
 
-## 🚀 How to use
+## BUILD DEV
 
-```sh
-npx create-expo-app -e with-router-tailwind
-```
+eas build --profile development --platform ios
+
+## DEPLOY TO APP STORE
+
+eas submit --platform ios

@@ -1,4 +1,4 @@
-package com.mycorp.myapp
+package com.ashwinmahesh.dndai
 
 import android.app.Application
 import android.content.res.Configuration

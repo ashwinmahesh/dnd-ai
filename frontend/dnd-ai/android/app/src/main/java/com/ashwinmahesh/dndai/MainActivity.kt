@@ -1,4 +1,4 @@
-package com.mycorp.myapp
+package com.ashwinmahesh.dndai
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

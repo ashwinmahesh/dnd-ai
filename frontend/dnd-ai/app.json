@@ -31,7 +31,9 @@
       "typedRoutes": true
     },
     "babel": {
-      "plugins": ["nativewind/babel"]
+      "plugins": [
+        "nativewind/babel"
+      ]
     },
     "ios": {
       "bundleIdentifier": "com.ashwinmahesh.dndai",
@@ -41,6 +43,14 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "package": "com.ashwinmahesh.dndai"
+    },
+    "extra": {
+      "router": {
+        "origin": "https://n"
+      },
+      "eas": {
+        "projectId": "da7c4ca5-7ea7-41de-89f5-eef759d1969e"
+      }
     }
   }
 }

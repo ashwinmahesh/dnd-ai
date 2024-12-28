@@ -26,6 +26,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="acme"/>
         <data android:scheme="com.mycorp.myapp"/>
+        <data android:scheme="com.ashwinmahesh.dndai"/>
       </intent-filter>
     </activity>
   </application>

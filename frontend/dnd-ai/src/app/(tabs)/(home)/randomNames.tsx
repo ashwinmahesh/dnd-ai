@@ -4,6 +4,7 @@ import { Button, Input, Layout, List, ListItem, Divider, Spinner, Text } from '@
 import { ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LastRandomNamesKey } from '@/constants/AsyncStorageKeys';
+import Logo from '@/images/logo';
 
 // const storageKey = 'RANDOM_NAMES';
 
@@ -71,6 +72,10 @@ const RandomNames = () => {
       style={{ flex: 1, paddingHorizontal: 12, paddingVertical: 12 }}
     >
       <ScrollView style={{ flex: 1 }}>
+        <Logo
+          image="npc"
+          size={200}
+        />
         <Layout
           className="flex"
           style={{ display: 'flex', flex: 1 }}
