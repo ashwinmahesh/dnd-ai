@@ -32,7 +32,7 @@ export default function Actions(props: TProps) {
     };
 
     return (
-      <Layout>
+      <Layout key={`action_${action.name}`}>
         <Text category="h6">
           {action.name}
           {action.recharge ? ` (Recharge ${action.recharge})` : ''}

@@ -91,10 +91,12 @@ class OpenAILibrary:
     2. That means giving everything actions, reactions, bonus actions, and sometimes other cool abilities
     so the monster isnt just a bag of hit points
     3. A description for the monster I want is: {monster_description}
-    3. The monster should be of Challenge Rating {challenge_rating}
-    4. Return the output in the following schema:
+    4. The monster should be of Challenge Rating {challenge_rating}
+    5. If the character is a spellcaster, ensure it has spells of all levels up to the maximum level it can cast. Not all monsters need to have spells
+    6. Ensure between all of the different types of actions (action, bonus action, reaction, legendary action), some of them do more than just deal damage
+    7. Return the output in the following schema:
 
-    ${json.dumps(monster_statblock_schema)}
+    ${json.dumps(monster_statblock_schema)}    
     '''
     messages.append({'role': 'user', "content": primary_message})
 
@@ -112,7 +114,8 @@ class OpenAILibrary:
         statblock_obj: Dict[str, Any] = json.loads(statblock[statblock.find("{"):statblock.rfind("}") + 1])# Remove extraneous characters
         return statblock_obj
       except Exception as e:
-        raise Exception("Unable to properly parse OpenAI response")
+        print("Statblock: ", statblock)
+        raise Exception("Unable to properly parse OpenAI response: ", str(e))
     except openai.OpenAIError as e:
       raise Exception(f"OpenAI Error: {e}")
 

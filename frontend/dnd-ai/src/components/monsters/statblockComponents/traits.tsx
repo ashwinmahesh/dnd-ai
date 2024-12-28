@@ -13,7 +13,7 @@ export default function Traits(props: TProps) {
       <Layout style={{ gap: 12, marginTop: 12 }}>
         {traits.map((trait) => {
           return (
-            <Layout>
+            <Layout key={`statblock_trait_${trait}`}>
               <Text
                 category="h6"
                 style={{ marginBottom: 3 }}

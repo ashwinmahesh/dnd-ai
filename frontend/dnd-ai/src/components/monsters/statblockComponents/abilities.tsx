@@ -20,7 +20,10 @@ const Abilities = (props: TProps) => {
   // row 2 = WIS, INT, CHA
 
   output.push(
-    <Layout style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 48 }}>
+    <Layout
+      style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 48 }}
+      key={`abilities_row_1`}
+    >
       <Layout style={{ width: 60 }}>
         <Text category={abilityTitleCategory}>STR</Text>
         <Text>
@@ -42,7 +45,10 @@ const Abilities = (props: TProps) => {
     </Layout>
   );
   output.push(
-    <Layout style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 48 }}>
+    <Layout
+      style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 48 }}
+      key={`abilities_row_2`}
+    >
       <Layout style={{ width: 60 }}>
         <Text category={abilityTitleCategory}>WIS</Text>
         <Text>
