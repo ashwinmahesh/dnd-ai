@@ -1,8 +1,10 @@
 import { generateMonsterStatblockAPI } from '@/api/inference';
-import { ActionStatus } from '@/api/types';
+import { ActionStatus, MonsterStatblock } from '@/api/types';
 import useFetch from '@/api/useFetch';
+import { LastGeneratedMonsterStatblock } from '@/constants/AsyncStorageKeys';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { Button, Divider, Input, Layout, Spinner, Text } from '@ui-kitten/components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImageProps, ScrollView, View, ViewProps } from 'react-native';
 
 const LoadingIndicator = (props): React.ReactElement => (
@@ -12,7 +14,36 @@ const LoadingIndicator = (props): React.ReactElement => (
 );
 
 export default function GenerateMonsterStatblock() {
-  const fetchGenerateStatblock = useFetch(generateMonsterStatblockAPI);
+  const { getItem, setItem } = useAsyncStorage(LastGeneratedMonsterStatblock);
+
+  const fetchGenerateStatblock = useFetch(generateMonsterStatblockAPI, {
+    onSuccess: async (data) => {
+      try {
+        await setItem(JSON.stringify(data.data));
+      } catch (err) {
+        console.error('Failed to store last generated statblock: ', err);
+      }
+    },
+  });
+
+  useEffect(() => {
+    getItem((err, data) => {
+      if (err) console.error('failed to get last statblock from storage:', err);
+      if (!data) return;
+      try {
+        const statblock: MonsterStatblock = JSON.parse(data);
+        fetchGenerateStatblock.setData((prev) => {
+          if (!prev) return { data: statblock, error: null };
+
+          prev.data = statblock;
+          return prev;
+        });
+      } catch (err) {
+        console.error(`failed to parse last statblock. Statblock=${data}\nErr=${err}`);
+      }
+    });
+  }, []);
+
   const [description, setDescription] = useState('');
   const [cr, setCR] = useState('');
 
@@ -28,28 +59,65 @@ export default function GenerateMonsterStatblock() {
 
     const renderStats = () => {
       const abilities = statblock.abilities;
-      const output: React.ReactElement[] = [];
+      const output: React.ReactElement[] = []; // 2 rows
 
-      Object.keys(abilities).map((ability) => {
-        const modifier = Math.floor((abilities[ability] - 10) / 2);
-        const modifierStr = modifier >= 0 ? `+${modifier}` : `${modifier}`;
+      function getModifier(val: number) {
+        const modifier = Math.floor((val - 10) / 2);
+        return modifier >= 0 ? `+${modifier}` : `${modifier}`;
+      }
+      // row 1 = STR, DEX, CON
+      // row 2 = WIS, INT, CHA
 
-        return (
-          <Layout style={{ alignItems: 'flex-start', flexDirection: 'row' }}>
-            <Text category="label">{ability.substring(0, 3).toUpperCase()}</Text>
+      output.push(
+        <Layout style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 48 }}>
+          <Layout style={{ width: 60 }}>
+            <Text category="label">STR</Text>
             <Text>
-              {abilities[ability]} {`(${modifierStr})`}
+              {abilities['strength']} {`(${getModifier(abilities['strength'])})`}
             </Text>
           </Layout>
-        );
-      });
-
+          <Layout style={{ width: 60 }}>
+            <Text category="label">DEX</Text>
+            <Text>
+              {abilities['dexterity']} {`(${getModifier(abilities['dexterity'])})`}
+            </Text>
+          </Layout>
+          <Layout style={{ width: 60 }}>
+            <Text category="label">CON</Text>
+            <Text>
+              {abilities['constitution']} {`(${getModifier(abilities['constitution'])})`}
+            </Text>
+          </Layout>
+        </Layout>
+      );
+      output.push(
+        <Layout style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 48 }}>
+          <Layout style={{ width: 60 }}>
+            <Text category="label">WIS</Text>
+            <Text>
+              {abilities['wisdom']} {`(${getModifier(abilities['wisdom'])})`}
+            </Text>
+          </Layout>
+          <Layout style={{ width: 60 }}>
+            <Text category="label">INT</Text>
+            <Text>
+              {abilities['intelligence']} {`(${getModifier(abilities['intelligence'])})`}
+            </Text>
+          </Layout>
+          <Layout style={{ width: 60 }}>
+            <Text category="label">CHA</Text>
+            <Text>
+              {abilities['charisma']} {`(${getModifier(abilities['charisma'])})`}
+            </Text>
+          </Layout>
+        </Layout>
+      );
       return output;
     };
 
     return (
       <Layout>
-        <Divider />
+        <Divider style={{ marginVertical: 12 }} />
         <Text category="h5">{statblock.name}</Text>
         <Text category="p2">
           {statblock.size} {statblock.type}, {statblock.alignment}
@@ -63,9 +131,10 @@ export default function GenerateMonsterStatblock() {
             .map((motion) => `${motion} ${statblock.speed[motion]} ft.`)
             .join(',')}
         </Text>
-        <Divider />
+        <Divider style={{ marginVertical: 12 }} />
 
-        <Layout style={{ flexDirection: 'row' }}></Layout>
+        <Layout style={{ gap: 12 }}>{renderStats()}</Layout>
+        <Divider style={{ marginVertical: 12 }} />
       </Layout>
     );
   };
@@ -100,7 +169,7 @@ export default function GenerateMonsterStatblock() {
         </Button>
         {fetchGenerateStatblock.error && <Text status="danger">{fetchGenerateStatblock.error}</Text>}
         {
-          fetchGenerateStatblock.status == ActionStatus.FULFILLED &&
+          fetchGenerateStatblock.data?.data &&
             // <Text>{JSON.stringify(fetchGenerateStatblock.data.data)}</Text>
             renderMonsterDetails()
           // renderMonsterDetails()
