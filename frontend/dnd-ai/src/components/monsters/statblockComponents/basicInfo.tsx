@@ -7,6 +7,8 @@ type TProps = {
   statblock: TMonsterStatblock;
 };
 
+const textCategory = 'p2';
+
 export default function BasicInfo(props: TProps) {
   const { statblock } = props;
   return (
@@ -15,7 +17,7 @@ export default function BasicInfo(props: TProps) {
       {statblock.saving_throws && (
         <Layout style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <Text category="label">Saving Throws:</Text>
-          <Text>
+          <Text category={textCategory}>
             {Object.keys(statblock.saving_throws)
               .map((ability) => {
                 const val = statblock.saving_throws[ability];
@@ -30,7 +32,7 @@ export default function BasicInfo(props: TProps) {
       {statblock.skills && (
         <Layout style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <Text category="label">Skills:</Text>
-          <Text>
+          <Text category={textCategory}>
             {Object.keys(statblock.skills)
               .map((ability) => {
                 const val = statblock.skills[ability];
@@ -45,7 +47,7 @@ export default function BasicInfo(props: TProps) {
       {statblock.damage_resistances && (
         <Layout style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <Text category="label">Damage Resistances:</Text>
-          <Text>{statblock.damage_resistances.join(', ')}</Text>
+          <Text category={textCategory}>{statblock.damage_resistances.join(', ')}</Text>
         </Layout>
       )}
 
@@ -53,7 +55,7 @@ export default function BasicInfo(props: TProps) {
       {statblock.damage_immunities && (
         <Layout style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <Text category="label">Damage Immunities:</Text>
-          <Text>{statblock.damage_immunities.join(', ')}</Text>
+          <Text category={textCategory}>{statblock.damage_immunities.join(', ')}</Text>
         </Layout>
       )}
 
@@ -61,14 +63,14 @@ export default function BasicInfo(props: TProps) {
       {statblock.condition_immunities && (
         <Layout style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <Text category="label">Condition Immunities:</Text>
-          <Text>{statblock.condition_immunities.join(', ')}</Text>
+          <Text category={textCategory}>{statblock.condition_immunities.join(', ')}</Text>
         </Layout>
       )}
 
       {/* Senses */}
       <Layout style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
         <Text category="label">Senses:</Text>
-        <Text>
+        <Text category={textCategory}>
           Passive Perception: {statblock.senses.passive_perception}
           {statblock.senses.darkvision ? `, Darkvision ${statblock.senses.darkvision} ft.` : ''}
         </Text>
@@ -78,7 +80,7 @@ export default function BasicInfo(props: TProps) {
       {statblock.languages && (
         <Layout style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <Text category="label">Languages:</Text>
-          <Text>{statblock.languages.join(', ')}</Text>
+          <Text category={textCategory}>{statblock.languages.join(', ')}</Text>
         </Layout>
       )}
     </Layout>
