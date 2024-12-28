@@ -31,19 +31,16 @@ export default function Page() {
           Monster Statblocks
         </Button>
         <Button
+          style={{ marginTop: 16 }}
+          onPress={() => router.push('/(tabs)/(home)/lootTable')}
+        >
+          Loot Tables
+        </Button>
+        <Button
           disabled
           style={{ marginTop: 16 }}
         >
           Quest Hooks
-        </Button>
-        <Button
-          style={{ marginTop: 16 }}
-          onPress={
-            () => router.push('/(tabs)/(home)/lootTable')
-            // generateLootTableAPI({ loot_cr_min: 6, loot_val_min: 50, magic_item_rarites: ['Uncommon', 'Rare'] })
-          }
-        >
-          Loot Tables
         </Button>
         <Button
           disabled

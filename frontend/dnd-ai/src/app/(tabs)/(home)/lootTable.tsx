@@ -17,7 +17,7 @@ import {
   Text,
 } from '@ui-kitten/components';
 import React, { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { Image, ScrollView } from 'react-native';
 
 const rarities = ['Common', 'Uncommon', 'Rare', 'Very Rare', 'Legendary'];
 
@@ -98,6 +98,12 @@ export default function LootTable() {
         >
           Loot Tables
         </Text>
+        <Layout style={{ justifyContent: 'center', alignItems: 'center', marginTop: 16 }}>
+          <Image
+            source={require('@/images/loot.png')}
+            style={{ resizeMode: 'contain', height: 200, width: 200 }}
+          />
+        </Layout>
         <Layout
           style={{
             flexDirection: 'row',
