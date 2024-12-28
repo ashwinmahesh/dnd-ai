@@ -5,9 +5,9 @@ import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AllKeys } from '@/constants/AsyncStorageKeys';
+import Logo from '@/images/logo';
 
 export default function Page() {
-  // TODO - subscribe to changes
   const user = firebaseAuth.currentUser;
   const router = useRouter();
 
@@ -23,8 +23,8 @@ export default function Page() {
     if (!confirm) return;
     try {
       await firebaseAuth.signOut();
+      await AsyncStorage.multiRemove(AllKeys);
       router.replace('/loading');
-      // router.dismissAll();
     } catch (err) {
       Alert.alert('Failed to Sign-Out', err.toString());
     }
@@ -62,6 +62,12 @@ export default function Page() {
         >
           More Features Coming Soon...
         </Text>
+      </Layout>
+      <Layout style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Logo
+          alt
+          size={300}
+        />
       </Layout>
       <Layout style={{ gap: 12 }}>
         {user && (
