@@ -55,16 +55,17 @@ export type TMonsterStatblock = {
     description: string;
   }[];
   actions?: {
-    name: string;
-    type?: string; // e.g., "Melee Weapon Attack"
-    attack_bonus?: number;
-    reach?: number;
-    range?: number;
-    target?: string;
+    name: string; // x
+    type?: string; // e.g., "Melee Weapon Attack" // x
+    attack_bonus?: number; // x
+    reach?: number; // x
+    range?: number; // x
+    target?: string; // x
     damage?: string; // e.g., "2d6+4"
     damage_type?: string; // e.g., "slashing"
-    recharge?: string; // e.g., "5-6"
+    recharge?: string; // e.g., "5-6" // x
     additional_effects?: string;
+    x;
   }[];
   bonus_actions?: {
     name: string;

@@ -1,7 +1,7 @@
 import { TMonsterStatblock } from '@/api/types';
 import { Divider, Layout, Text } from '@ui-kitten/components';
 import React from 'react';
-import { Abilities, BasicInfo, Traits } from './statblockComponents';
+import { Abilities, Actions, BasicInfo, Traits } from './statblockComponents';
 import { capitalize } from '@/utils/string';
 
 type TProps = {
@@ -35,6 +35,9 @@ const MonsterStatblock = (props: TProps) => {
       <BasicInfo statblock={statblock} />
       <Divider style={{ marginVertical: 12 }} />
       {statblock.traits && <Traits traits={statblock.traits} />}
+      <Divider style={{ marginVertical: 12 }} />
+      {statblock.actions && <Actions actions={statblock.actions} />}
+      <Divider style={{ marginVertical: 12 }} />
     </Layout>
   );
 };
