@@ -54,6 +54,12 @@ export default function Page() {
       >
         Images
       </Button>
+      <Button
+        disabled
+        style={{ marginTop: 16 }}
+      >
+        Riddle
+      </Button>
     </Layout>
   );
 }

@@ -95,11 +95,11 @@ export default function MonstersHome() {
             style={{ margin: 12 }}
             category="h5"
           >
-            Statblocks
+            Saved Statblocks
           </Text>
           <IconButton
             icon="plus"
-            style={{ flexGrow: 0.5 }}
+            style={{ flexGrow: 0.7 }}
             appearance="outline"
             onPress={() => router.push('/(tabs)/(home)/monsters/generateStats')}
           />
