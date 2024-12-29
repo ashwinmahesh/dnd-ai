@@ -1,2 +1,0 @@
-env: load .env
-env: export API_BASE API_KEY
