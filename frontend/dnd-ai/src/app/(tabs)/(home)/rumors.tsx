@@ -2,6 +2,7 @@ import { generateRumors, TGenRumorsAPI } from '@/api/inference';
 import useFetch from '@/api/useFetch';
 import LoadingButton from '@/components/common/LoadingButton';
 import { LastGeneratedRumors } from '@/constants/AsyncStorageKeys';
+import Logo from '@/images/logo';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { Divider, Input, Layout, Text } from '@ui-kitten/components';
 import React, { useEffect, useState } from 'react';
@@ -103,8 +104,12 @@ export default function Rumors() {
           Generate
         </LoadingButton>
         {fetchRumors.error && <Text status="danger">{fetchRumors.error}</Text>}
+        <Logo
+          image="rumors"
+          size={175}
+        />
         {fetchRumors.data?.data && (
-          <Layout>
+          <Layout style={{ marginTop: 12 }}>
             {fetchRumors.data.data.map((rumor, idx) => {
               return (
                 <Layout>

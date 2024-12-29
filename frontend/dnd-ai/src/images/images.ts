@@ -7,6 +7,7 @@ const images = {
   statblock_logo: require('@/images/statblock_logo.png'),
   npc: require('@/images/npc.png'),
   mounted_head: require('@/images/mounted_head.png'),
+  rumors: require('@/images/rumors.png'),
 };
 
 export default images;
