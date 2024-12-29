@@ -109,3 +109,23 @@ class OpenAIHandler:
         return jsonify(make_response(data=loot_table)), 200
       except Exception as e:
         return jsonify(make_response(data=None, error=str(e))), 500
+
+    @self.router.get('/rumors')
+    @protected_route
+    @self.rate_limiter.limiter.limit(self.rate_limiter.default_global_limit, per_method=True, exempt_when=self.rate_limiter.exemption_func)
+    def generate_rumors():
+      user: FirebaseUser = request.user
+      current_campaign_id = request.headers.get('CurrentCampaignID')
+
+      try:
+        rumors = self.openAILibrary.generate_rumors(
+          party_level=6,
+          location='A tavern in a military fortress, in a zombie infested jungle',
+          quest_giver="A bar-keep who is connected with the commoners",
+          num_rumors=10,
+          current_campaign_id=current_campaign_id,
+          user_uid = user.get('uid')
+        )
+        return jsonify(make_response(data=rumors)), 200
+      except Exception as e:
+        return jsonify(make_response(data=None, error=str(e))), 500

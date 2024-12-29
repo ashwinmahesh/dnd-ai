@@ -30,7 +30,8 @@ class OpenAILibrary:
     try:
       completion = self.client.chat.completions.create(
         model = "gpt-3.5-turbo",
-        messages=messages
+        messages=messages,
+        user=userUID
       )
 
       try:
@@ -47,13 +48,14 @@ class OpenAILibrary:
                                userUID: str = None) -> List[Dict[str, str]]:
     messages = self._init_messages(current_campaign_id, userUID)
 
-    primary_message = f"I need a list of {num_encounters} random encounters for a party of level {party_level}. The encounters should take place be about {scenario}. Return them in a new-line separated list with the format of '{'{ENCOUNTER DESCRIPTION}'} - {'{REASON FOR ENCOUNTER}'}'. Don't number them or return anything else in the output except the encounters in my desired format. If it is a combat encounter, include the number and types of enemies. In reason for encounter, provide context as to why the encounter might be happening. The context should be 2 sentences"
+    primary_message = f"I need a list of {num_encounters} diverse random encounters for a party of level {party_level}. The encounters should take place be about {scenario}. Return them in a new-line separated list with the format of '{'{ENCOUNTER DESCRIPTION}'} - {'{REASON FOR ENCOUNTER}'}'. Don't number them or return anything else in the output except the encounters in my desired format. If it is a combat encounter, include the number and types of enemies. In reason for encounter, provide context as to why the encounter might be happening. The context should be 3 sentences"
     messages.append({'role': 'user', "content": primary_message})
 
     try:
       completion = self.client.chat.completions.create(
         model = "gpt-3.5-turbo",
-        messages=messages
+        messages=messages,
+        user=userUID
       )
 
       try:
@@ -82,6 +84,55 @@ class OpenAILibrary:
   def generate_images(self, description: str):
     pass
 
+  def generate_rumors(self, party_level: int, location: str, quest_giver: str, num_rumors: int = 10, current_campaign_id: str = None, user_uid: str = None) -> List[Dict[str, str]]:
+    messages = self._init_messages(current_campaign_id, user_uid)
+
+    primary_message = f'''
+    1. Generate a D{num_rumors} list of rumors given by an NPC described as {quest_giver} at location {location}.
+    2. The list of rumors should be diverse and each have an actionable associated quest hook appropriate for a party of level {party_level} which the players can undertake.
+    3. Explain what the expected objective of the quest hook is.
+    4. Be specific with the rumor, quest_hook, and quest_objective.
+    4. Return example {num_rumors} rumors.
+    4. Return the output as a JSON object in the following format
+
+      {{
+           "rumors": [
+               {{
+                   "rumor": "<string>",
+                   "quest_hook": "<string>",
+                   "quest_objective": <string>
+               }}
+           ]
+       }}
+
+    5. The response must be a valid JSON object.
+    '''
+
+    messages.append({"role": "user", "content": primary_message})
+
+    logging.info(f"Generating D{num_rumors} rumor table given by {quest_giver} at {location} for party level {party_level}")
+
+    try:
+      completion = self.client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=messages,
+        user=user_uid,
+        response_format={"type": "json_object"}
+      )
+      try:
+        rumors = json.loads(completion.choices[0].message.content)
+        logging.debug(f"Rumors: {rumors}")
+        print(f"Rumors: {rumors}")
+        rumors: List[Dict[str, str]] = rumors['rumors']
+        #json.loads(statblock[statblock.find("{"):statblock.rfind("}") + 1])# Remove extraneous characters
+        return rumors
+      except Exception as e:
+        # print("Rumors: ", rumors)
+        raise Exception("Unable to properly parse OpenAI response: ", str(e))
+    except openai.OpenAIError as e:
+      raise Exception(f"OpenAI Error: {e}")
+
+
   def generate_monster(self, monster_description: str, challenge_rating: int, use_legendary_actions: bool = False, current_campaign_id: str = None, user_uid: str = None):
     messages = self._init_messages(current_campaign_id, user_uid)
 
@@ -106,7 +157,8 @@ class OpenAILibrary:
     try:
       completion = self.client.chat.completions.create(
         model = "gpt-3.5-turbo",
-        messages=messages
+        messages=messages,
+        user = user_uid,
       )
 
       try:
@@ -135,12 +187,12 @@ class OpenAILibrary:
   ):
     messages = self._init_messages(current_campaign_id, user_uid)
     primary_message = f'''
-    1. Generate me a D20 loot table retrieved off monsters of CR {loot_cr_min} - {loot_cr_max}.
-    2. Include a mix of gold, potions, spell scrolls {", and magic items" if include_magic_items else ''} of rarities: {", ".join(magic_item_rarities)}.
+    1. Generate me a D10 loot table retrieved off monsters of CR {loot_cr_min} - {loot_cr_max}.
+    2. Include a diverse mix of gold, potions, spell scrolls {", and magic items" if include_magic_items else ''} of rarities: {", ".join(magic_item_rarities)}.
     3. The value of each entry should range between {loot_val_min}gp and {loot_val_max}gp.
     4. Not every entry needs a spell scroll or a potion, sometimes just gold is enough.
     5. Return the output as a list of strings, example: ["100gp, Spell Scroll (Darkness)", "75gp, Potion of Greater Healing, Spell Scroll (Thunderwave)", "50gp, Cloak of Displacement"...].
-    6. DO NOT RETURN ANYTHING EXCEPT THE LIST OF STRINGS, which should contain exactly 20 elements.
+    6. DO NOT RETURN ANYTHING EXCEPT THE LIST OF STRINGS, which should contain exactly 10 elements.
     {f'7. A description of where the loot is found - {context}' if context else ''}
     {f'8. Do not include magic items' if not include_magic_items else ''}
 '''
@@ -150,7 +202,8 @@ class OpenAILibrary:
     try:
       completion = self.client.chat.completions.create(
         model = "gpt-3.5-turbo",
-        messages=messages
+        messages=messages,
+        user=user_uid
       )
 
       try:
