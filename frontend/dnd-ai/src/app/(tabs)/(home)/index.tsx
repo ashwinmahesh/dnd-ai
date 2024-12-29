@@ -50,10 +50,10 @@ export default function Page() {
           Loot Tables
         </Button>
         <Button
-          disabled
           style={{ marginTop: 16 }}
+          onPress={() => router.push('/(tabs)/(home)/rumors')}
         >
-          Quest Hooks
+          Rumors
         </Button>
         <Button
           disabled

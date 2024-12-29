@@ -71,6 +71,15 @@ export default function HomeLayout() {
           headerTintColor: DarkTheme.colors.text,
         }}
       />
+      <Stack.Screen
+        name="rumors"
+        options={{
+          headerShown: true,
+          headerTitle: 'Rumors',
+          headerStyle: { backgroundColor: DarkTheme.colors.background },
+          headerTintColor: DarkTheme.colors.text,
+        }}
+      />
     </Stack>
   );
 }
