@@ -5,8 +5,8 @@ import { SelectedCampaignKey } from '@/constants/AsyncStorageKeys';
 import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 const http = axios.create({
-  // baseURL: `${Config.API_BASE}/api/v1`,
-  baseURL: `http://localhost:6875/api/v1`,
+  baseURL: `${Config.API_BASE}/api/v1`,
+  // baseURL: `http://localhost:6875/api/v1`,
   timeout: 25000,
 });
 
