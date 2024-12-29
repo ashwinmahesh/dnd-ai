@@ -57,7 +57,7 @@ Add details about whats happened so far and the adventurers in your campaign. Th
 
 ### Frontend
 
-- Expo + React Native for app
+- Expo + React Native + UI Kitten
 - Firebase Auth + Firestore DB
 
 ### CI/CD
