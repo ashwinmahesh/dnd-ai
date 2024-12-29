@@ -1,10 +1,20 @@
 import '../../global.css';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
+import { DarkTheme } from '@react-navigation/native';
+import { useTheme } from '@ui-kitten/components';
 
 export default function TabLayout() {
+  const theme = useTheme();
+
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: theme['color-primary-500'],
+        tabBarStyle: { backgroundColor: DarkTheme.colors.card },
+        tabBarInactiveTintColor: 'white',
+      }}
+    >
       <Tabs.Screen
         name="(home)"
         options={{

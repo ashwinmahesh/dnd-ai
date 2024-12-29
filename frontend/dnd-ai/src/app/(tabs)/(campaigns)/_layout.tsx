@@ -1,3 +1,4 @@
+import { DarkTheme } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 
 export default function CampaignsLayout() {
@@ -10,15 +11,30 @@ export default function CampaignsLayout() {
     >
       <Stack.Screen
         name="index"
-        options={{ headerShown: true, headerTitle: 'Campaigns' }}
+        options={{
+          headerShown: true,
+          headerTitle: 'Campaigns',
+          headerStyle: { backgroundColor: DarkTheme.colors.background },
+          headerTintColor: DarkTheme.colors.text,
+        }}
       />
       <Stack.Screen
         name="[...campaignParams]"
-        options={{ headerShown: true, headerTitle: 'Create Campaign' }}
+        options={{
+          headerShown: true,
+          headerTitle: 'Create Campaign',
+          headerStyle: { backgroundColor: DarkTheme.colors.background },
+          headerTintColor: DarkTheme.colors.text,
+        }}
       />
       <Stack.Screen
         name="adventurer/[...params]"
-        options={{ headerShown: true, headerTitle: 'Add Adventurer' }}
+        options={{
+          headerShown: true,
+          headerTitle: 'Add Adventurer',
+          headerStyle: { backgroundColor: DarkTheme.colors.background },
+          headerTintColor: DarkTheme.colors.text,
+        }}
       />
     </Stack>
   );

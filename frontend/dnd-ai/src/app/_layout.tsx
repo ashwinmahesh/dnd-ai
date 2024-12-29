@@ -6,7 +6,8 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import { darkerBackgrounds, green } from '@/theme/orange';
+import { darkerBackgrounds, forestGreen } from '@/theme/themes';
+import { DarkTheme } from '@react-navigation/native';
 
 export default function Layout() {
   return (
@@ -14,9 +15,14 @@ export default function Layout() {
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider
         {...eva}
-        theme={{ ...eva.dark, ...green, ...darkerBackgrounds }}
+        theme={{ ...eva.dark, ...forestGreen, ...darkerBackgrounds }}
       >
-        <Stack>
+        <Stack
+          screenOptions={{
+            headerStyle: { backgroundColor: DarkTheme.colors.background },
+            headerTintColor: DarkTheme.colors.text,
+          }}
+        >
           <Stack.Screen
             name="index"
             options={{ headerShown: false }}
