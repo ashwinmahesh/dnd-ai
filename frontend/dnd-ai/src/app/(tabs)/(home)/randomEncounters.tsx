@@ -14,7 +14,6 @@ import {
   Text,
 } from '@ui-kitten/components';
 import useFetch from '@/api/useFetch';
-import { ActionStatus } from '@/api/types';
 import { ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LastRandomEncountersKey } from '@/constants/AsyncStorageKeys';
