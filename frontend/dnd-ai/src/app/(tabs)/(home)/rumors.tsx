@@ -74,12 +74,12 @@ export default function Rumors() {
   return (
     <Layout style={{ flex: 1, padding: 12 }}>
       <ScrollView>
-        <Layout style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 16 }}>
+        <Layout style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 16 }}>
           <Input
             value={quest_giver}
             onChangeText={setQuestGiver}
             label="Quest Giver"
-            style={{ flexGrow: 1 }}
+            style={{ flex: 1, flexShrink: 0 }}
             multiline
           />
           <Input
@@ -93,7 +93,6 @@ export default function Rumors() {
         <Layout
           style={{
             flexDirection: 'row',
-            justifyContent: 'flex-start',
             alignItems: 'flex-start',
             gap: 16,
             marginTop: 8,
@@ -103,7 +102,7 @@ export default function Rumors() {
             value={location}
             onChangeText={setLocation}
             label="Location"
-            style={{ flexGrow: 1 }}
+            style={{ flex: 1, flexShrink: 0 }}
             multiline
           />
           <Input
