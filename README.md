@@ -47,3 +47,17 @@ Add details about whats happened so far and the adventurers in your campaign. Th
 
 ![image](https://github.com/user-attachments/assets/7c657b77-a8b9-4fa5-a239-1c848f2c87ad)
 
+
+## Tech Stack
+
+### Backend
+
+- Python / Flask for codebase
+- Bazel + Docker for building
+- Automatic build and deploy to google cloud run on new commits to main via GitHub actions
+
+### Frontend
+
+- Expo + React Native for app
+- Firebase Auth + Firestore DB
+- Automatic build and deploy to Apple App Store on new commits to main via Expo Developer
