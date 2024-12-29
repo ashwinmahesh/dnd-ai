@@ -54,10 +54,13 @@ Add details about whats happened so far and the adventurers in your campaign. Th
 
 - Python / Flask for codebase
 - Bazel + Docker for building
-- Automatic build and deploy to google cloud run on new commits to main via GitHub actions
 
 ### Frontend
 
 - Expo + React Native for app
 - Firebase Auth + Firestore DB
-- Automatic build and deploy to Apple App Store on new commits to main via Expo Developer
+
+### CI/CD
+
+- Automatic build and deploy backend to google cloud run on new commits to main under /backend directory via GitHub actions
+- Automatic build and deploy to Apple App Store on new commits to main under /frontend/dnd-ai via Expo Developer
