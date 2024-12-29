@@ -1,11 +1,12 @@
 import React from 'react';
-import { Button, Layout, Text } from '@ui-kitten/components';
+import { Button, Layout, Text, useTheme } from '@ui-kitten/components';
 import { router } from 'expo-router';
 
 import { ScrollView } from 'react-native';
 import Logo from '@/images/logo';
 
 export default function Page() {
+  const theme = useTheme();
   return (
     <Layout
       className="flex flex-1 align-middle p-8 w-full"
@@ -16,6 +17,12 @@ export default function Page() {
         <Logo
           image="protector"
           size={150}
+          style={{
+            shadowColor: theme['color-primary-500'],
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 1,
+            shadowRadius: 10,
+          }}
         />
         <Text
           style={{ textAlign: 'center', marginVertical: 12 }}

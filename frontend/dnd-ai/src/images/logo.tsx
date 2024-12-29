@@ -1,6 +1,6 @@
 import { Layout } from '@ui-kitten/components';
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, ImageProps, ImageStyle } from 'react-native';
 import images from './images';
 
 type TImage = keyof typeof images;
@@ -8,10 +8,10 @@ type TImage = keyof typeof images;
 type TProps = {
   image: TImage;
   size: number;
-};
+} & ImageProps;
 
 export default function Logo(props: TProps) {
-  const { size, image } = props;
+  const { size, image, style, ...rest } = props;
   return (
     <Layout
       style={{
@@ -21,8 +21,10 @@ export default function Logo(props: TProps) {
       }}
     >
       <Image
+        {...rest}
         source={images[image]}
         style={{
+          ...(style as object),
           resizeMode: 'contain',
           height: size,
           width: size,

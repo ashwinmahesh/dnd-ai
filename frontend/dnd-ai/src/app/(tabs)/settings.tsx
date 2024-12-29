@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Layout, Text } from '@ui-kitten/components';
+import { Button, Layout, Text, useTheme } from '@ui-kitten/components';
 import { firebaseAuth } from '@/FirebaseConfig';
 import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -10,6 +10,8 @@ import Logo from '@/images/logo';
 export default function Page() {
   const user = firebaseAuth.currentUser;
   const router = useRouter();
+
+  const theme = useTheme();
 
   const [cacheClearLoading, setCacheClearLoading] = useState(false);
 
@@ -66,6 +68,12 @@ export default function Page() {
       <Logo
         image="protector"
         size={300}
+        style={{
+          shadowColor: theme['color-primary-500'],
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 1,
+          shadowRadius: 10,
+        }}
       />
       <Layout style={{ gap: 12 }}>
         {user && (
