@@ -7,7 +7,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
-    <string>dnd-ai</string>
+    <string>Dungeons &amp; Dragons Session Guardian</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -35,6 +35,12 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>com.googleusercontent.apps.1016458162515-qpn44ihnjdeo0h2tds4j9svpheg23qif</string>
+        </array>
+      </dict>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>exp+dnd-ai</string>
         </array>
       </dict>
     </array>

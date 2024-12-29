@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'dnd-ai'
+rootProject.name = 'Dungeons & Dragons Session Guardian'
 
 dependencyResolutionManagement {
   versionCatalogs {

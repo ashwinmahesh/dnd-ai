@@ -25,15 +25,14 @@
         }
       ]
     ],
-    "name": "dnd-ai",
+    "name": "Dungeons & Dragons Session Guardian",
     "slug": "dnd-ai",
+    "icon": "./assets/icon.png",
     "experiments": {
       "typedRoutes": true
     },
     "babel": {
-      "plugins": [
-        "nativewind/babel"
-      ]
+      "plugins": ["nativewind/babel"]
     },
     "ios": {
       "bundleIdentifier": "com.ashwinmahesh.dndai",
