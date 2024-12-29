@@ -157,8 +157,6 @@ class OpenAILibrary:
         resp = completion.choices[0].message.content
         logging.info(f"Loot table: {resp}")
         loot_table: List[str] = json.loads(resp)
-        # statblock_obj: Dict[str, Any] = json.loads(statblock[statblock.find("{"):statblock.rfind("}") + 1])# Remove extraneous characters
-        # return statblock_obj
         return loot_table
       except Exception as e:
         raise Exception("Unable to properly parse OpenAI response: ", str(e))

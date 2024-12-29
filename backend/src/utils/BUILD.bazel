@@ -4,5 +4,8 @@ py_library(
     name = "utils",
     srcs = glob(["**/*.py"]),
     visibility = ["//visibility:public"],
-    deps = [requirement("firebase_admin"),],
+    deps = [
+      requirement("firebase_admin"),
+      requirement("flask-limiter"),
+    ],
 )

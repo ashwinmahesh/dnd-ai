@@ -2,17 +2,19 @@ from flask import Flask, jsonify, request, Blueprint
 from typing import List
 
 from backend.src.core.openai import OpenAILibrary
-from backend.src.utils.http import make_response, protected_route, FirebaseUser
+from backend.src.utils.http import make_response, protected_route, FirebaseUser, RateLimiter
 
 class OpenAIHandler:
-  def __init__(self, app: Flask, router: Blueprint, openAILibrary: OpenAILibrary):
+  def __init__(self, app: Flask, router: Blueprint, openAILibrary: OpenAILibrary, rate_limiter: RateLimiter):
     self.app = app
     self.router = router
     self.openAILibrary = openAILibrary
+    self.rate_limiter = rate_limiter
 
   def register_routes(self):
     @self.router.get('/names')
     @protected_route
+    @self.rate_limiter.limiter.limit(self.rate_limiter.default_global_limit, per_method=True, exempt_when=self.rate_limiter.exemption_func)
     def get_names():
       user: FirebaseUser = request.user
       current_campaign_id = request.headers.get('CurrentCampaignID')
@@ -27,10 +29,12 @@ class OpenAIHandler:
         )
         return jsonify(make_response(data=names)), 200
       except Exception as e:
+        print("USING THIS EXCEPTION")
         return jsonify(make_response(error=e)), 500
     
     @self.router.get('/encounters')
     @protected_route
+    @self.rate_limiter.limiter.limit(self.rate_limiter.default_global_limit, per_method=True, exempt_when=self.rate_limiter.exemption_func)
     def get_encounters():
       user: FirebaseUser = request.user
       current_campaign_id = request.headers.get('CurrentCampaignID')
@@ -53,6 +57,7 @@ class OpenAIHandler:
       
     @self.router.get('/monster')
     @protected_route
+    @self.rate_limiter.limiter.limit(self.rate_limiter.default_global_limit, per_method=True, exempt_when=self.rate_limiter.exemption_func)
     def generate_monster_stablock():
       user: FirebaseUser = request.user
       current_campaign_id = request.headers.get('CurrentCampaignID')
@@ -76,6 +81,7 @@ class OpenAIHandler:
     
     @self.router.get('/loot_table')
     @protected_route
+    @self.rate_limiter.limiter.limit(self.rate_limiter.default_global_limit, per_method=True, exempt_when=self.rate_limiter.exemption_func)
     def generate_loot_table():
       user: FirebaseUser = request.user
       current_campaign_id = request.headers.get('CurrentCampaignID')

@@ -1,8 +1,9 @@
 from typing import Any, Dict, TypedDict, Optional
 from functools import wraps
-from flask import request, jsonify
+from flask import request, jsonify, Flask
 import os
 from firebase_admin import auth
+from flask_limiter import Limiter
 
 api_token = os.getenv("API_TOKEN", "2n7x9p4k6m8v3b1q5w7t9h4j6d8s3f5")
 
@@ -45,3 +46,23 @@ def protected_route(f):
       return jsonify(make_response(None, str(e))), 500
   
   return decorated_fn
+
+def limiter_key_func():
+  user: FirebaseUser = request.user
+  return user.get("uid")
+
+
+
+class RateLimiter:
+  
+  def __init__(self, app: Flask):
+    self.limiter = Limiter(
+      key_func=limiter_key_func,
+      app=app
+    )
+    self.default_global_limit = "20/day"
+
+  def exemption_func(self):
+    return limiter_key_func() == "otfx79kfaFXyV4ZdTCPiSrxy3TD3"
+
+  
