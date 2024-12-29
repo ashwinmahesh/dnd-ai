@@ -6,16 +6,21 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "owner": "ashwin.mahesh"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "owner": "ashwin.mahesh"
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "owner": "ashwin.mahesh"
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "owner": "ashwin.mahesh"
+    }
   }
 }
