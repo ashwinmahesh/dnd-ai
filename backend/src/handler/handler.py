@@ -1,7 +1,8 @@
 import os
-from flask import Flask, jsonify, Blueprint
+from flask import Flask, jsonify, Blueprint, render_template
 
 from backend.src.handler.openai_handler import OpenAIHandler
+from backend.src.handler.required import RequiredHandler
 from backend.src.core.openai import OpenAILibrary
 from backend.src.utils.http import make_response, RateLimiter
 
@@ -23,6 +24,9 @@ class Server:
   def _register_routes(self):
     openaiHandler = OpenAIHandler(self.app, self.router, self.openai_library, self.openai_limiter)
     openaiHandler.register_routes()
+
+    required_handler = RequiredHandler(self.app)
+    required_handler.register_routes()
 
     @self.app.get("/")
     def healthy():
