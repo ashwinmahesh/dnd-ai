@@ -64,7 +64,7 @@ class OpenAIHandler:
 
       monster_description = request.args.get('description', type=str)
       challenge_rating = request.args.get('challenge_rating', type=int)
-      use_legendary_actions = request.args.get('use_legendary_actions', default=False, type=bool)
+      use_legendary_actions = request.args.get('use_legendary_actions', default=True, type=bool)
 
       try:
         monster = self.openAILibrary.generate_monster(
