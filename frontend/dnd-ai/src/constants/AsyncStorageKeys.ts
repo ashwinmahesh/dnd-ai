@@ -13,5 +13,6 @@ export const AllKeys = [
   LastRandomEncountersKey,
   LastGeneratedMonsterStatblock,
   LastGeneratedLootTable,
+  LastGeneratedRumors,
   StatblockToView,
 ];
