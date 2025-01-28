@@ -8,7 +8,7 @@ const http = axios.create({
   // baseURL: `${Config.API_BASE}/api/v1`,
   baseURL: `https://dnd-ai-704020832855.us-east1.run.app/api/v1`,
   // baseURL: `http://localhost:6875/api/v1`,
-  timeout: 25000,
+  timeout: 60 * 1000, // 60 seconds
 });
 
 // console.log('BASE URL:', Config.API_BASE);

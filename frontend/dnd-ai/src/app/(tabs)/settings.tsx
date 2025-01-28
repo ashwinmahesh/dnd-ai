@@ -7,6 +7,7 @@ import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AllKeys } from '@/constants/AsyncStorageKeys';
 import Logo from '@/images/logo';
+import { deleteAllRecordsForUser } from '@/database/deleteUser';
 
 export default function Page() {
   const user = firebaseAuth.currentUser;
@@ -108,6 +109,7 @@ export default function Page() {
     }
 
     try {
+      await deleteAllRecordsForUser();
       await user.delete();
       try {
         await AsyncStorage.multiRemove(AllKeys);
